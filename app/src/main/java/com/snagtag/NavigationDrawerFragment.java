@@ -1,4 +1,4 @@
-package com.example.owner.snagtag_android;
+package com.snagtag;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -102,9 +102,12 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
+                        getString(R.string.title_section_tags),
+                        getString(R.string.title_section_cart),
+                        getString(R.string.title_section_closet),
+                        getString(R.string.title_section_stores),
+                        getString(R.string.title_section_account),
+                        getString(R.string.title_section_terms),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -234,10 +237,10 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
+        //if (mDrawerLayout != null && isDrawerOpen()) {
+        //    inflater.inflate(R.menu.global, menu);
+        //    showGlobalContextActionBar();
+        //}
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -247,8 +250,8 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.action_tags) {
+            Toast.makeText(getActivity(), "Navigation action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -261,9 +264,9 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+
     }
 
     private ActionBar getActionBar() {

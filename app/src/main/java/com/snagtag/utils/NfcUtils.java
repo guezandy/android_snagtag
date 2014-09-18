@@ -1,4 +1,4 @@
-package com.example.owner.snagtag_android.utils;
+package com.snagtag.utils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

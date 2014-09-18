@@ -25,7 +25,13 @@
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.example.owner.snagtag_android.NavigationDrawerFragment"
+        android:name="com.snagtag.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
+    <fragment android:id="@+id/tags_drawer"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:name="com.snagtag.TagsDrawerFragment"
+        tools:layout="@layout/fragment_tags_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

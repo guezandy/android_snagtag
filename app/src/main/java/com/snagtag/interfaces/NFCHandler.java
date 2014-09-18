@@ -1,4 +1,4 @@
-package com.example.owner.snagtag_android.interfaces;
+package com.snagtag.interfaces;
 
 import android.content.Intent;
 

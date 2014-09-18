@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.owner.snagtag_android.utils;
+package com.snagtag.utils;
 
 /**
  * <p>Encapsulates the result of a barcode scan invoked through {@link IntentIntegrator}.</p>

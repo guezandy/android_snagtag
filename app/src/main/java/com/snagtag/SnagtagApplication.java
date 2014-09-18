@@ -1,14 +1,13 @@
-package com.example.owner.snagtag_android;
+package com.snagtag;
 
 import android.app.Application;
-import com.example.owner.snagtag_android.models.CartItem;
-import com.example.owner.snagtag_android.models.TagHistoryItem;
-import com.example.owner.snagtag_android.models.ClothingItem;
+import com.snagtag.models.CartItem;
+import com.snagtag.models.TaghistoryItem;
+import com.snagtag.models.ClothingItem;
 
-import  com.example.owner.snagtag_android.R;
+import  com.snagtag.R;
 import com.parse.Parse;
 import com.parse.ParseACL;
-import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import android.util.Log;
@@ -31,7 +30,7 @@ public class SnagtagApplication extends Application {
          */
         ParseObject.registerSubclass(ClothingItem.class);
         ParseObject.registerSubclass(CartItem.class);
-        ParseObject.registerSubclass(TagHistoryItem.class);
+        ParseObject.registerSubclass(TaghistoryItem.class);
 
 
         /*

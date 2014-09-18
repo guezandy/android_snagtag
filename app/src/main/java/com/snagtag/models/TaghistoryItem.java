@@ -1,4 +1,4 @@
-package com.example.owner.snagtag_android.models;
+package com.snagtag.models;
 
 import java.util.Date;
 
@@ -14,9 +14,9 @@ import com.parse.ParseUser;
  */
 
 @ParseClassName("TagHistoryItem")
-public class TagHistoryItem extends ParseObject {
+public class TaghistoryItem extends ParseObject {
 
-	public TagHistoryItem() {
+	public TaghistoryItem() {
 		// A default constructor is required.
 	}
 

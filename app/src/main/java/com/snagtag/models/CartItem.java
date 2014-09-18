@@ -1,4 +1,4 @@
-package com.example.owner.snagtag_android.models;
+package com.snagtag.models;
 
 import java.util.Date;
 

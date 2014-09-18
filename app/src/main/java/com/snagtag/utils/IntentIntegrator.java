@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.owner.snagtag_android.utils;
+package com.snagtag.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
