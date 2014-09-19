@@ -2,8 +2,11 @@ package com.snagtag;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -173,5 +176,62 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onTagItemSelected(int position) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mNavigationDrawerFragment.isDrawerOpen()) {
+            mDrawer.closeDrawer(mNavigationDrawerFragment.getView());
+            return;
+        }
+
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            // set title
+            alertDialogBuilder.setTitle("Snagtag");
+
+            // set dialog message
+            alertDialogBuilder.setMessage("Are you sure you want to exit Snagtag?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // if this button is clicked, close
+                    // current activity
+                    MainActivity.super.onBackPressed();
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // if this button is clicked, just close
+                    // the dialog box and do nothing
+                    dialog.cancel();
+                }
+            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * Handles adding all fragments to the view.
+     * @param newFragment The fragment to add.
+     * @param addToBackstack Whether this Fragment should appear in the backstack or not.
+     * @param transition The transition animation to apply
+     * @param backstackName The name
+     */
+    public void replaceFragment(android.support.v4.app.Fragment newFragment, boolean addToBackstack, int transition, String backstackName) {
+        // use fragmentTransaction to replace the fragment
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.replace(R.id.container, newFragment, backstackName);
+        if (addToBackstack) {
+            fragmentTransaction.addToBackStack(backstackName);
+        }
+        fragmentTransaction.setTransition(transition);
+        fragmentTransaction.commit();
     }
 }
