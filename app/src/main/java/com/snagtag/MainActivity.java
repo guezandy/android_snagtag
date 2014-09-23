@@ -3,11 +3,11 @@ package com.snagtag;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -15,6 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.snagtag.fragment.ClosetFragment;
+import com.snagtag.fragment.NavigationDrawerFragment;
+import com.snagtag.fragment.TagsDrawerFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -66,10 +70,29 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch(position) {
+            case 0:
+                getSupportFragmentManager().popBackStackImmediate();
+                replaceFragment(PlaceholderFragment.newInstance(1), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Tag");
+                break;
+            case 1:
+
+                break;
+            case 2:
+                replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Closet");
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+        }
+
     }
 
     public void onSectionAttached(int number) {
@@ -82,6 +105,8 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section_closet);
+
+                replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Closet");
                 break;
             case 4:
                 mTitle = getString(R.string.title_section_stores);

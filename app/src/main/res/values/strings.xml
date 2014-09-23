@@ -13,4 +13,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_tags">Tags</string>
     <string name="tip_snag">Look for these tags at your favorite stores and start Snagging!</string>
+    <string name="button_closet">Closet Button</string>
+    <string name="button_cart">Cart Button</string>
+    <string name="button_back_arrow">Back Button</string>
+    <string name="title_measurements">Measurements:</string>
 </resources>

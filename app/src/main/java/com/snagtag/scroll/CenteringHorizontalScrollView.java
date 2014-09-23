@@ -1,0 +1,114 @@
+package com.snagtag.scroll;
+
+import android.app.Activity;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+
+/**
+ * Horizontal Scroll View that will center on the most visible element.
+ *
+ * This implementation assumes that the elements are of all equal width.
+ *
+ * Created by benjamin on 9/23/14.
+ */
+public class CenteringHorizontalScrollView extends HorizontalScrollView {
+
+    private Runnable mScrollerTask;
+    private int mInitialPosition;
+    private Context mContext;
+    private View mCurrentView;
+
+    private int mNewCheck = 100;
+    private static final String TAG = "CenteringHorizontalScrollView";
+    private DisplayMetrics mMetrics;
+    private int mItemWidthInDip = 150;
+
+    private OnScrollStoppedListener onScrollStoppedListener;
+
+
+    /**
+     * Defines the callback for when the scrolling stops.  This will give you the 'selected view' once scrolling is finished.
+     */
+    public interface OnScrollStoppedListener{
+        void onScrollStopped(View view);
+    }
+
+    public CenteringHorizontalScrollView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.mContext = context;
+        this.mMetrics = context.getResources().getDisplayMetrics();
+        this.setOnTouchListener(new OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    CenteringHorizontalScrollView.this.startScrollerTask();
+                }
+                return false;
+            }
+        });
+
+        mScrollerTask = new Runnable() {
+
+            public void run() {
+
+                int newPosition = getScrollY();
+                if(mInitialPosition - newPosition == 0){//has stopped
+                    setCenter();
+                    if(onScrollStoppedListener!=null){
+
+                        onScrollStoppedListener.onScrollStopped(mCurrentView);
+                    }
+                }else{
+                    mInitialPosition = getScrollY();
+                    CenteringHorizontalScrollView.this.postDelayed(mScrollerTask, mNewCheck);
+                }
+            }
+        };
+    }
+
+    /**
+     * The ScrollStoppedListener that will receive the scroll stopped callback.  The callback will be fired
+     * once the scroll has centered the right view.
+     * @param listener
+     */
+    public void setOnScrollStoppedListener(CenteringHorizontalScrollView.OnScrollStoppedListener listener){
+        onScrollStoppedListener = listener;
+    }
+
+
+    /**
+     * Call this when a scroll is initiated.
+     */
+    public void startScrollerTask(){
+
+        mInitialPosition = getScrollY();
+        CenteringHorizontalScrollView.this.postDelayed(mScrollerTask, mNewCheck);
+    }
+
+    /**
+     * This will center the closest view to the middle of the screen.
+     */
+    private void setCenter() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        ((Activity)mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int screenWidth = displaymetrics.widthPixels;
+        ViewGroup parent = (ViewGroup) getChildAt(0);
+
+        float x = getScrollX();
+        float widthInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mItemWidthInDip, mMetrics);
+        float offset = (x/widthInPx)+((screenWidth/2)/widthInPx);
+
+        Log.d("OFFSET", ""+((int)offset));
+
+        mCurrentView = parent.getChildAt(((int)offset));
+        int scrollX = (mCurrentView.getLeft() - (screenWidth / 2))
+                + (mCurrentView.getWidth() / 2);
+        this.smoothScrollTo(scrollX, 0);
+    }
+}

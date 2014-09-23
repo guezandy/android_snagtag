@@ -1,16 +1,16 @@
-package com.snagtag;
+package com.snagtag.fragment;
 
+import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,12 +22,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.snagtag.R;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class TagsDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment {
 
     /**
      * Remember the position of the selected item.
@@ -43,7 +45,7 @@ public class TagsDrawerFragment extends Fragment {
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
-    private TagsDrawerCallbacks mCallbacks;
+    private NavigationDrawerCallbacks mCallbacks;
 
     /**
      * Helper component that ties the action bar to the navigation drawer.
@@ -58,7 +60,7 @@ public class TagsDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    public TagsDrawerFragment() {
+    public NavigationDrawerFragment() {
     }
 
     @Override
@@ -90,7 +92,7 @@ public class TagsDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_tags_drawer, container, false);
+                R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -102,7 +104,12 @@ public class TagsDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        "Tag 1", "Tag 2", "Tag 3", "...", "Tag N"
+                        getString(R.string.title_section_tags),
+                        getString(R.string.title_section_cart),
+                        getString(R.string.title_section_closet),
+                        getString(R.string.title_section_stores),
+                        getString(R.string.title_section_account),
+                        getString(R.string.title_section_terms),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -195,7 +202,7 @@ public class TagsDrawerFragment extends Fragment {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onTagItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected(position);
         }
     }
 
@@ -203,9 +210,9 @@ public class TagsDrawerFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallbacks = (TagsDrawerCallbacks) activity;
+            mCallbacks = (NavigationDrawerCallbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement TagsDrawerCallbacks.");
+            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }
     }
 
@@ -235,7 +242,7 @@ public class TagsDrawerFragment extends Fragment {
         //if (mDrawerLayout != null && isDrawerOpen()) {
         //    inflater.inflate(R.menu.global, menu);
         //    showGlobalContextActionBar();
-        // }
+        //}
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -246,7 +253,7 @@ public class TagsDrawerFragment extends Fragment {
         }
 
         if (item.getItemId() == R.id.action_tags) {
-            Toast.makeText(getActivity(), "Tags action.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Navigation action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -271,10 +278,10 @@ public class TagsDrawerFragment extends Fragment {
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface TagsDrawerCallbacks {
+    public static interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onTagItemSelected(int position);
+        void onNavigationDrawerItemSelected(int position);
     }
 }

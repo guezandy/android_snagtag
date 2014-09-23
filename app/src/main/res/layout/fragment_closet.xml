@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+    <EditText
+        android:id="@+id/input_outfit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/button_view"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/button_cart"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/circle_grey"/>
+        <ImageView
+            android:id="@+id/button_snag"
+            android:layout_margin="12dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/circle_blue"/>
+        <ImageView
+            android:id="@+id/button_closet"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/circle_grey"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/input_outfit_name"
+        android:layout_above="@id/button_view">
+        <!--Clothing layouts here.-->
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/outfit_select_view"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/bottom_slider"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#d7d7d7"
+            android:gravity="center"
+            android:layout_alignParentBottom="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="^"/>
+        </LinearLayout>
+        <!--This will animate in when bottom_slider is pressed-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/outfit_select_slider"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:background="#d7d7d7">
+                <com.snagtag.scroll.CenteringHorizontalScrollView
+                    android:id="@+id/tops_scroll_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="98dp"
+                    android:scrollbars="none"
+                    android:background="#ffffff">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="98dp"
+                        android:background="#ffffff">
+                        <!--Dummy views for testing-->
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 1"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 2"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 3"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 4"/>
+                        <TextView
+                            android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Top 5"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 6"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 7"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 8"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 9"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 10"/>
+                    </LinearLayout>
+                </com.snagtag.scroll.CenteringHorizontalScrollView>
+            <com.snagtag.scroll.CenteringHorizontalScrollView
+                android:id="@+id/bottoms_scroll_view"
+                android:layout_width="wrap_content"
+                android:layout_height="98dp"
+                android:scrollbars="none"
+                android:layout_marginTop="2dp"
+                android:background="#ffffff">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="98dp"
+                    android:background="#ffffff">
+                    <!--Dummy views for testing-->
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 1"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 2"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 3"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 4"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 5"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 6"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 7"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 8"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 9"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Bottom 10"/>
+                </LinearLayout>
+            </com.snagtag.scroll.CenteringHorizontalScrollView>
+
+            <com.snagtag.scroll.CenteringHorizontalScrollView
+                android:id="@+id/shoes_scroll_view"
+                android:layout_width="wrap_content"
+                android:layout_height="98dp"
+                android:scrollbars="none"
+                android:layout_marginTop="2dp"
+                android:background="#ffffff">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="98dp"
+                    android:background="#ffffff">
+                    <!--Dummy views for testing-->
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 1"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 2"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 3"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 4"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 5"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 6"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 7"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 8"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 9"/>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="fill_parent"
+                        android:text="Shoe 10"/>
+                </LinearLayout>
+            </com.snagtag.scroll.CenteringHorizontalScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
