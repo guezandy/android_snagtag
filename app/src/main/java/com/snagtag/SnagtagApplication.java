@@ -1,8 +1,8 @@
 package com.snagtag;
 
 import android.app.Application;
-import com.snagtag.models.CartItem;
-import com.snagtag.models.TaghistoryItem;
+import com.snagtag.models.OutfitItem;
+import com.snagtag.models.TagHistoryItem;
 import com.snagtag.models.ClothingItem;
 
 import  com.snagtag.R;
@@ -29,10 +29,13 @@ public class SnagtagApplication extends Application {
          * create and modify Meal objects
          */
         ParseObject.registerSubclass(ClothingItem.class);
-        ParseObject.registerSubclass(CartItem.class);
-        ParseObject.registerSubclass(TaghistoryItem.class);
+        ParseObject.registerSubclass(OutfitItem.class);
+        ParseObject.registerSubclass(TagHistoryItem.class);
 
-
+        /*
+            Initialize the ability to store data locally
+         */
+        //Parse.enableLocalDatastore();
         /*
          * Fill in this section with your Parse credentials
          */
