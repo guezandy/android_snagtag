@@ -4,25 +4,42 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.widget.Toast;
 
 import com.snagtag.fragment.ClosetFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
+import com.snagtag.fragment.SingleItemFragment;
 import com.snagtag.fragment.TagsDrawerFragment;
+import com.snagtag.interfaces.NFCHandler;
+import com.snagtag.utils.NfcUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TagsDrawerFragment.TagsDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TagsDrawerFragment.TagsDrawerCallbacks, NFCHandler {
+    /**
+     * Tag to help in debugging
+     */
+    private final String TAG = MainActivity.class.getSimpleName();
 
     /**
      * The drawer layout
@@ -42,6 +59,12 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    /**
+     * NfcAdapter android class used to communicate with nfc on phone
+     */
+    private NfcAdapter mNfcAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +88,30 @@ public class MainActivity extends ActionBarActivity
         mTagsDrawerFragment.setUp(
                 R.id.tags_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter == null) {// no nfc on phone
+            Toast.makeText(this, "Sorry, NFC is not available on this device",
+                    Toast.LENGTH_SHORT).show();
+            finish(); //do we want to close the app?
+        }
+        // Disable dispatch to make nfctags readonly
+        mNfcAdapter.disableForegroundDispatch(MainActivity.this);
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+
+        if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction()) ||
+                NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            final String nfcid = processReadIntent(getIntent());
+            Fragment Snag = new SingleItemFragment();
+            ((SingleItemFragment) Snag).setItemId(nfcid);
+            //not sure if this is correct
+            replaceFragment(Snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Snag");
+        }
     }
 
     @Override
@@ -258,5 +305,31 @@ public class MainActivity extends ActionBarActivity
         }
         fragmentTransaction.setTransition(transition);
         fragmentTransaction.commit();
+    }
+
+    public String processReadIntent(Intent intent) {
+        Log.i(TAG, "Reading NFC tag");
+        List<NdefMessage> intentMessages = NfcUtils
+                .getMessagesFromIntent(intent);
+        List<String> payloadStrings = new ArrayList<String>(
+                intentMessages.size());
+
+        for (NdefMessage message : intentMessages) {
+            for (NdefRecord record : message.getRecords()) {
+                byte[] payload = record.getPayload();
+                String payloadString = new String(payload);
+
+                if (!TextUtils.isEmpty(payloadString))
+                    payloadStrings.add(payloadString);
+            }
+        }
+
+        if (!payloadStrings.isEmpty()) {
+            String content = TextUtils.join(",", payloadStrings);
+            // printing for testing
+            Log.i(TAG, content);
+            return content;
+        }
+        return null;
     }
 }
