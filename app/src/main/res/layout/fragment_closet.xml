@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-
+    <!--TODO: Add outfit details here.-->
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/button_view"
@@ -43,8 +43,6 @@
         android:layout_above="@id/button_view">
         <!--Clothing layouts here.-->
     </LinearLayout>
-
-
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/outfit_select_view"
@@ -268,4 +266,70 @@
             </com.snagtag.scroll.CenteringHorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
+
+    <!--This is the popup overlay-->
+
+    <RelativeLayout
+        android:layout_width="220dp"
+        android:layout_height="140dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:alpha=".8"></LinearLayout>
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_grey"
+            android:alpha=".8"></LinearLayout>
+        <TextView
+            android:id="@+id/item_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            tools:text="Gap"/>
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_below="@id/item_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            tools:text="Brand Striped Boatneck"/>
+        <TextView
+            android:id="@+id/item_size"
+            android:layout_below="@id/item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            tools:text="Color: Red"/>
+        <TextView
+            android:id="@+id/item_color"
+            android:layout_below="@id/item_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            tools:text="Size: M"/>
+        <TextView
+            android:id="@+id/item_cost"
+            android:layout_below="@id/item_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#00CCFF"
+            android:layout_marginLeft="12dp"
+            tools:text="$55.00"/>
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/circle_grey"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="12dp"/>
+    </RelativeLayout>
 </RelativeLayout>
