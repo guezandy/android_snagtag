@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity
             finish(); //do we want to close the app?
         }
         // Disable dispatch to make nfctags readonly
-        mNfcAdapter.disableForegroundDispatch(MainActivity.this);
+
     }
 
     @Override
@@ -106,10 +106,13 @@ public class MainActivity extends ActionBarActivity
 
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction()) ||
                 NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            //mNfcAdapter.disableForegroundDispatch(MainActivity.this);
             final String nfcid = processReadIntent(getIntent());
+            Log.i(TAG, "Got nfc id "+nfcid);
             Fragment Snag = new SingleItemFragment();
             ((SingleItemFragment) Snag).setItemId(nfcid);
             //not sure if this is correct
+            Log.i(TAG, "About to start fragment");
             replaceFragment(Snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Snag");
         }
     }
@@ -297,13 +300,16 @@ public class MainActivity extends ActionBarActivity
      */
     public void replaceFragment(android.support.v4.app.Fragment newFragment, boolean addToBackstack, int transition, String backstackName) {
         // use fragmentTransaction to replace the fragment
+        Log.i(TAG, "Initializing Fragment Transaction");
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
+        Log.i(TAG, "Replacing the fragment and calling backstack");
         fragmentTransaction.replace(R.id.container, newFragment, backstackName);
         if (addToBackstack) {
             fragmentTransaction.addToBackStack(backstackName);
         }
+        Log.i(TAG, "setting the transition");
         fragmentTransaction.setTransition(transition);
+        Log.i(TAG,"Commiting Transaction");
         fragmentTransaction.commit();
     }
 

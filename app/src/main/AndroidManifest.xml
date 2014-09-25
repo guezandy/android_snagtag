@@ -8,6 +8,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <!--NFC Permission -->
+        <uses-permission android:name="android.permission.NFC" />
+
 
         <uses-permission android:name="android.permission.INTERNET" />
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,10 +19,7 @@
         <uses-permission android:name="android.permission.VIBRATE" />
         <uses-permission android:name="android.permission.WAKE_LOCK" />
         <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-        <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-        <permission android:name="com.snagtag.permission.C2D_MESSAGE"
-            android:protectionLevel="signature"/>
-        <uses-permission android:name="com.snagtag.permission.C2D_MESSAGE" />
+
 
         <activity
             android:name=".MainActivity"
@@ -41,28 +41,6 @@
                 <data android:mimeType="application/com.snagtag.tag" />
             </intent-filter>
         </activity>
-        <!--  Service for push notifications -->
-        <service android:name="com.parse.PushService" />
-        <receiver android:name="com.parse.ParseBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <!--
-                  IMPORTANT: If you change the package name of this sample app,
-                  change "com.parse.tutorials.pushnotifications" in the lines
-                  below to match the new package name.
-                -->
-                <category android:name="com.snagtag" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

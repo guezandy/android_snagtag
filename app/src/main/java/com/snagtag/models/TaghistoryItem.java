@@ -24,7 +24,7 @@ public class TagHistoryItem extends ParseObject {
 
     //TagModel constructor with a clothingItem
     public TagHistoryItem(ClothingItem tagged) {
-        this.setClothingId(tagged.getObjectId());
+        this.setBarcode(tagged.getBarcode());
         this.setUser(ParseUser.getCurrentUser());
 
         //do we want to add more info in a tag
@@ -42,6 +42,10 @@ public class TagHistoryItem extends ParseObject {
         this.setInCart(false);
         this.setInCloset(false);
         this.setVisible(true);
+    }
+
+    public TagHistoryItem() {
+        //required default constructer
     }
 
     public void setVisible(Boolean b) {
@@ -67,6 +71,7 @@ public class TagHistoryItem extends ParseObject {
     public Boolean getInCloset() {
         return this.getBoolean("inCloset");
     }
+
     public void setUser(ParseUser user) {
         put("user", user);
     }
@@ -108,11 +113,7 @@ public class TagHistoryItem extends ParseObject {
         put("main_image", file);
     }
 
-    public void setClothingId(String id) {
-        put("clothing_id", id);
-    }
+    public String getBarcode() { return getString("barcode");   }
 
-    public String getClothingId() {
-        return this.getString("clothing_id");
-    }
+    public void setBarcode(String barcode) { this.put("barcode", barcode);}
 }

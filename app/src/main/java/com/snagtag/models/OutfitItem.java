@@ -12,7 +12,7 @@ import com.parse.ParseFile;
 public class OutfitItem extends ParseObject {
 
     public OutfitItem() {
-
+        //required default constructer
     }
 
     public OutfitItem(TagHistoryItem top, TagHistoryItem bottom, TagHistoryItem shoes) {

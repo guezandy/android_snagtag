@@ -36,17 +36,13 @@ public class ClothingItem extends ParseObject {
         return this.getObjectId();
     }
 
-    public ParseUser getAuthor() {
-        return getParseUser("user");
-    }
-
-    public void setAuthor(ParseUser user) {
-        put("user", user);
-    }
-
     public String getStore() {
         return getString("item_store");
     }
+
+    public void setBarcode(String barcode) { put("barcode", barcode);}
+
+    public String getBarcode() {return getString("barcode");}
 
     public void setStore(String store) {
         put("item_store", store);
