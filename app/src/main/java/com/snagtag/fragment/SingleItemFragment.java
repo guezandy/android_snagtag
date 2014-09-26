@@ -33,7 +33,7 @@ public class SingleItemFragment extends Fragment {
                 R.layout.fragment_item_detail_view, container, false);
 
         description = (TextView) mItemView.findViewById(R.id.item_description);
-        description.setText(this.id);
+        description.setText("test");
 
         return mItemView;
     }
