@@ -128,11 +128,16 @@ public class SingleItemFragment extends Fragment {
                         //usersTags.addUnique(tag);//add if unique
 //                        user.saveInBackground();
 
+<<<<<<< HEAD
               /* 5 */
                         //use local datastore with a relation??
                         //get relation
                         //relation.add(tag)
                         //relation.pinInBackground() //adds to local mem
+=======
+        description = (TextView) mItemView.findViewById(R.id.item_description);
+        description.setText("test");
+>>>>>>> 40debc0f21b95dc8348b7b70be785aaf1a8b3fda
 
 
              /* Add to cart */

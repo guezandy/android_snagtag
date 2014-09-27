@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- View to render a cart item in cart landing page list.-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_weight="48"
+    android:layout_width="0dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginLeft="2dp"
+    tools:layout_width="160dp"
+    android:layout_height="150dp">
+    <TextView
+        android:id="@+id/delete_item"
+        android:layout_width="wrap_content"
+        android:text="X"
+        android:textSize="8sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle_grey"/>
+    <com.parse.ParseImageView
+        android:id="@+id/item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/circle_grey"
+        android:scaleType="fitCenter"
+        />
+    <TextView
+        android:id="@+id/item_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_image"
+        android:textSize="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        tools:text="Brand Striped Boatneck Top"/>
+
+    <TextView
+        android:id="@+id/item_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_description"
+        android:textSize="10sp"
+        android:layout_marginLeft="10dp"
+        tools:text="$55.00"/>
+   </RelativeLayout>
