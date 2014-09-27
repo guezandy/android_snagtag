@@ -15,7 +15,7 @@ import java.util.Date;
  * All we need is getters and
  */
 
-@ParseClassName("ClothingEntity")
+@ParseClassName("ClothingItem")
 public class ClothingItem extends ParseObject {
 /*
 * Clothing Item contains all information about a clothing item need
