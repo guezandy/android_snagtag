@@ -25,8 +25,8 @@ public class SnagtagApplication extends Application {
         Log.i(TAG,"onCreate");
 
         /*
-         * In this tutorial, we'll subclass ParseObject for convenience to
-         * create and modify Meal objects
+         * Registering Parse Subclasses
+         *
          */
         ParseObject.registerSubclass(ClothingItem.class);
         ParseObject.registerSubclass(OutfitItem.class);
@@ -37,9 +37,8 @@ public class SnagtagApplication extends Application {
          */
         //Parse.enableLocalDatastore();
         /*
-         * Fill in this section with your Parse credentials
+         * Parse credentials and initialize
          */
-
         Parse.initialize(this, "cuLGNujAgxROlSMPh1FF58asDN8aGc4LCDcsOpk2", "aHQ9A0SjhZTw1r64dQ51H8EDWOp8PREmRacwHO9Y");
         //ParseFacebookUtils.initialize(getString(R.string.facebook_id));
 
@@ -72,5 +71,4 @@ public class SnagtagApplication extends Application {
 
         ParseACL.setDefaultACL(defaultACL, true);
     }
-
 }

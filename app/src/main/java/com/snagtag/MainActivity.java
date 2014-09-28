@@ -24,6 +24,10 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.snagtag.fragment.ClosetFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
 import com.snagtag.fragment.SingleItemFragment;
@@ -95,8 +99,6 @@ public class MainActivity extends ActionBarActivity
                     Toast.LENGTH_SHORT).show();
             finish(); //do we want to close the app?
         }
-        // Disable dispatch to make nfctags readonly
-
     }
 
     @Override
@@ -106,13 +108,10 @@ public class MainActivity extends ActionBarActivity
 
         if(NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction()) ||
                 NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
-            //mNfcAdapter.disableForegroundDispatch(MainActivity.this);
             final String nfcid = processReadIntent(getIntent());
             Log.i(TAG, "Got nfc id "+nfcid);
             Fragment Snag = new SingleItemFragment();
             ((SingleItemFragment) Snag).setItemId(nfcid);
-            //not sure if this is correct
-            Log.i(TAG, "About to start fragment");
             replaceFragment(Snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Snag");
         }
     }

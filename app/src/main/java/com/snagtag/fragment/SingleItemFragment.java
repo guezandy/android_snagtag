@@ -78,17 +78,14 @@ public class SingleItemFragment extends Fragment {
 		4. adds the item to the users taghistory relation
 		5. Add the tag to local phone mem
 */
-
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
-        //query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
-//        query.getFirstInBackground(new GetCallback<ParseObject>(){
-//            public void done(ParseObject item, ParseException e) { //or clothingItem
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem");
-        query.getInBackground("g74S9FXPFp", new GetCallback<ParseObject>() {
+        barcode = "12345"; //for testing
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
+        query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(final ParseObject item, ParseException e) {
                 if (item == null) {
-                    Log.d("Scan Tag", "The getFirst request failed.");
+                    Log.d("Scan Tag", "The request failed. "+e.getMessage());
                 } else {
                     Log.d("Scan Tag", "Retrieved the clothingItem.");
               /* 1 */
@@ -106,51 +103,6 @@ public class SingleItemFragment extends Fragment {
                             }
                         });
                     }
-                        //price
-                        //image
-              /*
-               * Check for similar colors and put the images
-               * Check inventory and put the sizes
-                ......
-              */
-
-              /* 2 */
-  //                      object.increment("tag_count"); //increments the items tag counter
-
-              /* 3 */
-      //                  TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
-      //                  tag.saveEventually();  //saves to the universal tag history table
-
-              /* 4 */
-//                        ParseUser user = ParseUser.getCurrentUser();//gets the current user
-//                        ParseRelation<TagHistoryItem> usersTags = user.getRelation("user_tags"); //gets all the users tags
-//                        usersTags.add(tag);
-                        //usersTags.addUnique(tag);//add if unique
-//                        user.saveInBackground();
-
-<<<<<<< HEAD
-              /* 5 */
-                        //use local datastore with a relation??
-                        //get relation
-                        //relation.add(tag)
-                        //relation.pinInBackground() //adds to local mem
-=======
-        description = (TextView) mItemView.findViewById(R.id.item_description);
-        description.setText("test");
->>>>>>> 40debc0f21b95dc8348b7b70be785aaf1a8b3fda
-
-
-             /* Add to cart */
-//                        if(false) {
- //                           TagHistoryItem adding = new TagHistoryItem(object);
- //                           adding.setInCart(true);
- //                           adding.saveInBackground();//added to cart table;
-  //                          ParseRelation<TagHistoryItem> userCart = user.getRelation("user_cart");
-
-                            //keep in mind the case of not unique but not in cart. If removed from cart through boolean
- //                           userCart.add(adding);
- //                           user.saveInBackground();
-  //                      }
                     }
                 }
             });
