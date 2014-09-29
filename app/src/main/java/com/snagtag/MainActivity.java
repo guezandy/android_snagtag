@@ -99,6 +99,8 @@ public class MainActivity extends ActionBarActivity
                     Toast.LENGTH_SHORT).show();
             finish(); //do we want to close the app?
         }
+
+
     }
 
     @Override
@@ -126,7 +128,7 @@ public class MainActivity extends ActionBarActivity
                 replaceFragment(PlaceholderFragment.newInstance(1), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Tag");
                 break;
             case 1:
-
+                replaceFragment(new SingleItemFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "SingleItemFragment");
                 break;
             case 2:
                 replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Closet");

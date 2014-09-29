@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -17,13 +16,8 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.models.ClothingItem;
-import com.snagtag.models.TagHistoryItem;
-
-import java.util.List;
 
 /**
  * This fragment displays a single clothing item
@@ -79,16 +73,19 @@ public class SingleItemFragment extends Fragment {
 		5. Add the tag to local phone mem
 */
         barcode = "12345"; //for testing
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
         query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
+
+
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(final ParseObject item, ParseException e) {
                 if (item == null) {
-                    Log.d("Scan Tag", "The request failed. "+e.getMessage());
+                    Log.d("Scan Tag", "The request failed. " + e.getMessage(), e);
+
                 } else {
                     Log.d("Scan Tag", "Retrieved the clothingItem.");
-              /* 1 */
+      /* 1 */
                     ClothingItem object = (ClothingItem) item;
                     brand.setText(object.getStore());
                     description.setText(object.getDescription());
@@ -103,9 +100,11 @@ public class SingleItemFragment extends Fragment {
                             }
                         });
                     }
-                    }
                 }
-            });
+            }
+        });
+
+
         return mItemView;
     }
 

@@ -9,16 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <!--NFC Permission -->
-        <uses-permission android:name="android.permission.NFC" />
-        <!--Parse Permissions -->
-        <uses-permission android:name="android.permission.INTERNET" />
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-        <!-- PUSH NOTIFICATION PERMISSIONS -->
-        <uses-permission android:name="android.permission.VIBRATE" />
-        <uses-permission android:name="android.permission.WAKE_LOCK" />
-        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
 
 
         <activity
@@ -42,4 +33,14 @@
         </activity>
     </application>
 
+    <!--NFC Permission -->
+    <uses-permission android:name="android.permission.NFC"/>
+    <!--Parse Permissions -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- PUSH NOTIFICATION PERMISSIONS -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 </manifest>
