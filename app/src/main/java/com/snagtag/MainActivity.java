@@ -132,14 +132,14 @@ public class MainActivity extends ActionBarActivity
                 replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Closet");
                 break;
             case 3:
-
                 break;
             case 4:
-
                 break;
             case 5:
-
                 break;
+            case 6:
+                break;
+
         }
 
     }
@@ -154,16 +154,17 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_section_closet);
-
-                replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Closet");
-                break;
+               break;
             case 4:
-                mTitle = getString(R.string.title_section_stores);
+                mTitle = getString(R.string.title_section_outfits);
                 break;
             case 5:
-                mTitle = getString(R.string.title_section_account);
+                mTitle = getString(R.string.title_section_stores);
                 break;
             case 6:
+                mTitle = getString(R.string.title_section_account);
+                break;
+            case 7:
                 mTitle = getString(R.string.title_section_terms);
                 break;
         }
