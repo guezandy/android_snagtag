@@ -16,8 +16,11 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.models.ClothingItem;
+import com.snagtag.models.TagHistoryItem;
 
 /**
  * This fragment displays a single clothing item
@@ -63,47 +66,9 @@ public class SingleItemFragment extends Fragment {
         description = (TextView) mItemView.findViewById(R.id.label_description);
         price = (TextView) mItemView.findViewById(R.id.label_price);
         image = (ParseImageView) mItemView.findViewById(R.id.item_image);
-/*
-	tagItem
-	Queries parse for clothingItem with matching barcode number
-		1. updates the screen with the items info and image
-		2. increments that clothing items counter (Tag counter)
-		3. makes a taghistory item and stores the item to taghistory table
-		4. adds the item to the users taghistory relation
-		5. Add the tag to local phone mem
-*/
-        barcode = "12345"; //for testing
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
-        query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
 
-
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(final ParseObject item, ParseException e) {
-                if (item == null) {
-                    Log.d("Scan Tag", "The request failed. " + e.getMessage(), e);
-
-                } else {
-                    Log.d("Scan Tag", "Retrieved the clothingItem.");
-      /* 1 */
-                    ClothingItem object = (ClothingItem) item;
-                    brand.setText(object.getStore());
-                    description.setText(object.getDescription());
-                    ParseFile photoFile = object.getMainImage();
-                    if (photoFile != null) {
-                        image.setParseFile(photoFile);
-                        image.loadInBackground(new GetDataCallback() {
-                            @Override
-                            public void done(byte[] data, ParseException e) {
-                                // nothing to do
-                                Log.i(TAG, "Image uploaded");
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
+        //TODO: Move into service
+        onItemSnagged(barcode);
 
         return mItemView;
     }
@@ -119,5 +84,49 @@ public class SingleItemFragment extends Fragment {
     public SingleItemFragment() {
         //default constructor for fragment
     }
+
+public void onItemSnagged(String nfcid) {
+/*
+	tagItem
+	Queries parse for clothingItem with matching barcode number
+		1. updates the screen with the items info and image
+		2. increments that clothing items counter (Tag counter)
+		3. makes a taghistory item and stores the item to taghistory table
+		4. adds the item to the users taghistory relation
+		5. Add the tag to local phone mem
+*/
+    barcode = "12345"; //for testing
+    final ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
+    query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
+
+
+    query.getFirstInBackground(new GetCallback<ParseObject>() {
+        @Override
+        public void done(final ParseObject item, ParseException e) {
+            if (item == null) {
+                Log.d("Scan Tag", "The request failed. " + e.getMessage(), e);
+
+            } else {
+                Log.d("Scan Tag", "Retrieved the clothingItem.");
+      /* 1 */
+                ClothingItem object = (ClothingItem) item;
+                brand.setText(object.getStore());
+                description.setText(object.getDescription());
+                ParseFile photoFile = object.getMainImage();
+                if (photoFile != null) {
+                    image.setParseFile(photoFile);
+                    image.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] data, ParseException e) {
+                            // nothing to do
+                            Log.i(TAG, "Image uploaded");
+                        }
+                    });
+                }
+            }
+        }
+    });
+    //return v;
+}
 
 }
