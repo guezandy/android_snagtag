@@ -35,6 +35,9 @@ public class SnagtagApplication extends Application {
             Initialize the ability to store data locally
          */
         Parse.enableLocalDatastore(this);
+
+        //TODO: FOR TESTING:
+        //ParseObject.unpinAllInBackground();
         /*
          * Parse credentials and initialize
          */

@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -18,9 +20,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.snagtag.R;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.TagHistoryItem;
+
+import java.util.List;
 
 /**
  * This fragment displays a single clothing item
@@ -95,7 +100,7 @@ public void onItemSnagged(String nfcid) {
 		4. adds the item to the users taghistory relation
 		5. Add the tag to local phone mem
 */
-    barcode = "12345"; //for testing
+    barcode = nfcid; //"12345"; //for testing
     final ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
     query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
     query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -129,8 +134,16 @@ public void onItemSnagged(String nfcid) {
 
       /* 3 */
                 Log.i(TAG, "Add item to tag history table");
-                TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
-                tag.saveInBackground(); //saves to the universal tag history table
+                final TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
+                tag.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+      /* 5 */
+                        //Adding to local database here to avoid thread overlap
+                        //TODO: Check for unique
+                        tag.pinInBackground();
+                    }
+                }); //saves to the universal tag history table
 	  /* 4 */
                 ParseUser user = ParseUser.getCurrentUser();//gets the current user
                 if(user != null) { //Allows an nfc intent even if not registered.
@@ -143,6 +156,5 @@ public void onItemSnagged(String nfcid) {
             }
         }
     });
-}
-
+    }
 }
