@@ -1,13 +1,9 @@
 package com.snagtag;
 
 import android.app.Activity;
-
-import java.util.Arrays;
-import java.util.List;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,11 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.snagtag.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**

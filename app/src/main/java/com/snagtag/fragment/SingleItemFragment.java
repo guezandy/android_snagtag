@@ -98,8 +98,6 @@ public void onItemSnagged(String nfcid) {
     barcode = "12345"; //for testing
     final ParseQuery<ParseObject> query = ParseQuery.getQuery("ClothingItem"); //or clothingItem
     query.whereEqualTo("barcode", barcode); //grab the clothingItem whose barcode num matches the nfcId
-
-
     query.getFirstInBackground(new GetCallback<ParseObject>() {
         @Override
         public void done(final ParseObject item, ParseException e) {
@@ -112,6 +110,7 @@ public void onItemSnagged(String nfcid) {
                 ClothingItem object = (ClothingItem) item;
                 brand.setText(object.getStore());
                 description.setText(object.getDescription());
+                price.setText(object.getPrice().toString());
                 ParseFile photoFile = object.getMainImage();
                 if (photoFile != null) {
                     image.setParseFile(photoFile);
@@ -123,10 +122,27 @@ public void onItemSnagged(String nfcid) {
                         }
                     });
                 }
+      /* 2 */
+                Log.i(TAG, "Incrementing tag count");
+                object.increment("tag_count"); //increments the items tag counter
+                object.saveInBackground();
+
+      /* 3 */
+                Log.i(TAG, "Add item to tag history table");
+                TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
+                tag.saveInBackground(); //saves to the universal tag history table
+	  /* 4 */
+                ParseUser user = ParseUser.getCurrentUser();//gets the current user
+                if(user != null) { //Allows an nfc intent even if not registered.
+                    ParseRelation usersTags = user.getRelation("user_tags"); //gets all the users tags
+                    //TODO: Add if unique
+                    usersTags.add(tag);
+                    //userTags.addUnique(object);//add if unique
+                    user.saveEventually();
+                }
             }
         }
     });
-    //return v;
 }
 
 }

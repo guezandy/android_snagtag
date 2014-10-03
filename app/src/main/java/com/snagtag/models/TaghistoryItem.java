@@ -1,10 +1,9 @@
 package com.snagtag.models;
 
-import java.util.Date;
-
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 /*
@@ -73,9 +72,13 @@ public class TagHistoryItem extends ParseObject {
     }
 
     public void setUser(ParseUser user) {
-        put("user", user);
+        //put("user", user);
+        if(user != null) {
+            ParseRelation relation = this.getRelation("user");
+            relation.add(user);
+        }
     }
-
+//TODO: fix this!
     public ParseUser getUser() {
         return getParseUser("user");
     }
@@ -96,12 +99,12 @@ public class TagHistoryItem extends ParseObject {
         put("description", description);
     }
 
-    //check this out
-    public Float getPrice() {
-        return (Float)this.getNumber("price");
+
+    public Double getPrice() {
+        return (Double)this.getNumber("price");
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         put("price", price);
     }
 

@@ -1,9 +1,8 @@
 package com.snagtag.models;
 
 import com.parse.ParseClassName;
-import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 /**
  * Created by Owner on 9/24/2014.

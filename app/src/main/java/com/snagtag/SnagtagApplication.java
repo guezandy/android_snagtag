@@ -1,16 +1,15 @@
 package com.snagtag;
 
 import android.app.Application;
-import com.snagtag.models.OutfitItem;
-import com.snagtag.models.TagHistoryItem;
-import com.snagtag.models.ClothingItem;
+import android.util.Log;
 
-import  com.snagtag.R;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import android.util.Log;
+import com.snagtag.models.ClothingItem;
+import com.snagtag.models.OutfitItem;
+import com.snagtag.models.TagHistoryItem;
 
 /**
  * Created by Owner on 9/16/2014.
@@ -35,7 +34,7 @@ public class SnagtagApplication extends Application {
         /*
             Initialize the ability to store data locally
          */
-        //Parse.enableLocalDatastore();
+        Parse.enableLocalDatastore(this);
         /*
          * Parse credentials and initialize
          */
