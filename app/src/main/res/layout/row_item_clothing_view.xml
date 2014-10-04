@@ -74,7 +74,7 @@
         android:layout_marginBottom="2dp"
         android:background="@drawable/circle_blue"/>
     <ImageView
-        android:id="@+id/item_store"
+        android:id="@+id/item_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

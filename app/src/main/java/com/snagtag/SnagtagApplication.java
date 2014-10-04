@@ -1,16 +1,17 @@
 package com.snagtag;
 
 import android.app.Application;
-import com.snagtag.models.OutfitItem;
-import com.snagtag.models.TagHistoryItem;
-import com.snagtag.models.ClothingItem;
+import android.util.Log;
 
-import  com.snagtag.R;
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import android.util.Log;
+import com.snagtag.models.CartItem;
+import com.snagtag.models.ClothingItem;
+import com.snagtag.models.OutfitItem;
+import com.snagtag.models.TagHistoryItem;
 
 /**
  * Created by Owner on 9/16/2014.
@@ -31,16 +32,20 @@ public class SnagtagApplication extends Application {
         ParseObject.registerSubclass(ClothingItem.class);
         ParseObject.registerSubclass(OutfitItem.class);
         ParseObject.registerSubclass(TagHistoryItem.class);
+        ParseObject.registerSubclass(CartItem.class);
 
         /*
             Initialize the ability to store data locally
          */
-        //Parse.enableLocalDatastore();
+        Parse.enableLocalDatastore(this);
+
+        //TODO: FOR TESTING:
+        //ParseObject.unpinAllInBackground();
         /*
          * Parse credentials and initialize
          */
         Parse.initialize(this, "cuLGNujAgxROlSMPh1FF58asDN8aGc4LCDcsOpk2", "aHQ9A0SjhZTw1r64dQ51H8EDWOp8PREmRacwHO9Y");
-        //ParseFacebookUtils.initialize(getString(R.string.facebook_id));
+//        ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
 
         /*
          * This app lets an anonymous user create and save photos of meals

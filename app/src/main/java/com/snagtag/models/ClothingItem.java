@@ -4,7 +4,7 @@ package com.snagtag.models;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
+
 import java.util.Date;
 
 /*
@@ -56,8 +56,8 @@ public class ClothingItem extends ParseObject {
         put("item_description", description);
     }
 
-    public Float getPrice() {
-        return (Float) getNumber("item_price");
+    public Double getPrice() {
+        return (Double) getNumber("item_price");
     }
 
     public void setPrice(Float price) {
