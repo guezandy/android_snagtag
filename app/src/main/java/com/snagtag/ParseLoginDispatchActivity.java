@@ -166,27 +166,32 @@ public class ParseLoginDispatchActivity extends Activity {
      * Handles facebook login request.
      */
     private void onFBLoginButtonClicked() {
-        Log.i(TAG, "onFBLoginButtonClicked");
-        ParseLoginDispatchActivity.this.progressDialog = ProgressDialog.show(
-                ParseLoginDispatchActivity.this, "", "Logging in...", true);
-        List<String> permissions = Arrays.asList("basic_info", "user_about_me",
-                "user_relationships", "user_birthday", "user_location");
-        ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException err) {
-                ParseLoginDispatchActivity.this.progressDialog.dismiss();
-                if (user == null) {
-                    Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
-                } else if (user.isNew()) {
-                    Log.d(TAG, "User signed up and logged in through Facebook!");
-                    startMainActivity();
-                } else {
-                    Log.d(TAG, "User logged in through Facebook!");
-                    startMainActivity();
+            ParseLoginDispatchActivity.this.progressDialog = ProgressDialog.show(
+                    ParseLoginDispatchActivity.this, "", "Logging in...", true);
+            List<String> permissions = Arrays.asList("public_profile", "user_friends", "user_about_me",
+                    "user_relationships", "user_birthday", "user_location");
+            ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException err) {
+                    ParseLoginDispatchActivity.this.progressDialog.dismiss();
+                    if (user == null) {
+                        Log.d(TAG,
+                                "Uh oh. The user cancelled the Facebook login.");
+                    } else if (user.isNew()) {
+                        Log.d(TAG,
+                                "User signed up and logged in through Facebook!");
+                        startMainActivity();
+                    } else {
+                        Log.d(TAG,
+                                "User logged in through Facebook!");
+                        startMainActivity();
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
+
+
+
 
     /**
      * Starts the Main Activity.

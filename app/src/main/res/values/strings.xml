@@ -18,4 +18,5 @@
     <string name="button_cart">Cart Button</string>
     <string name="button_back_arrow">Back Button</string>
     <string name="title_measurements">Measurements:</string>
+    <string name="facebook_app_id">361633490641874</string>
 </resources>

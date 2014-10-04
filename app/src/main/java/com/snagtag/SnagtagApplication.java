@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.snagtag.models.CartItem;
@@ -44,7 +45,7 @@ public class SnagtagApplication extends Application {
          * Parse credentials and initialize
          */
         Parse.initialize(this, "cuLGNujAgxROlSMPh1FF58asDN8aGc4LCDcsOpk2", "aHQ9A0SjhZTw1r64dQ51H8EDWOp8PREmRacwHO9Y");
-        //ParseFacebookUtils.initialize(getString(R.string.facebook_id));
+//        ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
 
         /*
          * This app lets an anonymous user create and save photos of meals
