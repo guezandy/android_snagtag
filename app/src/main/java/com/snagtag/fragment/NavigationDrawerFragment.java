@@ -1,5 +1,6 @@
 package com.snagtag.fragment;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -284,5 +285,42 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    /**
+     * Adapter class to allow us to inject nice looking views.
+     */
+    private class NavigationItemAdapter extends ArrayAdapter<String> {
+
+        public NavigationItemAdapter(Context context, String[] objects) {
+            super(context, objects);
+        }
+
+
+
+        @Override
+        public int getCount() {
+            return super.getCount();
+        }
+
+        @Override
+        public String getItem(int position) {
+            return super.getItem(position);
+        }
+
+        @Override
+        public int getPosition(String item) {
+            return super.getPosition(item);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return super.getItemId(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return super.getView(position, convertView, parent);
+        }
     }
 }
