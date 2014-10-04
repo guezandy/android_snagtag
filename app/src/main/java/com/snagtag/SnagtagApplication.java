@@ -7,6 +7,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.snagtag.models.CartItem;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.TagHistoryItem;
@@ -30,6 +31,7 @@ public class SnagtagApplication extends Application {
         ParseObject.registerSubclass(ClothingItem.class);
         ParseObject.registerSubclass(OutfitItem.class);
         ParseObject.registerSubclass(TagHistoryItem.class);
+        ParseObject.registerSubclass(CartItem.class);
 
         /*
             Initialize the ability to store data locally
