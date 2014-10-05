@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Snagtag_Android.iml" filepath="$PROJECT_DIR$/Snagtag_Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/android_snagtag.iml" filepath="$PROJECT_DIR$/android_snagtag.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook/facebook.iml" />
     </modules>
   </component>
 </project>
