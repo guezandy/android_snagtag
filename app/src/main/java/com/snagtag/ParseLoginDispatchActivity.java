@@ -84,7 +84,7 @@ public class ParseLoginDispatchActivity extends Activity {
             startActivity(intent);
         }
         //TODO: remove this debugging code set to true to skip login
-        boolean debugMode = true;
+        boolean debugMode = false;
         if (debugMode) {
             username.setText("demo@snagtagapp.com");
             password.setText("demo");
