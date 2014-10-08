@@ -23,12 +23,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
+import com.parse.ParseFacebookUtils;
 import com.snagtag.fragment.ClosetFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
 import com.snagtag.fragment.SingleItemFragment;
 import com.snagtag.fragment.TagsDrawerFragment;
 import com.snagtag.interfaces.NFCHandler;
 import com.snagtag.utils.NfcUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +102,11 @@ public class MainActivity extends ActionBarActivity
                     Toast.LENGTH_SHORT).show();
             finish(); //do we want to close the app?
         }
-
+        // Fetch Facebook user info if the session is active
+        Session session = ParseFacebookUtils.getSession();
+        if (session != null && session.isOpened()) {
+            makeMeRequest();
+        }
 
     }
 
@@ -334,5 +346,50 @@ public class MainActivity extends ActionBarActivity
             return content;
         }
         return null;
+    }
+
+    private void makeMeRequest() {
+        Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
+                new Request.GraphUserCallback() {
+                    @Override
+                    public void onCompleted(GraphUser user, Response response) {
+                        if (user != null) {
+                            // Create a JSON object to hold the profile info
+                            JSONObject userProfile = new JSONObject();
+                            try {
+                                // Populate the JSON object
+                                userProfile.put("facebookId", user.getId());
+                                userProfile.put("name", user.getName());
+                                if (user.getLocation().getProperty("name") != null) {
+                                    userProfile.put("location", (String) user
+                                            .getLocation().getProperty("name"));
+                                }
+                                if (user.getProperty("gender") != null) {
+                                    userProfile.put("gender",
+                                            (String) user.getProperty("gender"));
+                                }
+                                if (user.getBirthday() != null) {
+                                    userProfile.put("birthday",
+                                            user.getBirthday());
+                                }
+                                if (user.getProperty("relationship_status") != null) {
+                                    userProfile
+                                            .put("relationship_status",
+                                                    (String) user
+                                                            .getProperty("relationship_status"));
+                                }
+
+                            } catch (JSONException e) {
+                                Log.d(TAG,
+                                        "Error parsing returned user data.");
+                            }
+
+                        } else if (response.getError() != null) {
+                            // handle error
+                        }
+                    }
+                });
+        request.executeAsync();
+
     }
 }
