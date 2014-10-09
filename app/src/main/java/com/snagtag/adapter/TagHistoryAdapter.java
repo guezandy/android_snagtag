@@ -5,23 +5,19 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.parse.ParseRelation;
-import com.parse.ParseUser;
-import com.snagtag.R;
-import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.TagHistoryItem;
 
@@ -33,13 +29,16 @@ import com.snagtag.models.TagHistoryItem;
 public class TagHistoryAdapter extends ParseQueryAdapter<TagHistoryItem> {
     private final String TAG = TagHistoryAdapter.class.getSimpleName();
     //TODO: Is there a reason why delete is a textview?
+    //BAA - We're going to use fontawesome and a background image for most things rather than construct
+    // our buttons as a single image. Also, I've defined a single drawable in blue/grey and added a circle_button
+    // drawable to display differently for active/inactive/pressed states w/o having
+    // to have all sorts of image assets for each button or logic in the classes.
     TextView delete;
     ParseImageView itemImage;
     TextView description;
     TextView color;
     TextView size;
     TextView cost;
-    ImageView closet;
     ImageView cart;
 
 
@@ -110,36 +109,23 @@ public class TagHistoryAdapter extends ParseQueryAdapter<TagHistoryItem> {
         cost = (TextView) v.findViewById(R.id.item_cost);
         cost.setText(String.valueOf(item.getPrice()));
 //TODO: Reload the list after each one of these is pressed.
-        closet = (ImageView) v.findViewById(R.id.item_closet);
-        if(item.getInCloset() == true) {
-            closet.setImageResource(R.drawable.circle_blue);
-        } else {
-            closet.setImageResource(R.drawable.circle_grey);
-        }
-        closet.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(item.getInCloset() == false) {
-                    addToCloset(item);
-                } else {
-                    Toast.makeText(v.getContext(), item.getDescription()+ " already in closet", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+
 
         cart = (ImageView) v.findViewById(R.id.item_cart);
-        if(item.getInCart() == true) {
-            cart.setImageResource(R.drawable.circle_blue);
+        if(item.getInCart()) {
+            cart.setImageResource(R.drawable.circle_blue_button);
         } else {
             cart.setImageResource(R.drawable.circle_grey);
+            cart.setEnabled(false);
         }
         cart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(item.getInCart() == false) {
+                if(!item.getInCart()) {
                     addTagItemToCart(item);
                 } else {
-                    Toast.makeText(v.getContext(), item.getDescription()+ " is already in cart.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), item.getDescription() + " is already in cart.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -148,19 +134,19 @@ public class TagHistoryAdapter extends ParseQueryAdapter<TagHistoryItem> {
         return v;
     }
 
-    public void addTagItemToCart(TagHistoryItem item) {
+    private void addTagItemToCart(TagHistoryItem item) {
         CartItem cartItem = new CartItem(item);
         cartItem.saveInBackground();
         item.setInCart(true);
         item.saveInBackground();
     }
 
-    public void addToCloset(TagHistoryItem item) {
+    private void addToCloset(TagHistoryItem item) {
         item.setInCloset(true);
         item.saveInBackground();
     }
 
-    public void deleteFromTagHistory(TagHistoryItem item) {
+    private void deleteFromTagHistory(TagHistoryItem item) {
         item.setVisible(false);
         item.saveInBackground();
         //TODO: unpin all items with false as visibility we don't need to store them locally

@@ -4,10 +4,11 @@
     <string name="title_section_tags">Tags</string>
     <string name="title_section_cart">Cart</string>
     <string name="title_section_closet">Closet</string>
-    <string name="title_section_outfits">Outfits</string>
+    <string name="title_section_outfits">Outfit Creator</string>
     <string name="title_section_stores">Stores</string>
     <string name="title_section_account">Account</string>
     <string name="title_section_terms">Terms</string>
+    <string name="title_snagtag">Snagtag</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -19,4 +20,24 @@
     <string name="button_back_arrow">Back Button</string>
     <string name="title_measurements">Measurements:</string>
     <string name="facebook_app_id">361633490641874</string>
+
+
+    <!--Put dialog messages here-->
+    <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
+    <string name="dialog_exit">Are you sure you want to exit Snagtag?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">Yes</string>
+
+    <!--font awesome icons go here-->
+
+    <string name="icon_cart">&#xf07a;</string>
+    <string name="icon_creator">&#xf0f6;</string>
+    <string name="icon_closet">&#xf0f6;</string>
+    <string name="icon_terms">&#xf0f6;</string>
+    <string name="icon_account">&#xf007;</string>
+    <string name="icon_store">&#xf0f8;</string>
+    <string name="icon_delete">&#xf00d;</string>
+    <string name="icon_right">&#xf054;</string>
+    <string name="icon_down">&#xf078;</string>
+
 </resources>

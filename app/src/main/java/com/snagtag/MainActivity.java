@@ -1,7 +1,6 @@
 package com.snagtag;
 
-import android.app.ActionBar;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,23 +9,26 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
+import static com.snagtag.utils.Constant.*;
 
+import com.snagtag.fragment.AccountFragment;
+import com.snagtag.fragment.CartFragment;
 import com.snagtag.fragment.ClosetFragment;
+import com.snagtag.fragment.CreatorFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
 import com.snagtag.fragment.SingleItemFragment;
+import com.snagtag.fragment.StoreFragment;
 import com.snagtag.fragment.TagsDrawerFragment;
+import com.snagtag.fragment.TermsFragment;
 import com.snagtag.interfaces.NFCHandler;
 import com.snagtag.utils.NfcUtils;
 
@@ -65,6 +67,10 @@ public class MainActivity extends ActionBarActivity
     private NfcAdapter mNfcAdapter;
 
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,12 +96,10 @@ public class MainActivity extends ActionBarActivity
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {// no nfc on phone
-            Toast.makeText(this, "Sorry, NFC is not available on this device",
+            Toast.makeText(this, getString(R.string.dialog_no_nfc),
                     Toast.LENGTH_SHORT).show();
             finish(); //do we want to close the app?
         }
-
-
     }
 
     @Override
@@ -109,66 +113,42 @@ public class MainActivity extends ActionBarActivity
             Log.i(TAG, "Got nfc id "+nfcid);
             Fragment Snag = new SingleItemFragment();
             ((SingleItemFragment) Snag).setItemId(nfcid);
-            replaceFragment(Snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Snag");
+            replaceFragment(Snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_tags));
         }
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+
         switch(position) {
-            case 0:
+            case CART:
                 getSupportFragmentManager().popBackStackImmediate();
-                replaceFragment(PlaceholderFragment.newInstance(1), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Tag");
+                replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
                 break;
-            case 1:
-                replaceFragment(new SingleItemFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "SingleItemFragment");
+            case OUTFIT_CREATOR:
+                replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
                 break;
-            case 2:
-                replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, "Closet");
+            case CLOSET:
+                replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_closet));
                 break;
-            case 3:
+            case STORES:
+                replaceFragment(new StoreFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_stores));
                 break;
-            case 4:
+            case ACCOUNT:
+                replaceFragment(new AccountFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_account));
                 break;
-            case 5:
+            case TERMS:
+                replaceFragment(new TermsFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_terms));
                 break;
-            case 6:
+            default:
                 break;
 
-        }
-
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section_tags);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section_cart);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section_closet);
-               break;
-            case 4:
-                mTitle = getString(R.string.title_section_outfits);
-                break;
-            case 5:
-                mTitle = getString(R.string.title_section_stores);
-                break;
-            case 6:
-                mTitle = getString(R.string.title_section_account);
-                break;
-            case 7:
-                mTitle = getString(R.string.title_section_terms);
-                break;
         }
     }
 
     public void restoreActionBar() {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setTitle(mTitle);
@@ -205,45 +185,7 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_snag, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }
 
     @Override
     public void onTagItemSelected(int position) {
@@ -261,16 +203,16 @@ public class MainActivity extends ActionBarActivity
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
             // set title
-            alertDialogBuilder.setTitle("Snagtag");
+            alertDialogBuilder.setTitle(getString(R.string.title_snagtag));
 
             // set dialog message
-            alertDialogBuilder.setMessage("Are you sure you want to exit Snagtag?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage(R.string.dialog_exit).setCancelable(false).setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // if this button is clicked, close
                     // current activity
                     MainActivity.super.onBackPressed();
                 }
-            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            }).setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // if this button is clicked, just close
                     // the dialog box and do nothing

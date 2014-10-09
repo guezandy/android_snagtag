@@ -17,12 +17,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.snagtag.R;
+import com.snagtag.service.IParseService;
+import com.snagtag.service.MockParseService;
+
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -40,7 +46,7 @@ public class TagsDrawerFragment extends Fragment {
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
      */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String PREF_USER_LEARNED_TAGS = "tags_drawer_learned";
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -53,8 +59,13 @@ public class TagsDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+    //private ListView mDrawerListView;
     private View mFragmentContainerView;
+    //private TagHistoryAdapter tagHistoryAdapter;
+    private View mContainer;
+    private LinearLayout mStoreLayout;
+    private IParseService mParseService;
+
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -66,11 +77,12 @@ public class TagsDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mParseService = new MockParseService();
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_TAGS, false);
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -90,23 +102,59 @@ public class TagsDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_tags_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        "Tag 1", "Tag 2", "Tag 3", "...", "Tag N"
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        mContainer = inflater.inflate(R.layout.fragment_tags_drawer, null);
+        //tagHistoryAdapter = new TagHistoryAdapter(getActivity());
+        mStoreLayout = (LinearLayout)mContainer.findViewById(R.id.store_layout);
+        List<String> stores = mParseService.getStoresByTags(getActivity().getApplicationContext());
+
+        for(String store : stores) {
+            final View storeView = inflater.inflate(R.layout.row_item_snag_view, null);
+            TextView title = (TextView)storeView.findViewById(R.id.title_store_name);
+            title.setText(store);
+            final View header = storeView.findViewById(R.id.store_header);
+            final View openIndicator = storeView.findViewById(R.id.store_open_indicator);
+            final String storeName = store;
+            header.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final GridView itemGrid = (GridView)storeView.findViewById(R.id.item_grid);
+                    if(itemGrid.getVisibility()==View.VISIBLE) {
+                        ScaleAnimation anim = new ScaleAnimation(1, 1, 1, 0);
+                        anim.setDuration(300);
+                        anim.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                itemGrid.setVisibility(View.GONE);
+                                openIndicator.setRotation(0);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        itemGrid.startAnimation(anim);
+
+                    } else {
+                        ScaleAnimation anim = new ScaleAnimation(1, 1, 0, 1);
+                        anim.setDuration(300);
+                        itemGrid.startAnimation(anim);
+                        itemGrid.setVisibility(View.VISIBLE);
+                        openIndicator.setRotation(180);
+                        itemGrid.setAdapter(mParseService.getTagHistoryAdapter(getActivity().getApplicationContext(), storeName));
+                    }
+                }
+            });
+            mStoreLayout.addView(storeView);
+        }
+
+
+        return mContainer;
     }
 
     public boolean isDrawerOpen() {
@@ -163,7 +211,7 @@ public class TagsDrawerFragment extends Fragment {
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    sp.edit().putBoolean(PREF_USER_LEARNED_TAGS, true).apply();
                 }
 
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
@@ -189,9 +237,9 @@ public class TagsDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
+        //if (mDrawerListView != null) {
+        //    mDrawerListView.setItemChecked(position, true);
+        //}
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="0dp"
-    android:background="#cccc"
-    tools:context=".TagsDrawerFragment" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffff"
+    tools:context=".TagsDrawerFragment">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/store_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <!-- Store views will go here -->
+    </LinearLayout>
+</ScrollView>

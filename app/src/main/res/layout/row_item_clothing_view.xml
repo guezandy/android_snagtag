@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_weight="48"
     android:layout_width="0dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginLeft="2dp"
     tools:layout_width="160dp"
-    android:layout_height="150dp">
-    <TextView
+    android:paddingBottom="2dp"
+    android:layout_height="150dp"
+    android:background="#ffff">
+    <com.snagtag.ui.IconCustomTextView
         android:id="@+id/delete_item"
         android:layout_width="wrap_content"
-        android:text="X"
-        android:textSize="8sp"
+        android:text="@string/icon_delete"
+        android:textSize="10sp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="2dp"
@@ -62,26 +62,21 @@
         android:layout_below="@id/item_size"
         android:textSize="10sp"
         android:layout_marginLeft="10dp"
-        tools:text="$55.00"/>
-    <ImageView
-        android:id="@+id/item_closet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="2dp"
-        android:background="@drawable/circle_blue"/>
-    <ImageView
+        tools:text="$55.00"/>
+
+    <com.snagtag.ui.IconCustomTextView
         android:id="@+id/item_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/item_closet"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:textSize="22sp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/circle_blue"/>
+        android:layout_marginBottom="10dp"
+        android:text="@string/icon_cart"
+        android:textColor="#ffff"
+        android:background="@drawable/circle_button"/>
 </RelativeLayout>

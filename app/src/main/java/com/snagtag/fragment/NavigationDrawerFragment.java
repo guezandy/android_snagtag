@@ -22,7 +22,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import static com.snagtag.utils.Constant.*;
 
 import com.snagtag.R;
 
@@ -91,7 +93,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
@@ -104,16 +106,48 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
+
                 new String[]{
-                        getString(R.string.title_section_tags),
                         getString(R.string.title_section_cart),
+                        getString(R.string.title_section_outfits),
                         getString(R.string.title_section_closet),
-                        "Outfits",
                         getString(R.string.title_section_stores),
                         getString(R.string.title_section_account),
                         getString(R.string.title_section_terms),
-                }));
+                }){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = inflater.inflate(R.layout.navigation_item, null);
+                ((TextView)view.findViewById(R.id.title_navigation)).setText(getItem(position));
+                TextView icon = ((TextView)view.findViewById(R.id.icon_navigation));
+                switch(position) {
+                    case CART:
+                        icon.setText(getText(R.string.icon_cart));
+                        break;
+                    case OUTFIT_CREATOR:
+                        icon.setText(getText(R.string.icon_creator));
+                        break;
+
+                    case CLOSET:
+                        icon.setText(getText(R.string.icon_closet));
+                        break;
+                    case STORES:
+                        icon.setText(getText(R.string.icon_store));
+                        break;
+                    case ACCOUNT:
+                        icon.setText(getText(R.string.icon_account));
+                        break;
+
+                    case TERMS:
+                        icon.setText(getText(R.string.icon_terms));
+                        break;
+
+                    default:
+                        break;
+                }
+                return view;
+            }
+        });
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -288,40 +322,5 @@ public class NavigationDrawerFragment extends Fragment {
         void onNavigationDrawerItemSelected(int position);
     }
 
-    /**
-     * Adapter class to allow us to inject nice looking views.
-     */
-    private class NavigationItemAdapter extends ArrayAdapter<String> {
 
-        public NavigationItemAdapter(Context context, String[] objects) {
-            super(context, android.R.layout.simple_list_item_1, objects);
-        }
-
-
-
-        @Override
-        public int getCount() {
-            return super.getCount();
-        }
-
-        @Override
-        public String getItem(int position) {
-            return super.getItem(position);
-        }
-
-        @Override
-        public int getPosition(String item) {
-            return super.getPosition(item);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return super.getItemId(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return super.getView(position, convertView, parent);
-        }
-    }
 }

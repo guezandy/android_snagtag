@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -24,8 +22,6 @@ import com.parse.SaveCallback;
 import com.snagtag.R;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.TagHistoryItem;
-
-import java.util.List;
 
 /**
  * This fragment displays a single clothing item

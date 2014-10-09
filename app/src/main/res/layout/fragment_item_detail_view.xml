@@ -31,7 +31,7 @@
         android:layout_marginBottom="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/circle_blue"
+        android:background="@drawable/circle_blue_button"
         android:layout_marginRight="106dp"/>
     <ImageView
         android:id="@+id/button_back_arrow"

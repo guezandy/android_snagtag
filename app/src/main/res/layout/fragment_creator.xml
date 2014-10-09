@@ -29,7 +29,7 @@
             android:layout_margin="12dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/circle_blue"/>
+            android:background="@drawable/circle_blue_button"/>
         <ImageView
             android:id="@+id/button_closet"
             android:layout_width="45dp"
