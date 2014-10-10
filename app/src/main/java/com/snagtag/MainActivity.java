@@ -68,6 +68,7 @@ public class MainActivity extends ActionBarActivity
      */
     private TagsDrawerFragment mTagsDrawerFragment;
     /**
+     * 
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
