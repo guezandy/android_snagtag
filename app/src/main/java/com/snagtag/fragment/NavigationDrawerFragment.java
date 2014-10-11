@@ -2,7 +2,6 @@ package com.snagtag.fragment;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,9 +23,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import static com.snagtag.utils.Constant.*;
 
 import com.snagtag.R;
+
+import static com.snagtag.utils.Constant.ACCOUNT;
+import static com.snagtag.utils.Constant.CART;
+import static com.snagtag.utils.Constant.CLOSET;
+import static com.snagtag.utils.Constant.OUTFIT_CREATOR;
+import static com.snagtag.utils.Constant.STORES;
+import static com.snagtag.utils.Constant.TERMS;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

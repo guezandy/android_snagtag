@@ -40,4 +40,7 @@
     <string name="icon_right">&#xf054;</string>
     <string name="icon_down">&#xf078;</string>
 
+    <!--cart labels -->
+    <string name="label_cart_items">%n Items</string>
+
 </resources>
