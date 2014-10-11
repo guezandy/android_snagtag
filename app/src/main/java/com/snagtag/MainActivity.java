@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import static com.snagtag.utils.Constant.*;
 
-
 import com.snagtag.fragment.AccountFragment;
 import com.snagtag.fragment.CartFragment;
 
@@ -68,7 +67,7 @@ public class MainActivity extends ActionBarActivity
      */
     private TagsDrawerFragment mTagsDrawerFragment;
     /**
-     * 
+     *
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
