@@ -28,5 +28,11 @@ public class CartItem extends ParseObject {
         put("user", ParseUser.getCurrentUser());
     }
 
-    //TODO: Finish adding getters and setters to this class
+    public void setItem(TagHistoryItem i) {
+        this.put("item",i);
+    }
+
+    public TagHistoryItem getItem() {
+        return (TagHistoryItem)this.get("item");
+    }
 }
