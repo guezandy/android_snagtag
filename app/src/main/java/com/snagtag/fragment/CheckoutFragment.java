@@ -23,7 +23,8 @@ public class CheckoutFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        store = savedInstanceState.getString("store");
+        Bundle args = getArguments();
+        store =args.getString("store");
         super.onCreate(savedInstanceState);
     }
 
