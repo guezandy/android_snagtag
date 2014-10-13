@@ -38,7 +38,10 @@
     <string name="icon_store">&#xf0f8;</string>
     <string name="icon_delete">&#xf00d;</string>
     <string name="icon_right">&#xf054;</string>
+    <string name="icon_left">&#xf053;</string>
     <string name="icon_down">&#xf078;</string>
+    <string name="icon_remove">&#xf068;</string>
+    <string name="icon_add">&#xf067;</string>
 
     <!--cart labels -->
     <string name="label_cart_items">%n Items</string>

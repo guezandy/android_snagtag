@@ -29,4 +29,6 @@ public interface IParseService {
      */
     public BaseAdapter getCartItemAdapter(final Context context, String store, DataSetObserver dataChangedObserver);
 
+    public BaseAdapter getCheckoutItemAdapter(final Context context, String store, DataSetObserver dataChangedObserver);
+
 }

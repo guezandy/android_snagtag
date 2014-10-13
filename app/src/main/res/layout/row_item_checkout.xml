@@ -5,17 +5,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp">
-    <ImageView
+    <com.parse.ParseImageView
         android:id="@+id/item_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="12dp"
-        android:src="@drawable/ic_launcher"/>
+        tools:src="@drawable/ic_launcher"/>
+    <com.snagtag.ui.IconCustomTextView
+        android:id="@+id/button_delete"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:text="@string/icon_delete"
+        android:background="@drawable/circle_grey"/>
     <TextView
         android:id="@+id/item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/item_image"
+        android:layout_toLeftOf="@id/button_delete"
         tools:text="Brand Striped Boatneck Top"/>
     <TextView
         android:id="@+id/item_color"
@@ -40,7 +52,7 @@
         android:layout_toRightOf="@id/item_image"
         android:textColor="#36B0F3"
         tools:text="$55.00"/>
-    <TextView
+    <com.snagtag.ui.IconCustomTextView
         android:id="@+id/button_subtract_one"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -49,7 +61,7 @@
         android:textSize="16dp"
         android:textStyle="bold"
         android:textColor="#ffffff"
-        android:text="-"
+        android:text="@string/icon_remove"
         android:gravity="center"
         android:background="@drawable/add_subtract_button_shape"/>
     <TextView
@@ -62,7 +74,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:text="0"/>
-    <TextView
+    <com.snagtag.ui.IconCustomTextView
         android:id="@+id/button_add_one"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -72,18 +84,8 @@
         android:textSize="16dp"
         android:textStyle="bold"
         android:textColor="#ffffff"
-        android:text="+"
+        android:text="@string/icon_add"
         android:background="@drawable/add_subtract_button_shape"/>
 
-    <TextView
-        android:id="@+id/button_delete"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:textSize="16dp"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:text="x"
-        android:background="@drawable/circle_grey"/>
+
 </RelativeLayout>

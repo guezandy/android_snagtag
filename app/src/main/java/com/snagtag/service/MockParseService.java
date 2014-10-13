@@ -177,6 +177,71 @@ public class MockParseService implements IParseService {
         return cartItemAdapter;
     }
 
+    @Override
+    public BaseAdapter getCheckoutItemAdapter(final Context context, String store, DataSetObserver dataChangedObserver) {
+        final List<CartItem> mockCartItems = new ArrayList<CartItem>();
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] bitmapdata = stream.toByteArray();
+
+
+        for (int i = 0; i < CART_ITEMS; i++) {
+            CartItem item = new CartItem();
+            item.setItem(new TagHistoryItem());
+            item.getItem().setBarcode("338383" + i);
+            item.getItem().setDescription("Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit");
+            item.getItem().setInCart(i % 3 == 0);
+            item.getItem().setInCloset(i % 2 == 0);
+            item.getItem().setPrice(i + 1.00);
+            item.getItem().setStore(store);
+            item.getItem().setVisible(i % 4 == 0);
+            item.getItem().setImage(new ParseFile("item " + i, bitmapdata));
+            mockCartItems.add(item);
+        }
+
+        //Creating and returning an abstract inner class.
+        ArrayAdapter<CartItem> cartItemAdapter =
+                new ArrayAdapter<CartItem>(context, R.layout.row_item_checkout) {
+                    @Override
+                    public int getCount() {
+                        return CART_ITEMS;
+                    }
+
+                    @Override
+                    public CartItem getItem(int position) {
+                        return mockCartItems.get(position);
+                    }
+
+
+                    @Override
+                    public long getItemId(int position) {
+                        return position;
+                    }
+
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+
+                        if (convertView != null) {
+                            RowItemClothingViewHolder holder = (RowItemClothingViewHolder) convertView.getTag();
+                            holder.setItem(mockCartItems.get(position).getItem());
+                        } else {
+                            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            convertView = inflater.inflate(R.layout.row_item_checkout, null);
+                            RowItemClothingViewHolder holder = new RowItemClothingViewHolder(convertView, mockCartItems.get(position).getItem());
+
+
+                            convertView.setTag(holder);
+                        }
+                        return convertView;
+                    }
+                };
+        if (dataChangedObserver != null) {
+            cartItemAdapter.registerDataSetObserver(dataChangedObserver);
+        }
+        return cartItemAdapter;
+    }
+
     /**
      * Inner class to map the fields on a List Item view to the fields in a model object.
      */
@@ -205,7 +270,7 @@ public class MockParseService implements IParseService {
             this.cost.setText(nf.format(item.getPrice()));
             this.image.setParseFile(item.getImage());
             this.image.loadInBackground();
-            if (item.getInCart()) {
+            if (item.getInCart() && this.itemCart != null) {
                 this.itemCart.setEnabled(false);
             }
         }
