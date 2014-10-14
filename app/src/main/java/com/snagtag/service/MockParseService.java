@@ -4,15 +4,27 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.TagHistoryItem;
@@ -20,7 +32,10 @@ import com.snagtag.models.TagHistoryItem;
 import java.io.ByteArrayOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Service class to handle interactions with Parse.
@@ -30,13 +45,39 @@ import java.util.List;
  * Created by benjamin on 9/19/14.
  */
 public class MockParseService implements IParseService {
-    private int SNAGS_PER_STORE = 30;
+    private final String TAG = MockParseService.class.getSimpleName();
+    private int SNAGS_PER_STORE = 10;
     private int CART_ITEMS = 6;
     NumberFormat nf = NumberFormat.getCurrencyInstance();
 
     @Override
     public List<String> getStoresByTags(Context context) {
+        //ParseQuery query = new ParseQuery("TagHistoryItem");
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation relation = user.getRelation("user_tags");
+        ParseQuery query = relation.getQuery();
+        query.whereEqualTo("visible", true);
+        final Set<String> set = new TreeSet<String>();
+
+
+        query.findInBackground(new FindCallback<TagHistoryItem>() {
+            @Override
+            public void done (List<TagHistoryItem> snags, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    // snags have all the Clothing the current user tagged.
+                    for(TagHistoryItem snag : snags) {
+                        Log.i(TAG, "query got: "+ snag.getStore());
+                        set.add(snag.getStore().toString());
+                    }
+                }
+            }
+        });
         List<String> list = new ArrayList<String>();
+        //List<String> list = Arrays.asList(set.toArray(new String[0]));
+        Log.i(TAG, "Printing set: "+ set.toString());
+        list.addAll(set);
         list.add("Gap");
         list.add("Men's Warehouse");
         return list;
@@ -48,6 +89,110 @@ public class MockParseService implements IParseService {
         list.add("Gap");
         list.add("Men's Warehouse");
         return list;
+    }
+
+
+    @Override
+    public ParseQueryAdapter TagHistoryAdapter(final Context context, final String store) {
+        // Adapter for the Parse query
+
+        ParseQueryAdapter.QueryFactory<TagHistoryItem> factory =
+                new ParseQueryAdapter.QueryFactory<TagHistoryItem>() {
+                    public ParseQuery<TagHistoryItem> create() {
+                        //ParseQuery query = new ParseQuery("TagHistoryItem");
+                        ParseUser user = ParseUser.getCurrentUser();
+
+                        //grabs all user tags
+                        ParseRelation relation = user.getRelation("user_tags");
+                        //get query so we can sub-query
+                        ParseQuery query = relation.getQuery();
+                        //make sure user didnt delete any snags
+                        query.whereEqualTo("visible", true);
+
+                        //TODO: no stores yet
+                        //query.whereEqualTo("store", store);
+
+                        //get ten most recent
+                        query.orderByDescending("createdAt");
+                        query.setLimit(SNAGS_PER_STORE);
+
+                        return query;
+                    }
+                };
+        //setup query adapter
+        ParseQueryAdapter<TagHistoryItem> TagHistoryPerStore;
+        TagHistoryPerStore =  new ParseQueryAdapter<TagHistoryItem>(context, factory) {
+                    @Override
+                    public View getItemView(final TagHistoryItem item, View v, ViewGroup parent) {
+                        if (v == null) {
+                            v = View.inflate(getContext(), R.layout.row_item_clothing_view, null);
+                        }
+                        TextView description = (TextView) v.findViewById(R.id.item_description);
+                        description.setText(item.getDescription());
+
+                        com.snagtag.ui.IconCustomTextView delete = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.delete_item);
+                        delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // delete From Tag History
+                                item.setVisible(false);
+                                item.saveInBackground();
+                                //TODO: unpin all items with false as visibility we don't need to store them locally
+                            }
+                        });
+
+                        ParseImageView itemImage = (ParseImageView) v.findViewById(R.id.item_image);
+                        ParseFile photoFile = item.getImage();
+                        if (photoFile != null) {
+                            itemImage.setParseFile(photoFile);
+                            itemImage.loadInBackground(new GetDataCallback() {
+                                @Override
+                                public void done(byte[] data, ParseException e) {
+                                    // nothing to do
+                                    Log.i(TAG, "Image uploaded: " + item.getStore() + " , " + item.getDescription());
+                                }
+                            });
+                        }
+
+                        TextView color = (TextView) v.findViewById(R.id.item_color);
+                        color.setText("");
+
+                        TextView size = (TextView) v.findViewById(R.id.item_size);
+                        size.setText("");
+
+                        TextView cost = (TextView) v.findViewById(R.id.item_cost);
+                        cost.setText(String.valueOf(item.getPrice()));
+//TODO: Reload the list after each one of these is pressed.
+
+
+
+                        com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
+                        if(item.getInCart()) {
+                            //cart.setImageResource(R.drawable.circle_blue_button);
+                        } else {
+                            //cart.setImageResource(R.drawable.circle_grey);
+                            cart.setEnabled(false);
+                        }
+                        cart.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(!item.getInCart()) {
+                                    //add item to cart
+                                    CartItem cartItem = new CartItem(item);
+                                    cartItem.saveInBackground();
+                                    item.setInCart(true);
+                                    item.saveInBackground();
+                                } else {
+                                    Toast.makeText(v.getContext(), item.getDescription() + " is already in cart.", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        });
+
+                        return v;
+                    }
+                };
+        return TagHistoryPerStore;
     }
 
     @Override

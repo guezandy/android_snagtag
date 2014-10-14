@@ -146,7 +146,8 @@ public class TagsDrawerFragment extends Fragment {
                         itemGrid.startAnimation(anim);
                         itemGrid.setVisibility(View.VISIBLE);
                         openIndicator.setRotation(180);
-                        itemGrid.setAdapter(mParseService.getTagHistoryAdapter(getActivity().getApplicationContext(), storeName));
+                        //Adding the storeName as a parameter for parse query purposes;
+                        itemGrid.setAdapter(mParseService.TagHistoryAdapter(getActivity().getApplicationContext(), storeName));
                     }
                 }
             });

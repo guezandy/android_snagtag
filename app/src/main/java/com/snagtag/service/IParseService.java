@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.widget.BaseAdapter;
 
+import com.parse.ParseQueryAdapter;
+import com.snagtag.models.TagHistoryItem;
+
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ public interface IParseService {
 
     public BaseAdapter getTagHistoryAdapter(Context context, String store);
 
+    public ParseQueryAdapter TagHistoryAdapter(Context context, String store);
     /**
      *
      * @param context
