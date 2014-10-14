@@ -23,6 +23,8 @@ public interface IParseService {
 
     public BaseAdapter getTagHistoryAdapter(Context context, String store);
 
+    public ParseQueryAdapter CartAdapter(Context context, String store, DataSetObserver dataChangedObserver);
+
     public ParseQueryAdapter TagHistoryAdapter(Context context, String store);
     /**
      *Returns cart items

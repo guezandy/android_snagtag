@@ -31,7 +31,6 @@ public class CartFragment extends Fragment {
     private LinearLayout storeListLayout;
     private IParseService mParseService;
     private ArrayAdapter<CartItem> cartItemArrayAdapter;
-
     private String selectedStore;
 
     @Override
