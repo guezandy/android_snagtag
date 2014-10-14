@@ -58,7 +58,7 @@ public class MockParseService implements IParseService {
         ParseQuery query = relation.getQuery();
         query.whereEqualTo("visible", true);
         final Set<String> set = new TreeSet<String>();
-
+        final List<String> list = new ArrayList<String>();
 
         query.findInBackground(new FindCallback<TagHistoryItem>() {
             @Override
@@ -71,13 +71,13 @@ public class MockParseService implements IParseService {
                         Log.i(TAG, "query got: "+ snag.getStore());
                         set.add(snag.getStore().toString());
                     }
+                    list.addAll(set);
                 }
             }
         });
-        List<String> list = new ArrayList<String>();
         //List<String> list = Arrays.asList(set.toArray(new String[0]));
         Log.i(TAG, "Printing set: "+ set.toString());
-        list.addAll(set);
+        //list.addAll(set);
         list.add("Gap");
         list.add("Men's Warehouse");
         return list;
@@ -196,6 +196,116 @@ public class MockParseService implements IParseService {
     }
 
     @Override
+    public ParseQueryAdapter CartAdapter(final Context context, final String store, DataSetObserver dataChangedObserver) {
+        // Adapter for the Parse query
+        ParseQueryAdapter.QueryFactory<TagHistoryItem> factory =
+                new ParseQueryAdapter.QueryFactory<TagHistoryItem>() {
+                    public ParseQuery<TagHistoryItem> create() {
+                        //ParseQuery query = new ParseQuery("TagHistoryItem");
+                        ParseUser user = ParseUser.getCurrentUser();
+
+                        //grabs all user tags
+                        ParseRelation relation = user.getRelation("user_tags");
+                        //get query so we can sub-query
+                        ParseQuery query = relation.getQuery();
+
+                        //items in cart
+                        query.whereEqualTo("inCart", true);
+                        //make sure user didnt delete any snags
+                        //query.whereEqualTo("visible", true);
+
+                        //TODO: no stores yet but we'll sort the cart by stores
+                        //query.whereEqualTo("store", store);
+
+                        //get ten most recent
+                        query.orderByDescending("createdAt");
+                        //query.setLimit(SNAGS_PER_STORE);
+
+                        return query;
+                    }
+                };
+        //setup query adapter
+        ParseQueryAdapter<TagHistoryItem> UserCartPerStore;
+        UserCartPerStore =  new ParseQueryAdapter<TagHistoryItem>(context, factory) {
+            @Override
+            public View getItemView(final TagHistoryItem item, View v, ViewGroup parent) {
+                if (v == null) {
+                    v = View.inflate(getContext(), R.layout.row_item_clothing_view, null);
+                }
+                TextView description = (TextView) v.findViewById(R.id.item_description);
+                description.setText(item.getDescription());
+
+                com.snagtag.ui.IconCustomTextView delete = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.delete_item);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // TODO: do we want to delete From Tag History too?
+                        //item.setVisible(false);
+                        item.setInCart(false);
+                        item.saveInBackground();
+                        //TODO: unpin all items with false as visibility we don't need to store them locally
+                    }
+                });
+
+                ParseImageView itemImage = (ParseImageView) v.findViewById(R.id.item_image);
+                ParseFile photoFile = item.getImage();
+                if (photoFile != null) {
+                    itemImage.setParseFile(photoFile);
+                    itemImage.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] data, ParseException e) {
+                            // nothing to do
+                            Log.i(TAG, "Image uploaded: " + item.getStore() + " , " + item.getDescription());
+                        }
+                    });
+                }
+
+                TextView color = (TextView) v.findViewById(R.id.item_color);
+                color.setText("");
+
+                TextView size = (TextView) v.findViewById(R.id.item_size);
+                size.setText("");
+
+                TextView cost = (TextView) v.findViewById(R.id.item_cost);
+                cost.setText(String.valueOf(item.getPrice()));
+//TODO: Reload the list after each one of these is pressed.
+
+
+
+                com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
+                cart.setVisibility(View.GONE);
+                if(item.getInCart()) {
+                    //cart.setImageResource(R.drawable.circle_blue_button);
+                } else {
+                    //cart.setImageResource(R.drawable.circle_grey);
+                    cart.setEnabled(false);
+                }
+                cart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!item.getInCart()) {
+                            //add item to cart
+                            CartItem cartItem = new CartItem(item);
+                            cartItem.saveInBackground();
+                            item.setInCart(true);
+                            item.saveInBackground();
+                        } else {
+                            Toast.makeText(v.getContext(), item.getDescription() + " is already in cart.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                return v;
+            }
+        };
+
+        if (dataChangedObserver != null) {
+            UserCartPerStore.registerDataSetObserver(dataChangedObserver);
+        }
+        return UserCartPerStore;
+    }
+
+    @Override
     public BaseAdapter getTagHistoryAdapter(final Context context, String store) {
         final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
 
@@ -254,6 +364,8 @@ public class MockParseService implements IParseService {
             }
         };
     }
+
+
 
     @Override
     public BaseAdapter getCartItemAdapter(final Context context, String store, DataSetObserver dataChangedObserver) {
