@@ -88,6 +88,8 @@ public class CheckoutFragment extends Fragment {
         mExpiration = (TextView) mView.findViewById(R.id.card_expiration);
 
 
+
+
         setOrderInformation();
         setOnClickListeners();
 
@@ -126,6 +128,8 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(mViewFlipper.getDisplayedChild() < mViewFlipper.getChildCount()-1) {
+                    mViewFlipper.setInAnimation(CheckoutFragment.this.getActivity(),  R.anim.in_from_right);
+                    mViewFlipper.setOutAnimation(CheckoutFragment.this.getActivity(), R.anim.out_to_left);
                     mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild()+1);
                     updateView(mViewFlipper.getDisplayedChild());
                 }
@@ -135,6 +139,8 @@ public class CheckoutFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(mViewFlipper.getDisplayedChild()> 0) {
+                    mViewFlipper.setInAnimation(CheckoutFragment.this.getActivity(),  R.anim.in_from_left);
+                    mViewFlipper.setOutAnimation(CheckoutFragment.this.getActivity(), R.anim.out_to_right);
                     mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild()-1);
                     updateView(mViewFlipper.getDisplayedChild());
                 }

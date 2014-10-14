@@ -1,82 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff">
-    <EditText
-        android:id="@+id/input_outfit_name"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <!--TODO: Add outfit details here.-->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/button_view"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/button_cart"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/circle_grey"/>
-        <ImageView
-            android:id="@+id/button_snag"
-            android:layout_margin="12dp"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/circle_blue_button"/>
-        <ImageView
-            android:id="@+id/button_closet"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/circle_grey"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/button_new"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:text="Add New Outfit"
+            android:padding="12dp"
+            android:gravity="center"
+            android:background="#0BB5FF"/>
+        <GridView
+            android:id="@+id/grid_outfit"
+            android:layout_above="@id/button_new"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:background="#cccc"
+            android:horizontalSpacing="2dp"
+            android:verticalSpacing="2dp"
+            android:padding="2dp">
+        </GridView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/input_outfit_name"
-        android:layout_above="@id/button_view">
-        <!--Clothing layouts here.-->
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/outfit_select_view"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-
-        android:layout_height="wrap_content">
+        android:background="#ffffff">
+        <EditText
+            android:id="@+id/input_outfit_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <!--TODO: Add outfit details here.-->
         <LinearLayout
             android:orientation="horizontal"
-            android:id="@+id/bottom_slider"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#d7d7d7"
+            android:id="@+id/button_view"
+            android:layout_marginBottom="30dp"
             android:gravity="center"
-            android:layout_alignParentBottom="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="^"/>
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/button_cart"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/circle_grey"/>
+            <ImageView
+                android:id="@+id/button_snag"
+                android:layout_margin="12dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/circle_blue_button"/>
+            <ImageView
+                android:id="@+id/button_closet"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/circle_grey"/>
         </LinearLayout>
-        <!--This will animate in when bottom_slider is pressed-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/input_outfit_name"
+            android:layout_above="@id/button_view">
+            <!--Clothing layouts here.-->
+        </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/outfit_select_slider"
+            android:id="@+id/outfit_select_view"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:background="#d7d7d7">
+            android:layout_alignParentBottom="true"
+
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/bottom_slider"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#d7d7d7"
+                android:gravity="center"
+                android:layout_alignParentBottom="true">
+                <com.snagtag.ui.IconCustomTextView
+                    android:id="@+id/selector_chevron"
+                    android:textSize="24sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_down"
+                    android:rotation="180"/>
+            </LinearLayout>
+            <!--This will animate in when bottom_slider is pressed-->
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/outfit_select_slider"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="#d7d7d7">
+                    <com.snagtag.scroll.CenteringHorizontalScrollView
+                        android:id="@+id/tops_scroll_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="98dp"
+                        android:scrollbars="none"
+                        android:background="#ffffff">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="98dp"
+                            android:background="#ffffff">
+                            <!--Dummy views for testing-->
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 1"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 2"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 3"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 4"/>
+                            <TextView
+                                android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Top 5"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 6"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 7"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 8"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 9"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="150dp"
+                                android:layout_height="fill_parent"
+                                android:text="Top 10"/>
+                        </LinearLayout>
+                    </com.snagtag.scroll.CenteringHorizontalScrollView>
                 <com.snagtag.scroll.CenteringHorizontalScrollView
-                    android:id="@+id/tops_scroll_view"
+                    android:id="@+id/bottoms_scroll_view"
                     android:layout_width="wrap_content"
                     android:layout_height="98dp"
                     android:scrollbars="none"
+                    android:layout_marginTop="2dp"
                     android:background="#ffffff">
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -87,249 +181,186 @@
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 1"/>
+                            android:text="Bottom 1"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 2"/>
+                            android:text="Bottom 2"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 3"/>
+                            android:text="Bottom 3"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 4"/>
-                        <TextView
-                            android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Top 5"/>
+                            android:text="Bottom 4"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 6"/>
+                            android:text="Bottom 5"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 7"/>
+                            android:text="Bottom 6"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 8"/>
+                            android:text="Bottom 7"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 9"/>
+                            android:text="Bottom 8"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="150dp"
                             android:layout_height="fill_parent"
-                            android:text="Top 10"/>
+                            android:text="Bottom 9"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Bottom 10"/>
                     </LinearLayout>
                 </com.snagtag.scroll.CenteringHorizontalScrollView>
-            <com.snagtag.scroll.CenteringHorizontalScrollView
-                android:id="@+id/bottoms_scroll_view"
-                android:layout_width="wrap_content"
-                android:layout_height="98dp"
-                android:scrollbars="none"
-                android:layout_marginTop="2dp"
-                android:background="#ffffff">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="98dp"
-                    android:background="#ffffff">
-                    <!--Dummy views for testing-->
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 1"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 2"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 3"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 4"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 5"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 6"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 7"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 8"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 9"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Bottom 10"/>
-                </LinearLayout>
-            </com.snagtag.scroll.CenteringHorizontalScrollView>
 
-            <com.snagtag.scroll.CenteringHorizontalScrollView
-                android:id="@+id/shoes_scroll_view"
-                android:layout_width="wrap_content"
-                android:layout_height="98dp"
-                android:scrollbars="none"
-                android:layout_marginTop="2dp"
-                android:background="#ffffff">
-                <LinearLayout
+                <com.snagtag.scroll.CenteringHorizontalScrollView
+                    android:id="@+id/shoes_scroll_view"
                     android:layout_width="wrap_content"
                     android:layout_height="98dp"
+                    android:scrollbars="none"
+                    android:layout_marginTop="2dp"
                     android:background="#ffffff">
-                    <!--Dummy views for testing-->
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 1"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 2"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 3"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 4"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 5"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 6"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 7"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 8"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 9"/>
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="150dp"
-                        android:layout_height="fill_parent"
-                        android:text="Shoe 10"/>
-                </LinearLayout>
-            </com.snagtag.scroll.CenteringHorizontalScrollView>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="98dp"
+                        android:background="#ffffff">
+                        <!--Dummy views for testing-->
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 1"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 2"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 3"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 4"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 5"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 6"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 7"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 8"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 9"/>
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="150dp"
+                            android:layout_height="fill_parent"
+                            android:text="Shoe 10"/>
+                    </LinearLayout>
+                </com.snagtag.scroll.CenteringHorizontalScrollView>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <!--This is the popup overlay-->
+        <!--This is the popup overlay-->
 
-    <RelativeLayout
-        android:layout_width="220dp"
-        android:layout_height="140dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:visibility="gone"
-        tools:visibility="visible">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffff"
-            android:alpha=".8"></LinearLayout>
-        <LinearLayout
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:alpha=".8"></LinearLayout>
+            <LinearLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/border_grey"
-            android:alpha=".8"></LinearLayout>
-        <TextView
-            android:id="@+id/item_store"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp"
-            tools:text="Gap"/>
-        <TextView
-            android:id="@+id/item_description"
-            android:layout_below="@id/item_store"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            tools:text="Brand Striped Boatneck"/>
-        <TextView
-            android:id="@+id/item_size"
-            android:layout_below="@id/item_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            tools:text="Color: Red"/>
-        <TextView
-            android:id="@+id/item_color"
-            android:layout_below="@id/item_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            tools:text="Size: M"/>
-        <TextView
-            android:id="@+id/item_cost"
-            android:layout_below="@id/item_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#00CCFF"
-            android:layout_marginLeft="12dp"
-            tools:text="$55.00"/>
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/circle_grey"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="12dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_grey"
+                android:alpha=".8"></LinearLayout>
+            <TextView
+                android:id="@+id/item_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                tools:text="Gap"/>
+            <TextView
+                android:id="@+id/item_description"
+                android:layout_below="@id/item_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                tools:text="Brand Striped Boatneck"/>
+            <TextView
+                android:id="@+id/item_size"
+                android:layout_below="@id/item_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                tools:text="Color: Red"/>
+            <TextView
+                android:id="@+id/item_color"
+                android:layout_below="@id/item_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                tools:text="Size: M"/>
+            <TextView
+                android:id="@+id/item_cost"
+                android:layout_below="@id/item_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#00CCFF"
+                android:layout_marginLeft="12dp"
+                tools:text="$55.00"/>
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/circle_grey"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="12dp"/>
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</ViewFlipper>
