@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+        android:layout_marginBottom="2dp"
         android:background="#666666">
         <TextView
             android:id="@+id/title_store_name"
@@ -29,19 +30,34 @@
             android:textColor="#ffff"
             android:textSize="18sp"/>
     </RelativeLayout>
-    <com.snagtag.grid.FittingGridView
-        android:id="@+id/item_grid"
+    <ViewFlipper
+        android:id="@+id/grid_flipper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2"
-        android:background="#cccccc"
-        android:isScrollContainer="false"
-        android:verticalSpacing="2dp"
-        android:horizontalSpacing="2dp"
-        android:padding="2dp"
         android:visibility="gone"
-        tools:visibility="visible"
-        >
-        <!-- Dynamically add row_item_clothing_view.xml here -->
-    </com.snagtag.grid.FittingGridView>
+        tools:visibility="visible">
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"/>
+        <com.snagtag.grid.FittingGridView
+            android:id="@+id/item_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:background="#cccccc"
+            android:isScrollContainer="false"
+            android:verticalSpacing="2dp"
+            android:horizontalSpacing="2dp"
+            android:padding="2dp"
+
+            >
+            <!-- Dynamically add row_item_clothing_view.xml here -->
+        </com.snagtag.grid.FittingGridView>
+    </ViewFlipper>
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.snagtag.fragment;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -23,8 +24,10 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.snagtag.R;
+import com.snagtag.service.IParseCallback;
 import com.snagtag.service.IParseService;
 import com.snagtag.service.MockParseService;
 
@@ -100,59 +103,57 @@ public class TagsDrawerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mContainer = inflater.inflate(R.layout.fragment_tags_drawer, null);
         //tagHistoryAdapter = new TagHistoryAdapter(getActivity());
         mStoreLayout = (LinearLayout)mContainer.findViewById(R.id.store_layout);
-        List<String> stores = mParseService.getStoresByTags(getActivity().getApplicationContext());
-
-        for(String store : stores) {
-            final View storeView = inflater.inflate(R.layout.row_item_snag_view, null);
-            TextView title = (TextView)storeView.findViewById(R.id.title_store_name);
-            title.setText(store);
-            final View header = storeView.findViewById(R.id.store_header);
-            final View openIndicator = storeView.findViewById(R.id.store_open_indicator);
-            final String storeName = store;
-            header.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final GridView itemGrid = (GridView)storeView.findViewById(R.id.item_grid);
-                    if(itemGrid.getVisibility()==View.VISIBLE) {
-                        ScaleAnimation anim = new ScaleAnimation(1, 1, 1, 0);
-                        anim.setDuration(300);
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                itemGrid.setVisibility(View.GONE);
+        mParseService.getStoresByTags(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
+            @Override
+            public void onSuccess(List<String> items) {
+                List<String> stores = items;
+                for(String store : stores) {
+                    final View storeView = inflater.inflate(R.layout.row_item_snag_view, null);
+                    final ViewFlipper flipper = (ViewFlipper)storeView.findViewById(R.id.grid_flipper);
+                    TextView title = (TextView)storeView.findViewById(R.id.title_store_name);
+                    title.setText(store);
+                    final View header = storeView.findViewById(R.id.store_header);
+                    final View openIndicator = storeView.findViewById(R.id.store_open_indicator);
+                    final String storeName = store;
+                    header.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final GridView itemGrid = (GridView)storeView.findViewById(R.id.item_grid);
+                            if(itemGrid.getVisibility()==View.VISIBLE) {
+                                flipper.setVisibility(View.GONE);
+                                flipper.setDisplayedChild(0);
                                 openIndicator.setRotation(0);
+                            } else {
+                                flipper.setVisibility(View.VISIBLE);
+                                openIndicator.setRotation(180);
+                                //Adding the storeName as a parameter for parse query purposes;
+                                itemGrid.setAdapter(mParseService.TagHistoryAdapter(getActivity().getApplicationContext(), storeName, new DataSetObserver() {
+                                    @Override
+                                    public void onChanged() {
+                                        if(itemGrid.getCount() > 0) {
+                                            flipper.setDisplayedChild(1);
+                                        }
+                                    }
+                                }));
                             }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        itemGrid.startAnimation(anim);
-
-                    } else {
-                        ScaleAnimation anim = new ScaleAnimation(1, 1, 0, 1);
-                        anim.setDuration(300);
-                        itemGrid.startAnimation(anim);
-                        itemGrid.setVisibility(View.VISIBLE);
-                        openIndicator.setRotation(180);
-                        //Adding the storeName as a parameter for parse query purposes;
-                        itemGrid.setAdapter(mParseService.TagHistoryAdapter(getActivity().getApplicationContext(), storeName));
-                    }
+                        }
+                    });
+                    mStoreLayout.addView(storeView);
                 }
-            });
-            mStoreLayout.addView(storeView);
-        }
+            }
+
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
+
+
 
 
         return mContainer;

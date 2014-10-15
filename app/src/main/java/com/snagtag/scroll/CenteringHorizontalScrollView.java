@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
+import com.parse.ParseImageView;
+
 /**
  * Horizontal Scroll View that will center on the most visible element.
  *
@@ -25,6 +27,7 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
     private Context mContext;
     private View mCurrentView;
 
+    private int currentIdx=0;
     private int mNewCheck = 100;
     private static final String TAG = "CenteringHorizontalScrollView";
     private DisplayMetrics mMetrics;
@@ -32,12 +35,11 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
 
     private OnScrollStoppedListener onScrollStoppedListener;
 
-
     /**
      * Defines the callback for when the scrolling stops.  This will give you the 'selected view' once scrolling is finished.
      */
     public interface OnScrollStoppedListener{
-        void onScrollStopped(View view);
+        void onScrollStopped(View view, int index);
     }
 
     public CenteringHorizontalScrollView(Context context, AttributeSet attrs) {
@@ -61,8 +63,7 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
                 if(mInitialPosition - newPosition == 0){//has stopped
                     setCenter();
                     if(onScrollStoppedListener!=null){
-
-                        onScrollStoppedListener.onScrollStopped(mCurrentView);
+                        onScrollStoppedListener.onScrollStopped(mCurrentView, currentIdx);
                     }
                 }else{
                     mInitialPosition = getScrollY();
@@ -94,7 +95,7 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
     /**
      * This will center the closest view to the middle of the screen.
      */
-    private void setCenter() {
+    public void setCenter() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((Activity)mContext).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int screenWidth = displaymetrics.widthPixels;
@@ -102,13 +103,18 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
 
         float x = getScrollX();
         float widthInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mItemWidthInDip, mMetrics);
-        float offset = (x/widthInPx)+((screenWidth/2)/widthInPx);
+        float offset = x == 0 ? 1 : (x/widthInPx)+((screenWidth/2)/widthInPx);
 
         Log.d("OFFSET", ""+((int)offset));
 
         mCurrentView = parent.getChildAt(((int)offset));
+        currentIdx = (int)offset;
+
+
         int scrollX = (mCurrentView.getLeft() - (screenWidth / 2))
                 + (mCurrentView.getWidth() / 2);
         this.smoothScrollTo(scrollX, 0);
     }
+
+
 }

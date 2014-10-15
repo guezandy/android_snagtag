@@ -17,6 +17,7 @@ import android.widget.ViewFlipper;
 
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
+import com.snagtag.service.IParseCallback;
 import com.snagtag.service.IParseService;
 import com.snagtag.service.MockParseService;
 import com.snagtag.utils.FragmentUtil;
@@ -41,116 +42,127 @@ public class CartFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = (ViewFlipper)inflater.inflate(R.layout.fragment_cart, container, false);
         storeListLayout = (LinearLayout)mView.findViewById(R.id.cart_list_store);
         mParseService = new MockParseService();
-        List<String> stores = mParseService.getStoresByCartItems(getActivity().getApplicationContext());
+        mParseService.getStoresByCartItems(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
+            @Override
+            public void onSuccess(List<String> items) {
+                List<String> stores =  items;
+                for(final String store : stores) {
+                    final View storeView = inflater.inflate(R.layout.row_item_cart_store, null);
+                    TextView title = (TextView)storeView.findViewById(R.id.title_store_name);
+                    title.setText(store);
+                    final View header = storeView.findViewById(R.id.title_bar);
+                    final View openIndicator = storeView.findViewById(R.id.store_open_indicator);
+                    final View detailLayout = storeView.findViewById(R.id.detail_layout);
+                    final String storeName = store;
+                    final TextView totalView = (TextView)storeView.findViewById(R.id.item_cost);
+                    final TextView countView = (TextView)storeView.findViewById(R.id.item_summary);
 
-
-
-
-        for(final String store : stores) {
-            final View storeView = inflater.inflate(R.layout.row_item_cart_store, null);
-            TextView title = (TextView)storeView.findViewById(R.id.title_store_name);
-            title.setText(store);
-            final View header = storeView.findViewById(R.id.title_bar);
-            final View openIndicator = storeView.findViewById(R.id.store_open_indicator);
-            final View detailLayout = storeView.findViewById(R.id.detail_layout);
-            final String storeName = store;
-            final TextView totalView = (TextView)storeView.findViewById(R.id.item_cost);
-            final TextView countView = (TextView)storeView.findViewById(R.id.item_summary);
-
-            View checkout = storeView.findViewById(R.id.button_checkout);
-            checkout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    selectedStore = store;
-                    Bundle args = new Bundle();
-                    args.putString("store", store);
-                    CheckoutFragment checkoutFragment = new CheckoutFragment();
-                    checkoutFragment.setArguments(args);
-                    FragmentUtil.replaceFragment(getActivity(), checkoutFragment,true, 0, "Checkout");
-
-                }
-            });
-
-            header.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final LinearLayout itemGrid = (LinearLayout)storeView.findViewById(R.id.item_grid);
-                    if(detailLayout.getVisibility()==View.VISIBLE) {
-                        ScaleAnimation anim = new ScaleAnimation(1, 1, 1, 0);
-                        anim.setDuration(300);
-
-                        anim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                detailLayout.setVisibility(View.GONE);
-                                openIndicator.setRotation(0);
-                                double total = 0.0;
-                                for(int i = 0 ; i < cartItemArrayAdapter.getCount(); i++) {
-                                    CartItem item = cartItemArrayAdapter.getItem(i);
-                                    total = total + item.getItem().getPrice();
-                                }
-                                totalView.setText(""+total);
-                                countView.setText((""+cartItemArrayAdapter.getCount()));
-                                totalView.setVisibility(View.VISIBLE);
-                                countView.setVisibility(View.VISIBLE);
-                                itemGrid.removeAllViews();
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        detailLayout.startAnimation(anim);
-
-                    } else {
-                        ScaleAnimation anim = new ScaleAnimation(1, 1, 0, 1);
-                        anim.setDuration(300);
-                        detailLayout.startAnimation(anim);
-                        detailLayout.setVisibility(View.VISIBLE);
-                        openIndicator.setRotation(180);
-                        CartItemsObserver caObserver = new CartItemsObserver(null,itemGrid, countView, totalView);
-                        cartItemArrayAdapter = (ArrayAdapter<CartItem>)mParseService.getCartItemAdapter(getActivity().getApplicationContext(), storeName, caObserver);
-                        caObserver.setItemsAdapter(cartItemArrayAdapter);
-                        LinearLayout currentRow = null;
-                        for(int i = 0 ; i < cartItemArrayAdapter.getCount(); i++) {
-
-                            if(i%2 == 0) {
-                                currentRow = new LinearLayout(getActivity());
-                                currentRow.setOrientation(LinearLayout.HORIZONTAL);
-                                currentRow.setBackgroundColor(Color.parseColor("#cccccc"));
-                                currentRow.setPadding(4,2,4,2);
-                                itemGrid.addView(currentRow);
-                            }
-                            View v = cartItemArrayAdapter.getView(i, null, currentRow);
-                            // Get params:
-                            LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
-                            if(loparams==null) {
-                                loparams = new LinearLayout.LayoutParams(0, getDip(160), 49f);
-                                loparams.setMargins(2,0,2,0);
-                            }
-                            v.setLayoutParams(loparams);
-                            currentRow.addView(v);
+                    View checkout = storeView.findViewById(R.id.button_checkout);
+                    checkout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            selectedStore = store;
+                            Bundle args = new Bundle();
+                            args.putString("store", store);
+                            CheckoutFragment checkoutFragment = new CheckoutFragment();
+                            checkoutFragment.setArguments(args);
+                            FragmentUtil.replaceFragment(getActivity(), checkoutFragment,true, 0, "Checkout");
 
                         }
+                    });
+
+                    header.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final LinearLayout itemGrid = (LinearLayout)storeView.findViewById(R.id.item_grid);
+                            if(detailLayout.getVisibility()==View.VISIBLE) {
+                                ScaleAnimation anim = new ScaleAnimation(1, 1, 1, 0);
+                                anim.setDuration(300);
+
+                                anim.setAnimationListener(new Animation.AnimationListener() {
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        detailLayout.setVisibility(View.GONE);
+                                        openIndicator.setRotation(0);
+                                        double total = 0.0;
+                                        for(int i = 0 ; i < cartItemArrayAdapter.getCount(); i++) {
+                                            CartItem item = cartItemArrayAdapter.getItem(i);
+                                            total = total + item.getItem().getPrice();
+                                        }
+                                        totalView.setText(""+total);
+                                        countView.setText((""+cartItemArrayAdapter.getCount()));
+                                        totalView.setVisibility(View.VISIBLE);
+                                        countView.setVisibility(View.VISIBLE);
+                                        itemGrid.removeAllViews();
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+                                });
+                                detailLayout.startAnimation(anim);
+
+                            } else {
+                                ScaleAnimation anim = new ScaleAnimation(1, 1, 0, 1);
+                                anim.setDuration(300);
+                                detailLayout.startAnimation(anim);
+                                detailLayout.setVisibility(View.VISIBLE);
+                                openIndicator.setRotation(180);
+                                CartItemsObserver caObserver = new CartItemsObserver(null,itemGrid, countView, totalView);
+                                cartItemArrayAdapter = (ArrayAdapter<CartItem>)mParseService.getCartItemAdapter(getActivity().getApplicationContext(), storeName, caObserver);
+                                caObserver.setItemsAdapter(cartItemArrayAdapter);
+                                LinearLayout currentRow = null;
+                                for(int i = 0 ; i < cartItemArrayAdapter.getCount(); i++) {
+
+                                    if(i%2 == 0) {
+                                        currentRow = new LinearLayout(getActivity());
+                                        currentRow.setOrientation(LinearLayout.HORIZONTAL);
+                                        currentRow.setBackgroundColor(Color.parseColor("#cccccc"));
+                                        currentRow.setPadding(4,2,4,2);
+                                        itemGrid.addView(currentRow);
+                                    }
+                                    View v = cartItemArrayAdapter.getView(i, null, currentRow);
+                                    // Get params:
+                                    LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
+                                    if(loparams==null) {
+                                        loparams = new LinearLayout.LayoutParams(0, getDip(160), 49f);
+                                        loparams.setMargins(2,0,2,0);
+                                    }
+                                    v.setLayoutParams(loparams);
+                                    currentRow.addView(v);
+
+                                }
 
 
-                        totalView.setVisibility(View.GONE);
-                        countView.setVisibility(View.GONE);
-                    }
+                                totalView.setVisibility(View.GONE);
+                                countView.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                    storeListLayout.addView(storeView);
                 }
-            });
-            storeListLayout.addView(storeView);
-        }
+            }
+
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
+
+
+
+
+
 
 
 

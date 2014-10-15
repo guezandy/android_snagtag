@@ -6,19 +6,21 @@
     android:layout_width="0dp"
     tools:layout_width="160dp"
     android:paddingBottom="2dp"
-    android:layout_height="150dp"
+    android:layout_height="210dp"
     android:background="#ffff">
     <com.snagtag.ui.IconCustomTextView
         android:id="@+id/delete_item"
-        android:layout_width="wrap_content"
+        android:layout_width="25dp"
         android:text="@string/icon_delete"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="2dp"
         android:gravity="center"
         android:textColor="#ffffff"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:background="@drawable/circle_grey"/>
     <com.parse.ParseImageView
         android:id="@+id/item_image"
@@ -35,8 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_image"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         tools:text="Brand Striped Boatneck Top"/>
     <TextView
@@ -44,24 +47,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_description"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         tools:text="Color: Red"/>
     <TextView
         android:id="@+id/item_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_color"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         tools:text="Size: M"/>
     <TextView
         android:id="@+id/item_cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_size"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="2dp"
         tools:text="$55.00"/>
 
@@ -75,6 +81,7 @@
         android:gravity="center"
         android:textSize="22sp"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/icon_cart"
         android:textColor="#ffff"

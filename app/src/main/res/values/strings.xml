@@ -42,6 +42,7 @@
     <string name="icon_down">&#xf078;</string>
     <string name="icon_remove">&#xf068;</string>
     <string name="icon_add">&#xf067;</string>
+    <string name="icon_check">&#xf00c;</string>
 
     <!--cart labels -->
     <string name="label_cart_items">%n Items</string>

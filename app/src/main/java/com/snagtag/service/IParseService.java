@@ -17,15 +17,15 @@ import java.util.List;
  */
 public interface IParseService {
 
-    public List<String> getStoresByTags(Context context);
+    public void getStoresByTags(Context context, IParseCallback<List<String>> stores);
 
-    public List<String> getStoresByCartItems(Context context);
+    public void getStoresByCartItems(Context context, IParseCallback<List<String>> stores);
 
     public BaseAdapter getTagHistoryAdapter(Context context, String store);
 
     public ParseQueryAdapter CartAdapter(Context context, String store, DataSetObserver dataChangedObserver);
 
-    public ParseQueryAdapter TagHistoryAdapter(Context context, String store);
+    public ParseQueryAdapter TagHistoryAdapter(Context context, String store, DataSetObserver dataChangedObserver);
     /**
      *Returns cart items
      * @param context
@@ -56,25 +56,25 @@ public interface IParseService {
     /**
      * Combines closet and snags to return tops
      * @param context
-     * @param dataChangedObserver
+     *
      * @return
      */
-    public BaseAdapter getTopAdapter(final Context context, DataSetObserver dataChangedObserver);
+    public void getTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
 
     /**
      * Combines closet and snags to return bottoms
      * @param context
-     * @param dataChangedObserver
+     *
      * @return
      */
-    public BaseAdapter getBottomAdapter(final Context context, DataSetObserver dataChangedObserver);
+    public void getBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
 
     /**
      * Combines closet and snags to return shoes.
      * @param context
-     * @param dataChangedObserver
+     *
      * @return
      */
-    public BaseAdapter getShoeAdapter(final Context context, DataSetObserver dataChangedObserver);
+    public void getShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
 
 }

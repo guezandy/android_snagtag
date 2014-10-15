@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,7 +57,7 @@ public class MockParseService implements IParseService {
     NumberFormat nf = NumberFormat.getCurrencyInstance();
 
     @Override
-    public List<String> getStoresByTags(Context context) {
+    public void getStoresByTags(Context context, IParseCallback<List<String>> stores) {
         //ParseQuery query = new ParseQuery("TagHistoryItem");
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation relation = user.getRelation("user_tags");
@@ -85,20 +86,20 @@ public class MockParseService implements IParseService {
         //list.addAll(set);
         list.add("Gap");
         list.add("Men's Warehouse");
-        return list;
+        stores.onSuccess(list);
     }
 
     @Override
-    public List<String> getStoresByCartItems(Context context) {
+    public void getStoresByCartItems(Context context, IParseCallback<List<String>> stores) {
         List<String> list = new ArrayList<String>();
         list.add("Gap");
         list.add("Men's Warehouse");
-        return list;
+        stores.onSuccess(list);
     }
 
 
     @Override
-    public ParseQueryAdapter TagHistoryAdapter(final Context context, final String store) {
+    public ParseQueryAdapter TagHistoryAdapter(final Context context, final String store, DataSetObserver dataChangedObserver) {
         // Adapter for the Parse query
 
         ParseQueryAdapter.QueryFactory<TagHistoryItem> factory =
@@ -204,6 +205,7 @@ public class MockParseService implements IParseService {
                         return v;
                     }
                 };
+        tagHistoryPerStore.registerDataSetObserver(dataChangedObserver);
         return tagHistoryPerStore;
     }
 
@@ -646,18 +648,36 @@ public class MockParseService implements IParseService {
     }
 
     @Override
-    public BaseAdapter getTopAdapter(final Context context, DataSetObserver dataChangedObserver) {
-        return null;
+    public void getTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        for (int i = 0; i < SNAGS_PER_STORE; i++) {
+            TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+            mockItems.add(item);
+        }
+
+        callback.onSuccess(mockItems);
     }
 
     @Override
-    public BaseAdapter getBottomAdapter(final Context context, DataSetObserver dataChangedObserver) {
-        return null;
+    public void getBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        for (int i = 0; i < SNAGS_PER_STORE; i++) {
+            TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+            mockItems.add(item);
+        }
+
+        callback.onSuccess(mockItems);
     }
 
     @Override
-    public BaseAdapter getShoeAdapter(final Context context, DataSetObserver dataChangedObserver) {
-        return null;
+    public void getShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        for (int i = 0; i < SNAGS_PER_STORE; i++) {
+            TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+            mockItems.add(item);
+        }
+        callback.onSuccess(mockItems);
+
     }
 
 }

@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/button_new"
             android:layout_alignParentBottom="true"
@@ -15,7 +17,8 @@
             android:text="Add New Outfit"
             android:padding="12dp"
             android:gravity="center"
-            android:background="#0BB5FF"/>
+            android:background="#0BB5FF" />
+
         <GridView
             android:id="@+id/grid_outfit"
             android:layout_above="@id/button_new"
@@ -25,18 +28,19 @@
             android:background="#cccc"
             android:horizontalSpacing="2dp"
             android:verticalSpacing="2dp"
-            android:padding="2dp">
-        </GridView>
+            android:padding="2dp"></GridView>
     </RelativeLayout>
+
     <RelativeLayout
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff">
+
         <EditText
             android:id="@+id/input_outfit_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
         <!--TODO: Add outfit details here.-->
         <LinearLayout
             android:orientation="horizontal"
@@ -46,30 +50,59 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
+            <com.snagtag.ui.IconCustomTextView
                 android:id="@+id/button_cart"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@drawable/circle_grey"/>
-            <ImageView
+                android:text="@string/icon_cart"
+                android:textColor="#ffff"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:background="@drawable/circle_button" />
+            <com.snagtag.ui.IconCustomTextView
                 android:id="@+id/button_snag"
                 android:layout_margin="12dp"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@drawable/circle_blue_button"/>
-            <ImageView
+                android:text="@string/icon_check"
+                android:textColor="#ffff"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/circle_button" />
+            <com.snagtag.ui.IconCustomTextView
                 android:id="@+id/button_closet"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@drawable/circle_grey"/>
+                android:text="@string/icon_closet"
+                android:textColor="#ffff"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/circle_button" />
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/input_outfit_name"
             android:layout_above="@id/button_view">
-            <!--Clothing layouts here.-->
-        </LinearLayout>
+            <com.parse.ParseImageView
+                android:id="@+id/image_top_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <com.parse.ParseImageView
+                android:id="@+id/image_bottom_selected"
+                android:layout_toRightOf="@id/image_top_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <com.parse.ParseImageView
+                android:id="@+id/image_shoe_selected"
+                android:layout_below="@id/image_top_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </RelativeLayout>
+
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/outfit_select_view"
@@ -77,6 +110,7 @@
             android:layout_alignParentBottom="true"
 
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:id="@+id/bottom_slider"
@@ -85,13 +119,14 @@
                 android:background="#d7d7d7"
                 android:gravity="center"
                 android:layout_alignParentBottom="true">
+
                 <com.snagtag.ui.IconCustomTextView
                     android:id="@+id/selector_chevron"
                     android:textSize="24sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/icon_down"
-                    android:rotation="180"/>
+                    android:rotation="180" />
             </LinearLayout>
             <!--This will animate in when bottom_slider is pressed-->
             <LinearLayout
@@ -102,199 +137,81 @@
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:background="#d7d7d7">
-                    <com.snagtag.scroll.CenteringHorizontalScrollView
-                        android:id="@+id/tops_scroll_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="98dp"
-                        android:scrollbars="none"
-                        android:background="#ffffff">
-                        <LinearLayout
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <com.snagtag.scroll.CenteringHorizontalScrollView
+                            android:id="@+id/tops_scroll_view"
                             android:layout_width="wrap_content"
                             android:layout_height="98dp"
+                            android:scrollbars="none"
                             android:background="#ffffff">
-                            <!--Dummy views for testing-->
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 1"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 2"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 3"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 4"/>
-                            <TextView
-                                android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Top 5"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 6"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 7"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 8"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 9"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="150dp"
-                                android:layout_height="fill_parent"
-                                android:text="Top 10"/>
-                        </LinearLayout>
-                    </com.snagtag.scroll.CenteringHorizontalScrollView>
-                <com.snagtag.scroll.CenteringHorizontalScrollView
-                    android:id="@+id/bottoms_scroll_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="98dp"
-                    android:scrollbars="none"
-                    android:layout_marginTop="2dp"
-                    android:background="#ffffff">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="98dp"
-                        android:background="#ffffff">
-                        <!--Dummy views for testing-->
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 1"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 2"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 3"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 4"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 5"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 6"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 7"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 8"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 9"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Bottom 10"/>
-                    </LinearLayout>
-                </com.snagtag.scroll.CenteringHorizontalScrollView>
 
-                <com.snagtag.scroll.CenteringHorizontalScrollView
-                    android:id="@+id/shoes_scroll_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="98dp"
-                    android:scrollbars="none"
-                    android:layout_marginTop="2dp"
-                    android:background="#ffffff">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="98dp"
-                        android:background="#ffffff">
-                        <!--Dummy views for testing-->
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 1"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 2"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 3"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 4"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 5"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 6"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 7"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 8"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 9"/>
-                        <TextView
-                            android:gravity="center"
-                            android:layout_width="150dp"
-                            android:layout_height="fill_parent"
-                            android:text="Shoe 10"/>
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:id="@+id/tops_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="98dp"
+                                android:background="#ffffff">
+
+                            </LinearLayout>
+                        </com.snagtag.scroll.CenteringHorizontalScrollView>
+
+                        <com.snagtag.scroll.CenteringHorizontalScrollView
+                            android:id="@+id/bottoms_scroll_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="98dp"
+                            android:scrollbars="none"
+                            android:layout_marginTop="2dp"
+                            android:background="#ffffff">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:id="@+id/bottoms_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="98dp"
+                                android:background="#ffffff">
+
+                            </LinearLayout>
+                        </com.snagtag.scroll.CenteringHorizontalScrollView>
+
+                        <com.snagtag.scroll.CenteringHorizontalScrollView
+                            android:id="@+id/shoes_scroll_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="98dp"
+                            android:scrollbars="none"
+                            android:layout_marginTop="2dp"
+                            android:background="#ffffff">
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:id="@+id/shoes_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="98dp"
+                                android:background="#ffffff">
+
+                            </LinearLayout>
+                        </com.snagtag.scroll.CenteringHorizontalScrollView>
                     </LinearLayout>
-                </com.snagtag.scroll.CenteringHorizontalScrollView>
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/creator_gradient_left">
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/creator_gradient_right">
+
+                    </LinearLayout>
+                </RelativeLayout>
+           </LinearLayout>
         </LinearLayout>
 
         <!--This is the popup overlay-->
@@ -306,45 +223,52 @@
             android:layout_marginTop="100dp"
             android:visibility="gone"
             tools:visibility="visible">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#ffffff"
                 android:alpha=".8"></LinearLayout>
+
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_grey"
                 android:alpha=".8"></LinearLayout>
+
             <TextView
                 android:id="@+id/item_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="12dp"
-                tools:text="Gap"/>
+                tools:text="Gap" />
+
             <TextView
                 android:id="@+id/item_description"
                 android:layout_below="@id/item_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                tools:text="Brand Striped Boatneck"/>
+                tools:text="Brand Striped Boatneck" />
+
             <TextView
                 android:id="@+id/item_size"
                 android:layout_below="@id/item_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                tools:text="Color: Red"/>
+                tools:text="Color: Red" />
+
             <TextView
                 android:id="@+id/item_color"
                 android:layout_below="@id/item_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                tools:text="Size: M"/>
+                tools:text="Size: M" />
+
             <TextView
                 android:id="@+id/item_cost"
                 android:layout_below="@id/item_color"
@@ -352,7 +276,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="#00CCFF"
                 android:layout_marginLeft="12dp"
-                tools:text="$55.00"/>
+                tools:text="$55.00" />
+
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
@@ -360,7 +285,7 @@
                 android:layout_alignParentRight="true"
                 android:background="@drawable/circle_grey"
                 android:layout_marginRight="12dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp" />
         </RelativeLayout>
     </RelativeLayout>
 </ViewFlipper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Special view to hold the 'first' and 'last' elements in the list
+so that a user can scroll the first and last clothing item to 'center'
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="150dp"
+    android:background="#ffff"
+    android:layout_height="match_parent"
+    android:paddingLeft="75dp"
+    android:paddingRight="75dp"
+    android:layout_gravity="center">
+
+</LinearLayout>
