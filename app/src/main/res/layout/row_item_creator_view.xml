@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="150dp"
+    android:layout_width="@dimen/item_selector_width"
     android:background="#ffff"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
@@ -18,14 +18,14 @@
         tools:src="@drawable/ic_launcher"/>
     <TextView
         android:id="@+id/item_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="25dp"
         android:layout_gravity="center"
         android:gravity="center"
         tools:text="10/365"
         android:textColor="#ffff"
         android:padding="6dp"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/circle_grey"/>

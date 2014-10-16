@@ -39,9 +39,10 @@
 
         <EditText
             android:id="@+id/input_outfit_name"
+            android:hint="Outfit name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <!--TODO: Add outfit details here.-->
+
         <LinearLayout
             android:orientation="horizontal"
             android:id="@+id/button_view"
@@ -69,40 +70,74 @@
                 android:textSize="20sp"
                 android:gravity="center"
                 android:background="@drawable/circle_button" />
-            <com.snagtag.ui.IconCustomTextView
-                android:id="@+id/button_closet"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:text="@string/icon_closet"
-                android:textColor="#ffff"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:background="@drawable/circle_button" />
+
         </LinearLayout>
-        <RelativeLayout
+        <LinearLayout
+            android:layout_below="@id/input_outfit_name"
+            android:layout_above="@id/button_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/input_outfit_name"
-            android:layout_above="@id/button_view">
-            <com.parse.ParseImageView
-                android:id="@+id/image_top_selected"
+            android:layout_gravity="center">
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <com.parse.ParseImageView
-                android:id="@+id/image_bottom_selected"
-                android:layout_toRightOf="@id/image_top_selected"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <com.parse.ParseImageView
-                android:id="@+id/image_shoe_selected"
-                android:layout_below="@id/image_top_selected"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-        </RelativeLayout>
-
+                android:layout_height="match_parent"
+                >
+                <com.parse.ParseImageView
+                    android:id="@+id/image_top_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="25dp"
+                    />
+                <com.snagtag.ui.IconCustomTextView
+                    android:id="@+id/snag_indicator_top"
+                    android:layout_width="45dp"
+                    android:layout_below="@id/image_top_selected"
+                    android:layout_toRightOf="@id/image_top_selected"
+                    android:layout_marginLeft="-25dp"
+                    android:layout_marginRight="-25dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/icon_tag"/>
+                <com.parse.ParseImageView
+                    android:id="@+id/image_bottom_selected"
+                    android:layout_toRightOf="@id/image_top_selected"
+                    android:layout_toEndOf="@id/image_top_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    />
+                <com.snagtag.ui.IconCustomTextView
+                    android:id="@+id/snag_indicator_bottom"
+                    android:layout_width="45dp"
+                    android:layout_below="@id/image_bottom_selected"
+                    android:layout_toRightOf="@id/image_bottom_selected"
+                    android:layout_marginLeft="-25dp"
+                    android:layout_marginRight="-25dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/icon_tag"/>
+                <com.parse.ParseImageView
+                    android:id="@+id/image_shoe_selected"
+                    android:layout_below="@id/image_top_selected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    />
+                <com.snagtag.ui.IconCustomTextView
+                    android:id="@+id/snag_indicator_shoes"
+                    android:layout_width="45dp"
+                    android:layout_below="@id/image_shoe_selected"
+                    android:layout_toRightOf="@id/image_shoe_selected"
+                    android:layout_marginLeft="-25dp"
+                    android:layout_marginRight="-25dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/icon_tag"/>
+            </RelativeLayout>
+        </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/outfit_select_view"
@@ -133,7 +168,7 @@
                 android:orientation="vertical"
                 android:id="@+id/outfit_select_slider"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="@dimen/creator_bottom_drawer_height"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:background="#d7d7d7">
@@ -147,7 +182,7 @@
                         <com.snagtag.scroll.CenteringHorizontalScrollView
                             android:id="@+id/tops_scroll_view"
                             android:layout_width="wrap_content"
-                            android:layout_height="98dp"
+                            android:layout_height="@dimen/creator_selector_height"
                             android:scrollbars="none"
                             android:background="#ffffff">
 
@@ -155,7 +190,7 @@
                                 android:orientation="horizontal"
                                 android:id="@+id/tops_view"
                                 android:layout_width="wrap_content"
-                                android:layout_height="98dp"
+                                android:layout_height="@dimen/creator_selector_height"
                                 android:background="#ffffff">
 
                             </LinearLayout>
@@ -164,7 +199,7 @@
                         <com.snagtag.scroll.CenteringHorizontalScrollView
                             android:id="@+id/bottoms_scroll_view"
                             android:layout_width="wrap_content"
-                            android:layout_height="98dp"
+                            android:layout_height="@dimen/creator_selector_height"
                             android:scrollbars="none"
                             android:layout_marginTop="2dp"
                             android:background="#ffffff">
@@ -173,7 +208,7 @@
                                 android:orientation="horizontal"
                                 android:id="@+id/bottoms_view"
                                 android:layout_width="wrap_content"
-                                android:layout_height="98dp"
+                                android:layout_height="@dimen/creator_selector_height"
                                 android:background="#ffffff">
 
                             </LinearLayout>
@@ -182,7 +217,7 @@
                         <com.snagtag.scroll.CenteringHorizontalScrollView
                             android:id="@+id/shoes_scroll_view"
                             android:layout_width="wrap_content"
-                            android:layout_height="98dp"
+                            android:layout_height="@dimen/creator_selector_height"
                             android:scrollbars="none"
                             android:layout_marginTop="2dp"
                             android:background="#ffffff">
@@ -191,7 +226,7 @@
                                 android:orientation="horizontal"
                                 android:id="@+id/shoes_view"
                                 android:layout_width="wrap_content"
-                                android:layout_height="98dp"
+                                android:layout_height="@dimen/creator_selector_height"
                                 android:background="#ffffff">
 
                             </LinearLayout>
@@ -217,6 +252,7 @@
         <!--This is the popup overlay-->
 
         <RelativeLayout
+            android:id="@+id/item_detail_popup"
             android:layout_width="220dp"
             android:layout_height="140dp"
             android:layout_centerHorizontal="true"
@@ -228,14 +264,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#ffffff"
-                android:alpha=".8"></LinearLayout>
+
+                android:alpha=".9"></LinearLayout>
 
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_grey"
-                android:alpha=".8"></LinearLayout>
+                android:background="@drawable/detail_popup"
+                ></LinearLayout>
 
             <TextView
                 android:id="@+id/item_store"
@@ -278,12 +315,17 @@
                 android:layout_marginLeft="12dp"
                 tools:text="$55.00" />
 
-            <ImageView
+            <com.snagtag.ui.IconCustomTextView
+                android:id="@+id/button_add_item"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
+                android:textColor="#ffff"
+                android:textSize="24sp"
+                android:text="@string/icon_cart"
+                android:gravity="center"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/circle_grey"
+                android:background="@drawable/circle_button"
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="12dp" />
         </RelativeLayout>

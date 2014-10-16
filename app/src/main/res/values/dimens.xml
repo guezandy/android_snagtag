@@ -8,4 +8,7 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="tag_drawer_width">320dp</dimen>
     <dimen name="outfit_selector_height">320dp</dimen>
+    <dimen name="creator_selector_height">103dp</dimen>
+    <dimen name="creator_bottom_drawer_height">310dp</dimen>
+    <dimen name="item_selector_width">150dp</dimen>
 </resources>

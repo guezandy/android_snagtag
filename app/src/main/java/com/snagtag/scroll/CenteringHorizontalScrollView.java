@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
 import com.parse.ParseImageView;
+import com.snagtag.R;
 
 /**
  * Horizontal Scroll View that will center on the most visible element.
@@ -31,7 +32,7 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
     private int mNewCheck = 100;
     private static final String TAG = "CenteringHorizontalScrollView";
     private DisplayMetrics mMetrics;
-    private int mItemWidthInDip = 150;
+    private float mItemWidth = -1;
 
     private OnScrollStoppedListener onScrollStoppedListener;
 
@@ -44,6 +45,7 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
 
     public CenteringHorizontalScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mItemWidth = (int)getResources().getDimension(R.dimen.item_selector_width);
         this.mContext = context;
         this.mMetrics = context.getResources().getDisplayMetrics();
         this.setOnTouchListener(new OnTouchListener() {
@@ -102,8 +104,8 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
         ViewGroup parent = (ViewGroup) getChildAt(0);
 
         float x = getScrollX();
-        float widthInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mItemWidthInDip, mMetrics);
-        float offset = x == 0 ? 1 : (x/widthInPx)+((screenWidth/2)/widthInPx);
+        //float widthInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mItemWidthInDip, mMetrics);
+        float offset = x == 0 ? 1 : (x/mItemWidth)+((screenWidth/2)/mItemWidth);
 
         Log.d("OFFSET", ""+((int)offset));
 

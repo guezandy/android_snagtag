@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.parse.ParseQueryAdapter;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.service.IParseCallback;
@@ -31,15 +32,13 @@ public class CartFragment extends Fragment {
     private ViewFlipper mView;
     private LinearLayout storeListLayout;
     private IParseService mParseService;
-    private ArrayAdapter<CartItem> cartItemArrayAdapter;
+    private ParseQueryAdapter<CartItem> cartItemAdapter;
     private String selectedStore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
 
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,12 +93,12 @@ public class CartFragment extends Fragment {
                                         detailLayout.setVisibility(View.GONE);
                                         openIndicator.setRotation(0);
                                         double total = 0.0;
-                                        for(int i = 0 ; i < cartItemArrayAdapter.getCount(); i++) {
-                                            CartItem item = cartItemArrayAdapter.getItem(i);
+                                        for(int i = 0 ; i < cartItemAdapter.getCount(); i++) {
+                                            CartItem item = cartItemAdapter.getItem(i);
                                             total = total + item.getItem().getPrice();
                                         }
                                         totalView.setText(""+total);
-                                        countView.setText((""+cartItemArrayAdapter.getCount()));
+                                        countView.setText((""+ cartItemAdapter.getCount()));
                                         totalView.setVisibility(View.VISIBLE);
                                         countView.setVisibility(View.VISIBLE);
                                         itemGrid.removeAllViews();
@@ -119,10 +118,10 @@ public class CartFragment extends Fragment {
                                 detailLayout.setVisibility(View.VISIBLE);
                                 openIndicator.setRotation(180);
                                 CartItemsObserver caObserver = new CartItemsObserver(null,itemGrid, countView, totalView);
-                                cartItemArrayAdapter = (ArrayAdapter<CartItem>)mParseService.getCartItemAdapter(getActivity().getApplicationContext(), storeName, caObserver);
-                                caObserver.setItemsAdapter(cartItemArrayAdapter);
+                                cartItemAdapter = (ParseQueryAdapter<CartItem>)mParseService.CartAdapter(getActivity().getApplicationContext(), storeName, caObserver);
+                                caObserver.setItemsAdapter(cartItemAdapter);
                                 LinearLayout currentRow = null;
-                                for(int i = 0 ; i < cartItemArrayAdapter.getCount(); i++) {
+                                for(int i = 0 ; i < cartItemAdapter.getCount(); i++) {
 
                                     if(i%2 == 0) {
                                         currentRow = new LinearLayout(getActivity());
@@ -131,7 +130,7 @@ public class CartFragment extends Fragment {
                                         currentRow.setPadding(4,2,4,2);
                                         itemGrid.addView(currentRow);
                                     }
-                                    View v = cartItemArrayAdapter.getView(i, null, currentRow);
+                                    View v = cartItemAdapter.getView(i, null, currentRow);
                                     // Get params:
                                     LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
                                     if(loparams==null) {
@@ -178,17 +177,17 @@ public class CartFragment extends Fragment {
 
     class CartItemsObserver extends DataSetObserver {
 
-        private ArrayAdapter<CartItem>itemsAdapter;
+        private ParseQueryAdapter<CartItem>itemsAdapter;
         private TextView itemsView, totalView;
         private LinearLayout grid;
-        public CartItemsObserver(ArrayAdapter<CartItem> itemsAdapter, LinearLayout grid, TextView itemsView, TextView totalView) {
+        public CartItemsObserver(ParseQueryAdapter<CartItem> itemsAdapter, LinearLayout grid, TextView itemsView, TextView totalView) {
             this.itemsAdapter = itemsAdapter;
             this.totalView = totalView;
             this.itemsView = itemsView;
             this.grid = grid;
         }
 
-        public void setItemsAdapter(ArrayAdapter<CartItem> items) {
+        public void setItemsAdapter(ParseQueryAdapter<CartItem> items) {
             this.itemsAdapter = items;
         }
 
@@ -206,7 +205,7 @@ public class CartFragment extends Fragment {
                 }
 
 
-                currentRow.addView(cartItemArrayAdapter.getView(i, null, currentRow));
+                currentRow.addView(cartItemAdapter.getView(i, null, currentRow));
             }
             totalView.setText(""+total);
             itemsView.setText((""+itemsAdapter.getCount()));

@@ -1,17 +1,16 @@
 package com.snagtag.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseRelation;
@@ -34,8 +32,6 @@ import com.snagtag.models.TagHistoryItem;
 import java.io.ByteArrayOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -68,13 +64,13 @@ public class MockParseService implements IParseService {
 
         query.findInBackground(new FindCallback<TagHistoryItem>() {
             @Override
-            public void done (List<TagHistoryItem> snags, ParseException e) {
+            public void done(List<TagHistoryItem> snags, ParseException e) {
                 if (e != null) {
                     // There was an error
                 } else {
                     // snags have all the Clothing the current user tagged.
-                    for(TagHistoryItem snag : snags) {
-                        Log.i(TAG, "query got: "+ snag.getStore());
+                    for (TagHistoryItem snag : snags) {
+                        Log.i(TAG, "query got: " + snag.getStore());
                         set.add(snag.getStore().toString());
                     }
                     list.addAll(set);
@@ -82,7 +78,7 @@ public class MockParseService implements IParseService {
             }
         });
         //List<String> list = Arrays.asList(set.toArray(new String[0]));
-        Log.i(TAG, "Printing set: "+ set.toString());
+        Log.i(TAG, "Printing set: " + set.toString());
         //list.addAll(set);
         list.add("Gap");
         list.add("Men's Warehouse");
@@ -127,84 +123,85 @@ public class MockParseService implements IParseService {
                 };
         //setup query adapter
         final ParseQueryAdapter<TagHistoryItem> tagHistoryPerStore;
-        tagHistoryPerStore =  new ParseQueryAdapter<TagHistoryItem>(context, factory) {
+        tagHistoryPerStore = new ParseQueryAdapter<TagHistoryItem>(context, factory) {
             final ParseQueryAdapter<TagHistoryItem> me = this;
-                @Override
-                    public View getItemView(final TagHistoryItem item, View v, ViewGroup parent) {
-                        if (v == null) {
-                            v = View.inflate(getContext(), R.layout.row_item_clothing_view, null);
-                        }
-                        TextView description = (TextView) v.findViewById(R.id.item_description);
-                        description.setText(item.getDescription() + counter++);
 
-                        com.snagtag.ui.IconCustomTextView delete = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.delete_item);
-                        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public View getItemView(final TagHistoryItem item, View v, ViewGroup parent) {
+                if (v == null) {
+                    v = View.inflate(getContext(), R.layout.row_item_clothing_view, null);
+                }
+                TextView description = (TextView) v.findViewById(R.id.item_description);
+                description.setText(item.getDescription() + counter++);
+
+                com.snagtag.ui.IconCustomTextView delete = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.delete_item);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // delete From Tag History
+                        item.setVisible(false);
+                        item.saveInBackground(new SaveCallback() {
                             @Override
-                            public void onClick(View v) {
-                                // delete From Tag History
-                                item.setVisible(false);
-                                item.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                       me.notifyDataSetChanged();
-                                    }
-                                });
-
-                                //TODO: unpin all items with false as visibility we don't need to store them locally
+                            public void done(ParseException e) {
+                                me.notifyDataSetChanged();
                             }
                         });
 
-                        ParseImageView itemImage = (ParseImageView) v.findViewById(R.id.item_image);
-                        ParseFile photoFile = item.getImage();
-                        if (photoFile != null) {
-                            itemImage.setParseFile(photoFile);
-                            itemImage.loadInBackground(new GetDataCallback() {
+                        //TODO: unpin all items with false as visibility we don't need to store them locally
+                    }
+                });
+
+                ParseImageView itemImage = (ParseImageView) v.findViewById(R.id.item_image);
+                ParseFile photoFile = item.getImage();
+                if (photoFile != null) {
+                    itemImage.setParseFile(photoFile);
+                    itemImage.loadInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] data, ParseException e) {
+                            // nothing to do
+                            Log.i(TAG, "Image uploaded: " + item.getStore() + " , " + item.getDescription());
+                        }
+                    });
+                }
+
+                TextView color = (TextView) v.findViewById(R.id.item_color);
+                color.setText("");
+
+                TextView size = (TextView) v.findViewById(R.id.item_size);
+                size.setText("");
+
+                TextView cost = (TextView) v.findViewById(R.id.item_cost);
+                cost.setText(String.valueOf(item.getPrice()));
+//TODO: Reload the list after each one of these is pressed.
+                com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
+                if (item.getInCart()) {
+                    cart.setEnabled(false);
+                }
+                cart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!item.getInCart()) {
+                            //add item to cart
+                            CartItem cartItem = new CartItem(item);
+                            cartItem.saveInBackground();
+                            item.setInCart(true);
+                            item.saveInBackground(new SaveCallback() {
                                 @Override
-                                public void done(byte[] data, ParseException e) {
-                                    // nothing to do
-                                    Log.i(TAG, "Image uploaded: " + item.getStore() + " , " + item.getDescription());
+                                public void done(ParseException e) {
+                                    me.notifyDataSetChanged();
                                 }
                             });
+
+                        } else {
+                            Toast.makeText(v.getContext(), item.getDescription() + " is already in cart.", Toast.LENGTH_SHORT).show();
                         }
 
-                        TextView color = (TextView) v.findViewById(R.id.item_color);
-                        color.setText("");
-
-                        TextView size = (TextView) v.findViewById(R.id.item_size);
-                        size.setText("");
-
-                        TextView cost = (TextView) v.findViewById(R.id.item_cost);
-                        cost.setText(String.valueOf(item.getPrice()));
-//TODO: Reload the list after each one of these is pressed.
-                        com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
-                        if(item.getInCart()) {
-                            cart.setEnabled(false);
-                        }
-                        cart.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(!item.getInCart()) {
-                                    //add item to cart
-                                    CartItem cartItem = new CartItem(item);
-                                    cartItem.saveInBackground();
-                                    item.setInCart(true);
-                                    item.saveInBackground(new SaveCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-                                            me.notifyDataSetChanged();
-                                        }
-                                    });
-
-                                } else {
-                                    Toast.makeText(v.getContext(), item.getDescription() + " is already in cart.", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
-
-                        return v;
                     }
-                };
+                });
+
+                return v;
+            }
+        };
         tagHistoryPerStore.registerDataSetObserver(dataChangedObserver);
         return tagHistoryPerStore;
     }
@@ -240,7 +237,7 @@ public class MockParseService implements IParseService {
                 };
         //setup query adapter
         ParseQueryAdapter<TagHistoryItem> UserCartPerStore;
-        UserCartPerStore =  new ParseQueryAdapter<TagHistoryItem>(context, factory) {
+        UserCartPerStore = new ParseQueryAdapter<TagHistoryItem>(context, factory) {
             @Override
             public View getItemView(final TagHistoryItem item, View v, ViewGroup parent) {
                 if (v == null) {
@@ -285,19 +282,15 @@ public class MockParseService implements IParseService {
 //TODO: Reload the list after each one of these is pressed.
 
 
-
                 com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
                 cart.setVisibility(View.GONE);
-                if(item.getInCart()) {
-                    //cart.setImageResource(R.drawable.circle_blue_button);
-                } else {
-                    //cart.setImageResource(R.drawable.circle_grey);
+                if (!item.getInCart()) {
                     cart.setEnabled(false);
                 }
                 cart.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!item.getInCart()) {
+                        if (!item.getInCart()) {
                             //add item to cart
                             CartItem cartItem = new CartItem(item);
                             cartItem.saveInBackground();
@@ -374,7 +367,7 @@ public class MockParseService implements IParseService {
         item.setInCart(i % 3 == 0);
         item.setInCloset(i % 2 == 0);
         item.setPrice(i + 1.00);
-        item.setStore(store==null?"":store);
+        item.setStore(store == null ? "" : store);
         item.setVisible(i % 4 == 0);
         item.setImage(new ParseFile("item " + i, bitmapdata));
         return item;
@@ -406,42 +399,42 @@ public class MockParseService implements IParseService {
 
         //Creating and returning an abstract inner class.
         ArrayAdapter<CartItem> cartItemAdapter =
-         new ArrayAdapter<CartItem>(context, R.layout.row_item_snag_view) {
-            @Override
-            public int getCount() {
-                return CART_ITEMS;
-            }
+                new ArrayAdapter<CartItem>(context, R.layout.row_item_snag_view) {
+                    @Override
+                    public int getCount() {
+                        return CART_ITEMS;
+                    }
 
-            @Override
-            public CartItem getItem(int position) {
-                return mockCartItems.get(position);
-            }
+                    @Override
+                    public CartItem getItem(int position) {
+                        return mockCartItems.get(position);
+                    }
 
 
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
+                    @Override
+                    public long getItemId(int position) {
+                        return position;
+                    }
 
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
 
-                if (convertView != null) {
-                    RowItemClothingViewHolder holder = (RowItemClothingViewHolder) convertView.getTag();
-                    holder.setItem(mockCartItems.get(position).getItem());
-                } else {
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    convertView = inflater.inflate(R.layout.row_item_clothing_view, null);
-                    RowItemClothingViewHolder holder = new RowItemClothingViewHolder(convertView, mockCartItems.get(position).getItem());
-                    convertView.findViewById(R.id.item_color).setVisibility(View.GONE);
-                    convertView.findViewById(R.id.item_size).setVisibility(View.GONE);
-                    convertView.findViewById(R.id.item_cart).setVisibility(View.GONE);
+                        if (convertView != null) {
+                            RowItemClothingViewHolder holder = (RowItemClothingViewHolder) convertView.getTag();
+                            holder.setItem(mockCartItems.get(position).getItem());
+                        } else {
+                            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            convertView = inflater.inflate(R.layout.row_item_clothing_view, null);
+                            RowItemClothingViewHolder holder = new RowItemClothingViewHolder(convertView, mockCartItems.get(position).getItem());
+                            convertView.findViewById(R.id.item_color).setVisibility(View.GONE);
+                            convertView.findViewById(R.id.item_size).setVisibility(View.GONE);
+                            convertView.findViewById(R.id.item_cart).setVisibility(View.GONE);
 
-                    convertView.setTag(holder);
-                }
-                return convertView;
-            }
-        };
+                            convertView.setTag(holder);
+                        }
+                        return convertView;
+                    }
+                };
         if (dataChangedObserver != null) {
             cartItemAdapter.registerDataSetObserver(dataChangedObserver);
         }
@@ -560,10 +553,10 @@ public class MockParseService implements IParseService {
 
         public OutfitItemClothingHolder(View rootView, OutfitItem item) {
             this.rootView = rootView;
-            this.topImage = (ParseImageView)rootView.findViewById(R.id.image_top);
-            this.bottomImage = (ParseImageView)rootView.findViewById(R.id.image_bottom);
-            this.shoesImage = (ParseImageView)rootView.findViewById(R.id.image_shoes);
-            this.outfitName = (TextView)rootView.findViewById(R.id.text_outfit_name);
+            this.topImage = (ParseImageView) rootView.findViewById(R.id.image_top);
+            this.bottomImage = (ParseImageView) rootView.findViewById(R.id.image_bottom);
+            this.shoesImage = (ParseImageView) rootView.findViewById(R.id.image_shoes);
+            this.outfitName = (TextView) rootView.findViewById(R.id.text_outfit_name);
             setItem(item);
         }
 
@@ -580,36 +573,16 @@ public class MockParseService implements IParseService {
     }
 
     @Override
-    public BaseAdapter getOutfitItemAdapter(final Context context, String store, DataSetObserver dataChangedObserver) {
+    public BaseAdapter getOutfitItemAdapter(final Context context, final String store, final DataSetObserver dataChangedObserver) {
+        //Changing this to get the list on a background thread so the UI works smoother.
         final List<OutfitItem> mockOutfitItems = new ArrayList<OutfitItem>();
 
-        for (int i = 0; i < OUTFIT_ITEMS; i++) {
-            OutfitItem item = new OutfitItem();
-            TagHistoryItem top = buildDummyTagHistoryItem(store, i, context);
-            TagHistoryItem bottom = buildDummyTagHistoryItem(store, i, context);
-            TagHistoryItem shoes = buildDummyTagHistoryItem(store, i, context);
-
-            item.setBottomImage(bottom);
-            item.setBottomInCloset(bottom);
-            item.setBottomRelation(bottom);
-            item.setOutfitTitle("Outfit " + i);
-            item.setOwnEntireOutfit();
-            item.setShoesImage(shoes);
-            item.setShoesInCloset(shoes);
-            item.setShoesRelation(shoes);
-            item.setTopImage(top);
-            item.setTopInCloset(top);
-            item.setTopRelation(top);
-
-            mockOutfitItems.add(item);
-        }
-
         //Creating and returning an abstract inner class.
-        ArrayAdapter<OutfitItem> outfitItemArrayAdapter =
+        final ArrayAdapter<OutfitItem> outfitItemArrayAdapter =
                 new ArrayAdapter<OutfitItem>(context, R.layout.row_item_outfit_view) {
                     @Override
                     public int getCount() {
-                        return OUTFIT_ITEMS;
+                        return mockOutfitItems.size();
                     }
 
                     @Override
@@ -640,6 +613,42 @@ public class MockParseService implements IParseService {
                         return convertView;
                     }
                 };
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                for (int i = 0; i < OUTFIT_ITEMS; i++) {
+                    OutfitItem item = new OutfitItem();
+                    TagHistoryItem top = buildDummyTagHistoryItem(store, i, context);
+                    TagHistoryItem bottom = buildDummyTagHistoryItem(store, i, context);
+                    TagHistoryItem shoes = buildDummyTagHistoryItem(store, i, context);
+
+                    item.setBottomImage(bottom);
+                    item.setBottomInCloset(bottom);
+                    item.setBottomRelation(bottom);
+                    item.setOutfitTitle("Outfit " + i);
+                    item.setOwnEntireOutfit();
+                    item.setShoesImage(shoes);
+                    item.setShoesInCloset(shoes);
+                    item.setShoesRelation(shoes);
+                    item.setTopImage(top);
+                    item.setTopInCloset(top);
+                    item.setTopRelation(top);
+
+                    mockOutfitItems.add(item);
+                }
+                ((Activity)context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        outfitItemArrayAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        t.start();
+
+
         if (dataChangedObserver != null) {
             outfitItemArrayAdapter.registerDataSetObserver(dataChangedObserver);
         }
@@ -650,33 +659,56 @@ public class MockParseService implements IParseService {
     @Override
     public void getTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
         final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
-        for (int i = 0; i < SNAGS_PER_STORE; i++) {
-            TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-            mockItems.add(item);
-        }
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+                    mockItems.add(item);
+                }
 
-        callback.onSuccess(mockItems);
+                callback.onSuccess(mockItems);
+            }
+        });
+        t.start();
+
+
     }
 
     @Override
     public void getBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
         final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
-        for (int i = 0; i < SNAGS_PER_STORE; i++) {
-            TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-            mockItems.add(item);
-        }
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+                    mockItems.add(item);
+                }
 
-        callback.onSuccess(mockItems);
+                callback.onSuccess(mockItems);
+            }
+        });
+        t.start();
     }
 
     @Override
     public void getShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
         final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
-        for (int i = 0; i < SNAGS_PER_STORE; i++) {
-            TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-            mockItems.add(item);
-        }
-        callback.onSuccess(mockItems);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+                    mockItems.add(item);
+                }
+                callback.onSuccess(mockItems);
+
+            }
+        });
+        t.start();
+
 
     }
 

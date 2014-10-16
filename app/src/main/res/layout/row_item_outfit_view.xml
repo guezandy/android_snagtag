@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:background="#ffff">
     <com.snagtag.ui.IconCustomTextView
+        android:id="@+id/button_remove"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
@@ -21,7 +22,10 @@
        android:id="@+id/image_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_below="@id/button_remove"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
         tools:src="@drawable/ic_launcher"/>
     <com.parse.ParseImageView
         android:id="@+id/image_shoes"
@@ -37,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/image_top"
         android:layout_toRightOf="@id/image_top"
-        android:layout_marginTop="25dp"
+        android:layout_below="@id/button_remove"
         tools:src="@drawable/ic_launcher"/>
     <TextView
         android:id="@+id/text_outfit_name"
@@ -46,5 +50,6 @@
         android:layout_height="wrap_content"
         tools:text="Outfit 1"
         android:layout_alignParentBottom="true"
-        android:layout_margin="25dp"/>
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="25dp"/>
 </RelativeLayout>
