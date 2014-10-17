@@ -335,7 +335,8 @@ public class CreatorFragment extends Fragment {
         mButtonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: grab selected items, add to Outfit and save....
+                //TODO: grab selected items, add to Outfit and save...
+
                 closeBottomSlider();
                 mCreatorView.setDisplayedChild(OUTFIT_LIST);
             }

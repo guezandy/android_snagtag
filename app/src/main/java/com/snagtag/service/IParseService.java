@@ -77,4 +77,25 @@ public interface IParseService {
      */
     public void getShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
 
+    /**
+     *
+     * @param context
+     * @param callback
+     */
+    public void getClosetTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
+
+    /**
+     *
+     * @param context
+     * @param callback
+     */
+    public void getClosetBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
+
+    /**
+     *
+     * @param context
+     * @param callback
+     */
+    public void getClosetShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback);
+
 }

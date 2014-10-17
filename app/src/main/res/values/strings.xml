@@ -44,6 +44,7 @@
     <string name="icon_add">&#xf067;</string>
     <string name="icon_check">&#xf00c;</string>
     <string name="icon_tag">&#xf02b;</string>
+    <string name="icon_reorder">&#xf07a; Reorder</string>
 
     <!--cart labels -->
     <string name="label_cart_items">%n Items</string>

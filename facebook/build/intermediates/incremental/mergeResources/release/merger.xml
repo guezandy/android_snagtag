@@ -4,6 +4,20 @@
     <dataSet config="20.0.0" >
         <source path="/Users/benjamin/androidstudio/android_snagtag/facebook/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/res" />
     </dataSet>
+    <dataSet config="0.1.2" >
+        <source path="/Users/benjamin/androidstudio/android_snagtag/facebook/build/intermediates/exploded-aar/org.lucasr.twowayview/twowayview/0.1.2/res" >
+            <file
+                path="/Users/benjamin/androidstudio/android_snagtag/facebook/build/intermediates/exploded-aar/org.lucasr.twowayview/twowayview/0.1.2/res/values/values.xml"
+                qualifiers="" >
+                <declare-styleable name="TwoWayView" >
+                    <attr name="android:orientation" />
+                    <attr name="android:choiceMode" />
+                    <attr name="android:listSelector" />
+                    <attr name="android:drawSelectorOnTop" />
+                </declare-styleable>
+            </file>
+        </source>
+    </dataSet>
     <dataSet config="main" >
         <source path="/Users/benjamin/androidstudio/android_snagtag/facebook/res" >
             <file

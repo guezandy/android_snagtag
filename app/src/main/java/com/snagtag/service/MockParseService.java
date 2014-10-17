@@ -638,7 +638,7 @@ public class MockParseService implements IParseService {
 
                     mockOutfitItems.add(item);
                 }
-                ((Activity)context).runOnUiThread(new Runnable() {
+                ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         outfitItemArrayAdapter.notifyDataSetChanged();
@@ -712,4 +712,54 @@ public class MockParseService implements IParseService {
 
     }
 
+    @Override
+    public void getClosetTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+                    mockItems.add(item);
+                }
+
+                callback.onSuccess(mockItems);
+            }
+        });
+        t.start();
+    }
+
+    @Override
+    public void getClosetBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+                    mockItems.add(item);
+                }
+
+                callback.onSuccess(mockItems);
+            }
+        });
+        t.start();
+    }
+
+    @Override
+    public void getClosetShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+                    mockItems.add(item);
+                }
+
+                callback.onSuccess(mockItems);
+            }
+        });
+        t.start();
+    }
 }

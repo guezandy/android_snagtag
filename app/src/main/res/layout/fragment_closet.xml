@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:weightSum="90">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Tops"
+            android:padding="12dp"
+            android:textSize="24sp"
+            android:background="#666666"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/scroll_tops"
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:background="#cccccc"
+            android:orientation="horizontal">
+        </android.support.v4.view.ViewPager>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Bottoms"
+            android:padding="12dp"
+            android:textSize="24sp"
+            android:background="#666666"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/scroll_bottoms"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#cccccc"
+            android:layout_weight="30">
+        </android.support.v4.view.ViewPager>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Shoes"
+            android:padding="12dp"
+            android:textSize="24sp"
+            android:background="#666666"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/scroll_shoes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#cccccc"
+            android:layout_weight="30">
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/header_filter"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:translationY="300dp"
+        android:background="#cccccc"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        >
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/filter_open_indicator"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:rotation="180"
+            android:text="@string/icon_down"/>
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="Filters"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <!--Filters....-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter 1"/>
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/item_detail_popup"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="32dp"
+        android:padding="4dp"
+        android:visibility="gone"
+        tools:visibility="gone"
+        android:layout_height="match_parent"
+        android:background="#cccccc">
+
+        <com.parse.ParseImageView
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            android:padding="12dp"
+            android:id="@+id/item_image"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/background"
+            android:background="#ffffff"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_alignStart="@id/background"
+            android:layout_alignLeft="@id/background"
+            android:layout_alignTop="@id/background"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:textSize="18sp"
+            tools:text="Brand Striped Boatneck Top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_color"
+            android:layout_below="@id/item_description"
+            android:layout_alignLeft="@id/background"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+
+            tools:text="Color: Red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_size"
+            android:layout_alignStart="@id/background"
+            android:layout_alignLeft="@id/background"
+            android:layout_below="@id/item_color"
+            android:layout_marginLeft="12dp"
+            tools:text="Size: M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_cost"
+            android:layout_alignStart="@id/background"
+            android:layout_alignLeft="@id/background"
+            android:layout_below="@id/item_size"
+            android:layout_marginLeft="12dp"
+            tools:text="$55.00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/item_history"
+            android:layout_alignStart="@id/background"
+            android:layout_alignLeft="@id/background"
+            android:layout_below="@id/item_cost"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            tools:text="Purchased from Gap on 09/04/14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/button_reorder"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:layout_margin="12dp"
+            android:text="@string/icon_reorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"/>
+    </RelativeLayout>
+</RelativeLayout>
