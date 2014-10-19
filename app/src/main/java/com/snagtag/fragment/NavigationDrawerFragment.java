@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -124,27 +125,27 @@ public class NavigationDrawerFragment extends Fragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = inflater.inflate(R.layout.navigation_item, null);
                 ((TextView)view.findViewById(R.id.title_navigation)).setText(getItem(position));
-                TextView icon = ((TextView)view.findViewById(R.id.icon_navigation));
+                ImageView icon = ((ImageView)view.findViewById(R.id.icon_navigation));
                 switch(position) {
                     case CART:
-                        icon.setText(getText(R.string.icon_cart));
+                        icon.setImageResource(R.drawable.cart);
                         break;
                     case OUTFIT_CREATOR:
-                        icon.setText(getText(R.string.icon_creator));
+                        icon.setImageResource(R.drawable.outfit);
                         break;
 
                     case CLOSET:
-                        icon.setText(getText(R.string.icon_closet));
+                        icon.setImageResource(R.drawable.closet);
                         break;
                     case STORES:
-                        icon.setText(getText(R.string.icon_store));
+                        icon.setImageResource(R.drawable.store);
                         break;
                     case ACCOUNT:
-                        icon.setText(getText(R.string.icon_account));
+                        icon.setImageResource(R.drawable.account);
                         break;
 
                     case TERMS:
-                        icon.setText(getText(R.string.icon_terms));
+                        icon.setImageResource(R.drawable.terms);
                         break;
 
                     default:

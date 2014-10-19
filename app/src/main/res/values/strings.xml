@@ -9,6 +9,7 @@
     <string name="title_section_account">Account</string>
     <string name="title_section_terms">Terms</string>
     <string name="title_snagtag">Snagtag</string>
+    <string name="title_tutorial">Tutorial</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>

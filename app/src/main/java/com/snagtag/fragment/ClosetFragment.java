@@ -8,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.parse.ParseImageView;
@@ -37,6 +39,7 @@ public class ClosetFragment extends Fragment {
     private View mButtonReorder;
     private View mHeaderFilter;
     private View mFilterOpenIndicator;
+    private View mFilterOptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class ClosetFragment extends Fragment {
         mButtonReorder = mView.findViewById(R.id.button_reorder);
         mHeaderFilter = mView.findViewById(R.id.header_filter);
         mFilterOpenIndicator = mView.findViewById(R.id.filter_open_indicator);
+        mFilterOptions = mView.findViewById(R.id.filter_options);
         setClickListeners();
 
         return mView;
@@ -81,7 +85,32 @@ public class ClosetFragment extends Fragment {
         mHeaderFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+               if(mFilterOptions.getVisibility()==View.GONE) {
+                   Animation animation = AnimationUtils.loadAnimation(ClosetFragment.this.getActivity(), R.anim.in_from_bottom);
+                   mFilterOptions.setVisibility(View.VISIBLE);
+                   mHeaderFilter.startAnimation(animation);
+                   mFilterOpenIndicator.setRotation(0);
+               } else {
+                   Animation animation = AnimationUtils.loadAnimation(ClosetFragment.this.getActivity(), R.anim.out_to_bottom);
+                   animation.setAnimationListener(new Animation.AnimationListener() {
+                       @Override
+                       public void onAnimationStart(Animation animation) {
+
+                       }
+
+                       @Override
+                       public void onAnimationEnd(Animation animation) {
+                           mFilterOptions.setVisibility(View.GONE);
+                           mFilterOpenIndicator.setRotation(180);
+                       }
+
+                       @Override
+                       public void onAnimationRepeat(Animation animation) {
+
+                       }
+                   });
+                   mHeaderFilter.startAnimation(animation);
+               }
             }
         });
     }

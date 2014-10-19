@@ -64,8 +64,8 @@
         android:id="@+id/header_filter"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
-        android:translationY="300dp"
+        android:layout_height="wrap_content"
+
         android:background="#cccccc"
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
@@ -85,9 +85,12 @@
             android:textColor="#ffffff"
             android:text="Filters"/>
         <LinearLayout
+            android:id="@+id/filter_options"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+
             >
             <!--Filters....-->
             <TextView

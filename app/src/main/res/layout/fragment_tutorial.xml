@@ -2,24 +2,93 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="100">
     <TextView
-        android:gravity="center"
+
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:text="Tutorial Placeholder...."
+        android:layout_height="0dp"
+        android:layout_weight="14"
+        android:text="Here's how it works:"
+        android:gravity="center"
+        android:layout_margin="36dp"
+        android:textSize="24sp"
         />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="24"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:weightSum="100">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:textSize="18sp"
+            android:text="1. Swipe Snagtags with your phone, pick a size and color add them to your card"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="24"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:weightSum="100">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:textSize="18sp"
+            android:text="1. Use the Outfit Editor to match your Snags to items you already own"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="wrap_content"
+            android:src="@drawable/outfit"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="24"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:weightSum="100">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="70"
+            android:textSize="18sp"
+            android:text="1. Purchase your Snags easily and securely"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cart"/>
+    </LinearLayout>
+
     <Button
+        android:id="@+id/button_continue"
         android:layout_gravity="center"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:text="Continue"
-        android:layout_width="160dp"
-        android:layout_height="40dp"
-        android:background="@drawable/button_shape"
+        android:textColor="#666666"
+        android:textSize="28sp"
+        android:text="Got it, get Snagging! >>"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="14"
+        android:background="#cccccc"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
         />
+
 </LinearLayout>

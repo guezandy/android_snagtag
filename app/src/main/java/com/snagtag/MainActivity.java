@@ -37,6 +37,7 @@ import com.snagtag.fragment.SingleItemFragment;
 import com.snagtag.fragment.StoreFragment;
 import com.snagtag.fragment.TagsDrawerFragment;
 import com.snagtag.fragment.TermsFragment;
+import com.snagtag.fragment.TutorialFragment;
 import com.snagtag.interfaces.NFCHandler;
 import com.snagtag.utils.NfcUtils;
 
@@ -129,9 +130,15 @@ public class MainActivity extends ActionBarActivity
                 NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
             final String nfcid = processReadIntent(getIntent());
             Log.i(TAG, "Got nfc id "+nfcid);
-            Fragment Snag = new SingleItemFragment();
-            ((SingleItemFragment) Snag).setItemId(nfcid);
-            replaceFragment(Snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_tags));
+            Fragment snag = new SingleItemFragment();
+            ((SingleItemFragment) snag).setItemId(nfcid);
+            replaceFragment(snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_tags));
+        } else {
+            if(getSharedPreferences("PREFS", 0).getBoolean("firstTime", true)) {
+                getSharedPreferences("PREFS", 0).edit().putBoolean("firstTime", false).commit();
+                Fragment tutorialFragment = new TutorialFragment();
+                replaceFragment(tutorialFragment, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_tutorial));
+            }
         }
     }
 
