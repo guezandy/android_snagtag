@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Shows items already purchased.
+ *
  * Created by benjamin on 10/7/14.
  */
 public class ClosetFragment extends Fragment {

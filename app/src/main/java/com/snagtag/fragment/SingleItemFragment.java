@@ -39,7 +39,7 @@ public class SingleItemFragment extends Fragment {
     /**
      * Flag for knowing if the activity was opening due to an nfc tag
      */
-    private Boolean nfcIntent = false;
+    //private Boolean nfcIntent = false;
 
     /**
      * Components for the view
@@ -78,9 +78,9 @@ public class SingleItemFragment extends Fragment {
         this.barcode = itemId;
     }
 
-    public void setNfcIntent(Boolean b) {
-        this.nfcIntent = b;
-    }
+    /*public void setNfcIntent(Boolean b) {
+        //this.nfcIntent = b;
+    }*/
 
     public SingleItemFragment() {
         //default constructor for fragment

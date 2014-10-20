@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -81,7 +80,6 @@ public class CreatorFragment extends Fragment {
     private TagHistoryItem mSelectedTop;
     private TagHistoryItem mSelectedShoes;
     private TagHistoryItem mSelectedBottom;
-    private TagHistoryItem itemInDetail;
 
     private boolean mOutfitCreatorOpen = false;
 
@@ -213,27 +211,27 @@ public class CreatorFragment extends Fragment {
 
     /**
      * Sets the view states for selecting an item
-     * @param tagIndicator The view for the tag indicator
-     * @param imageView The view for the clothing image
-     * @param historyItem The item selected
      *
+     * @param tagIndicator The view for the tag indicator
+     * @param imageView    The view for the clothing image
+     * @param historyItem  The item selected
      */
-    private void setSelected(View tagIndicator, ParseImageView imageView,  TagHistoryItem historyItem) {
-        if(!historyItem.getInCloset()) {
+    private void setSelected(View tagIndicator, ParseImageView imageView, TagHistoryItem historyItem) {
+        if (!historyItem.getInCloset()) {
             tagIndicator.setVisibility(View.VISIBLE);
         }
         imageView.setParseFile(historyItem.getImage());
         imageView.loadInBackground();
     }
 
-    private void setSelected(View tagIndicator, ParseImageView imageView,  ParseFile image, boolean inCloset, CenteringHorizontalScrollView scroller, int scrollIndex) {
-        if(!inCloset) {
+    private void setSelected(View tagIndicator, ParseImageView imageView, ParseFile image, boolean inCloset, CenteringHorizontalScrollView scroller, int scrollIndex) {
+        if (!inCloset) {
             tagIndicator.setVisibility(View.VISIBLE);
         }
         imageView.setParseFile(image);
         imageView.loadInBackground();
         float offset = getResources().getDimension(R.dimen.item_selector_width) * scrollIndex;
-        scroller.setScrollX((int)offset);
+        scroller.setScrollX((int) offset);
         scroller.setCenter();
 
     }
@@ -300,9 +298,9 @@ public class CreatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //make sure existing items are zeroed out.
-                mSelectedTop=null;
-                mSelectedBottom=null;
-                mSelectedShoes=null;
+                mSelectedTop = null;
+                mSelectedBottom = null;
+                mSelectedShoes = null;
                 mTopImageView.setParseFile(null);
                 mBottomImageView.setParseFile(null);
                 mShoesImageView.setParseFile(null);
@@ -380,17 +378,17 @@ public class CreatorFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 OutfitItem item = (OutfitItem) adapterView.getItemAtPosition(i);
                 mOutfitName.setText(item.getOutfitTitle());
-                if(item.getTopImage() != null) {
+                if (item.getTopImage() != null) {
                     setSelected(mSnagIndicatorTop, mTopImageView, item.getTopImage(), item.getTopInCloset(), mTopsScrollView, i);
                 } else {
                     mTopsScrollView.setScrollX(0);
                 }
-                if(item.getBottomImage() != null) {
+                if (item.getBottomImage() != null) {
                     setSelected(mSnagIndicatorBottom, mBottomImageView, item.getBottomImage(), item.getBottomInCloset(), mBottomsScrollView, i);
                 } else {
                     mBottomsScrollView.setScrollX(0);
                 }
-                if(item.getShoesImage() != null) {
+                if (item.getShoesImage() != null) {
                     setSelected(mSnagIndicatorShoes, mShoesImageView, item.getShoesImage(), item.getShoesInCloset(), mShoesScrollView, i);
                 } else {
                     mShoesScrollView.setScrollX(0);
@@ -406,7 +404,6 @@ public class CreatorFragment extends Fragment {
 
     private void showDetail(TagHistoryItem item) {
         if (item != null) {
-            itemInDetail = item;
             mItemStore.setText(item.getStore());
             mItemDescription.setText(item.getDescription());
             mItemColor.setText(item.getString("color"));

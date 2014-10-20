@@ -15,4 +15,8 @@ public class Constant {
     public static final int STORES = 3;
     public static final int ACCOUNT = 4;
     public static final int TERMS = 5;
+
+    //Keys for parameter passing.  Per Google recommendations, fully qualified names are used.
+
+    public static final String PARAM_STORE = "com.snagtag.store";
 }

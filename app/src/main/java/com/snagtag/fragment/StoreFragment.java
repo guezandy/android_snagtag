@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.snagtag.R;
 
 /**
+ * Shows lists of all the stores that have Snag Tags.
  * Created by benjamin on 10/7/14.
  */
 public class StoreFragment extends Fragment {

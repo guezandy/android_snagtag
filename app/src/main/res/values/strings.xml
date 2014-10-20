@@ -58,6 +58,7 @@
     <string name="checkout_subtotal">Subtotal: $ %1$.2f</string>
     <string name="checout_total">Total: $ %1$.2f</string>
     <string name="checkout_shipping">%1$s business days</string>
+    <string name="checkout_item_count">%1$d Items</string>
 
     <!--Account elements
      NAME

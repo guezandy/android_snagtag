@@ -18,8 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,9 +60,9 @@ public class TagsDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    //private ListView mDrawerListView;
+
     private View mFragmentContainerView;
-    //private TagHistoryAdapter tagHistoryAdapter;
+
     private View mContainer;
     private LinearLayout mStoreLayout;
     private IParseService mParseService;
@@ -97,25 +95,25 @@ public class TagsDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mContainer = inflater.inflate(R.layout.fragment_tags_drawer, null);
+                             Bundle savedInstanceState) {
+        mContainer = inflater.inflate(R.layout.fragment_tags_drawer, container);
         //tagHistoryAdapter = new TagHistoryAdapter(getActivity());
-        mStoreLayout = (LinearLayout)mContainer.findViewById(R.id.store_layout);
+        mStoreLayout = (LinearLayout) mContainer.findViewById(R.id.store_layout);
         mParseService.getStoresByTags(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
             @Override
             public void onSuccess(List<String> items) {
-                List<String> stores = items;
-                for(String store : stores) {
+
+                for (String store : items) {
                     final View storeView = inflater.inflate(R.layout.row_item_snag_view, null);
-                    final ViewFlipper flipper = (ViewFlipper)storeView.findViewById(R.id.grid_flipper);
-                    TextView title = (TextView)storeView.findViewById(R.id.title_store_name);
+                    final ViewFlipper flipper = (ViewFlipper) storeView.findViewById(R.id.grid_flipper);
+                    TextView title = (TextView) storeView.findViewById(R.id.title_store_name);
                     title.setText(store);
                     final View header = storeView.findViewById(R.id.store_header);
                     final View openIndicator = storeView.findViewById(R.id.store_open_indicator);
@@ -123,8 +121,8 @@ public class TagsDrawerFragment extends Fragment {
                     header.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            final GridView itemGrid = (GridView)storeView.findViewById(R.id.item_grid);
-                            if(itemGrid.getVisibility()==View.VISIBLE) {
+                            final GridView itemGrid = (GridView) storeView.findViewById(R.id.item_grid);
+                            if (itemGrid.getVisibility() == View.VISIBLE) {
                                 flipper.setVisibility(View.GONE);
                                 flipper.setDisplayedChild(0);
                                 openIndicator.setRotation(0);
@@ -135,7 +133,7 @@ public class TagsDrawerFragment extends Fragment {
                                 itemGrid.setAdapter(mParseService.TagHistoryAdapter(getActivity().getApplicationContext(), storeName, new DataSetObserver() {
                                     @Override
                                     public void onChanged() {
-                                        if(itemGrid.getCount() > 0) {
+                                        if (itemGrid.getCount() > 0) {
                                             flipper.setDisplayedChild(1);
                                         }
                                     }
@@ -152,8 +150,6 @@ public class TagsDrawerFragment extends Fragment {
 
             }
         });
-
-
 
 
         return mContainer;
@@ -304,16 +300,6 @@ public class TagsDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
-    }
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();

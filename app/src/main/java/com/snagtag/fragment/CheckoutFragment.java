@@ -14,14 +14,16 @@ import android.widget.ViewFlipper;
 
 import com.snagtag.R;
 import com.snagtag.service.MockParseService;
+import com.snagtag.utils.Constant;
 
 /**
+ * Includes all the steps to checkout.
+ *
  * Created by benjamin on 10/10/14.
  */
 public class CheckoutFragment extends Fragment {
 
     private View mView;
-    private MockParseService mParseService;
     private String mStore;
     private ViewFlipper mViewFlipper;
     private ListView itemListView;
@@ -55,29 +57,28 @@ public class CheckoutFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Bundle args = getArguments();
-        mStore =args.getString("store");
+        mStore = args.getString(Constant.PARAM_STORE);
 
         super.onCreate(savedInstanceState);
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_checkout, container, false);
-        mViewFlipper = (ViewFlipper)mView.findViewById(R.id.checkout_view_flipper);
-        mParseService = new MockParseService(getActivity().getApplicationContext());
-        itemListView = (ListView)mView.findViewById(R.id.items_list);
+        mViewFlipper = (ViewFlipper) mView.findViewById(R.id.checkout_view_flipper);
 
-        mStoreNameView = (TextView)mView.findViewById(R.id.store_name);
+        itemListView = (ListView) mView.findViewById(R.id.items_list);
+
+        mStoreNameView = (TextView) mView.findViewById(R.id.store_name);
         mArrowForward = mView.findViewById(R.id.arrow_forward);
         mArrowBack = mView.findViewById(R.id.arrow_back);
         mPlaceOrderButton = mView.findViewById(R.id.button_place_order);
         mApplyDiscountCodeButton = mView.findViewById(R.id.button_apply_discount_code);
 
-        mEditHeader = (TextView)mView.findViewById(R.id.edit_header);
-        mShippingHeader = (TextView)mView.findViewById(R.id.shipping_header);
-        mReviewHeader = (TextView)mView.findViewById(R.id.review_header);
+        mEditHeader = (TextView) mView.findViewById(R.id.edit_header);
+        mShippingHeader = (TextView) mView.findViewById(R.id.shipping_header);
+        mReviewHeader = (TextView) mView.findViewById(R.id.review_header);
 
         mUserName = (TextView) mView.findViewById(R.id.user_name);
         mStreetAddress = (TextView) mView.findViewById(R.id.street_address);
@@ -86,8 +87,6 @@ public class CheckoutFragment extends Fragment {
         mCardName = (TextView) mView.findViewById(R.id.card_name);
         mCardNumber = (TextView) mView.findViewById(R.id.card_number);
         mExpiration = (TextView) mView.findViewById(R.id.card_expiration);
-
-
 
 
         setOrderInformation();
@@ -127,10 +126,10 @@ public class CheckoutFragment extends Fragment {
         mArrowForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mViewFlipper.getDisplayedChild() < mViewFlipper.getChildCount()-1) {
-                    mViewFlipper.setInAnimation(CheckoutFragment.this.getActivity(),  R.anim.in_from_right);
+                if (mViewFlipper.getDisplayedChild() < mViewFlipper.getChildCount() - 1) {
+                    mViewFlipper.setInAnimation(CheckoutFragment.this.getActivity(), R.anim.in_from_right);
                     mViewFlipper.setOutAnimation(CheckoutFragment.this.getActivity(), R.anim.out_to_left);
-                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild()+1);
+                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
                     updateView(mViewFlipper.getDisplayedChild());
                 }
             }
@@ -138,10 +137,10 @@ public class CheckoutFragment extends Fragment {
         mArrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mViewFlipper.getDisplayedChild()> 0) {
-                    mViewFlipper.setInAnimation(CheckoutFragment.this.getActivity(),  R.anim.in_from_left);
+                if (mViewFlipper.getDisplayedChild() > 0) {
+                    mViewFlipper.setInAnimation(CheckoutFragment.this.getActivity(), R.anim.in_from_left);
                     mViewFlipper.setOutAnimation(CheckoutFragment.this.getActivity(), R.anim.out_to_right);
-                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild()-1);
+                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() - 1);
                     updateView(mViewFlipper.getDisplayedChild());
                 }
             }
@@ -163,23 +162,24 @@ public class CheckoutFragment extends Fragment {
 
     /**
      * Updates the view depending on the step in the checkout process.
-     * @param newView
+     *
+     * @param newView The new view to show.
      */
     private void updateView(int newView) {
         switch (newView) {
-            case EDIT :
+            case EDIT:
                 mEditHeader.setTypeface(Typeface.DEFAULT_BOLD);
                 mShippingHeader.setTypeface(Typeface.DEFAULT);
                 mReviewHeader.setTypeface(Typeface.DEFAULT);
                 break;
-            case SHIPPING :
+            case SHIPPING:
                 mEditHeader.setTypeface(Typeface.DEFAULT);
                 mShippingHeader.setTypeface(Typeface.DEFAULT_BOLD);
                 mReviewHeader.setTypeface(Typeface.DEFAULT);
                 mArrowForward.setVisibility(View.VISIBLE);
                 mPlaceOrderButton.setVisibility(View.GONE);
                 break;
-            case REVIEW :
+            case REVIEW:
                 mEditHeader.setTypeface(Typeface.DEFAULT);
                 mShippingHeader.setTypeface(Typeface.DEFAULT);
                 mReviewHeader.setTypeface(Typeface.DEFAULT_BOLD);
