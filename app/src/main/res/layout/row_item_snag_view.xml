@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:layout_marginBottom="2dp"
-        android:background="#666666">
+        android:background="@color/grey_dark">
         <TextView
             android:id="@+id/title_store_name"
             tools:text="Gap Snags"
             android:gravity="center"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="20sp"
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="@string/icon_down"
-            android:textColor="#ffff"
+            android:textColor="@color/white"
             android:textSize="18sp"/>
     </RelativeLayout>
     <ViewFlipper
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:numColumns="2"
-            android:background="#cccccc"
+            android:background="@color/grey_light"
             android:isScrollContainer="false"
             android:verticalSpacing="2dp"
             android:horizontalSpacing="2dp"

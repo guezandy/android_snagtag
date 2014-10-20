@@ -80,7 +80,7 @@ public class TagsDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mParseService = new MockParseService();
+        mParseService = new MockParseService(getActivity().getApplicationContext());
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.

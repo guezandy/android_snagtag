@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#ffff">
+    android:background="@color/white">
     <com.snagtag.ui.IconCustomTextView
         android:id="@+id/button_remove"
         android:layout_width="25dp"
@@ -15,7 +15,7 @@
         android:text="@string/icon_delete"
         android:gravity="center"
         android:textSize="18sp"
-        android:textColor="#ffff"
+        android:textColor="@color/white"
         android:background="@drawable/circle_grey"
         />
    <com.parse.ParseImageView

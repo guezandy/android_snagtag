@@ -7,7 +7,7 @@ so that a user can scroll the first and last clothing item to 'center'
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="@dimen/item_selector_width"
-    android:background="#ffff"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:paddingLeft="75dp"
     android:paddingRight="75dp"

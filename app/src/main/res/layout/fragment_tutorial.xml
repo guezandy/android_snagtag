@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="14"
-        android:text="Here's how it works:"
+        android:text="@string/label_tutorial_title"
         android:gravity="center"
         android:layout_margin="36dp"
         android:textSize="24sp"
@@ -27,11 +27,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="70"
             android:textSize="18sp"
-            android:text="1. Swipe Snagtags with your phone, pick a size and color add them to your card"/>
+            android:text="@string/label_tutorial_step_1"/>
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="35"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_snag"
             android:src="@drawable/ic_launcher"/>
     </LinearLayout>
     <LinearLayout
@@ -47,11 +48,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="70"
             android:textSize="18sp"
-            android:text="1. Use the Outfit Editor to match your Snags to items you already own"/>
+            android:text="@string/label_tutorial_step_2"/>
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="35"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_closet"
             android:src="@drawable/outfit"/>
     </LinearLayout>
     <LinearLayout
@@ -67,24 +69,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="70"
             android:textSize="18sp"
-            android:text="1. Purchase your Snags easily and securely"/>
+            android:text="@string/label_tutorial_step_3"/>
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="35"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_cart"
             android:src="@drawable/cart"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/button_continue"
         android:layout_gravity="center"
-        android:textColor="#666666"
+        android:textColor="@color/grey_dark"
         android:textSize="28sp"
-        android:text="Got it, get Snagging! >>"
+        android:text="@string/label_get_snagging"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="14"
-        android:background="#cccccc"
+        android:background="@color/grey_light"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"

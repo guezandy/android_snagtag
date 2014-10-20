@@ -21,6 +21,7 @@
         android:layout_marginBottom="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:background="@drawable/circle_grey"
         android:layout_marginRight="24dp"/>
     <ImageView
@@ -54,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:padding="24dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -69,7 +70,7 @@
                     />
             </LinearLayout>
             <LinearLayout
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -82,19 +83,19 @@
                     android:id="@+id/label_brand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#666666"
+                    android:textColor="@color/grey_dark"
                     tools:text="Brand"/>
                 <TextView
                     android:id="@+id/label_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#666666"
+                    android:textColor="@color/grey_dark"
                     tools:text="Striped Boatneck Top"/>
                 <TextView
                     android:id="@+id/label_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#666666"
+                    android:textColor="@color/grey_dark"
                     tools:text="$55.00"/>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -110,7 +111,7 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -123,13 +124,13 @@
                     android:text="@string/title_measurements"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#666666"
+                    android:textColor="@color/grey_dark"
                     />
                 <TextView
                     android:id="@+id/label_measurements"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#666666"
+                    android:textColor="@color/grey_dark"
                     tools:text="Some measurement information here"/>
             </LinearLayout>
         </LinearLayout>

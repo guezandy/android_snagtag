@@ -13,8 +13,8 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ffff"
-            android:text="Add New Outfit"
+            android:textColor="@color/white"
+            android:text="@string/label_add_outfit"
             android:padding="12dp"
             android:gravity="center"
             android:background="#0BB5FF" />
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:numColumns="2"
-            android:background="#cccc"
+            android:background="@color/grey_light"
             android:horizontalSpacing="2dp"
             android:verticalSpacing="2dp"
             android:padding="2dp"></GridView>
@@ -35,7 +35,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
+        android:background="@color/white">
 
         <EditText
             android:id="@+id/input_outfit_name"
@@ -56,7 +56,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:text="@string/icon_cart"
-                android:textColor="#ffff"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:textSize="20sp"
                 android:background="@drawable/circle_button" />
@@ -66,7 +66,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:text="@string/icon_check"
-                android:textColor="#ffff"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:background="@drawable/circle_button" />
@@ -184,14 +184,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/creator_selector_height"
                             android:scrollbars="none"
-                            android:background="#ffffff">
+                            android:background="@color/white">
 
                             <LinearLayout
                                 android:orientation="horizontal"
                                 android:id="@+id/tops_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/creator_selector_height"
-                                android:background="#ffffff">
+                                android:background="@color/white">
 
                             </LinearLayout>
                         </com.snagtag.scroll.CenteringHorizontalScrollView>
@@ -202,14 +202,14 @@
                             android:layout_height="@dimen/creator_selector_height"
                             android:scrollbars="none"
                             android:layout_marginTop="2dp"
-                            android:background="#ffffff">
+                            android:background="@color/white">
 
                             <LinearLayout
                                 android:orientation="horizontal"
                                 android:id="@+id/bottoms_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/creator_selector_height"
-                                android:background="#ffffff">
+                                android:background="@color/white">
 
                             </LinearLayout>
                         </com.snagtag.scroll.CenteringHorizontalScrollView>
@@ -220,14 +220,14 @@
                             android:layout_height="@dimen/creator_selector_height"
                             android:scrollbars="none"
                             android:layout_marginTop="2dp"
-                            android:background="#ffffff">
+                            android:background="@color/white">
 
                             <LinearLayout
                                 android:orientation="horizontal"
                                 android:id="@+id/shoes_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="@dimen/creator_selector_height"
-                                android:background="#ffffff">
+                                android:background="@color/white">
 
                             </LinearLayout>
                         </com.snagtag.scroll.CenteringHorizontalScrollView>
@@ -263,7 +263,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
+                android:background="@color/white"
 
                 android:alpha=".9"></LinearLayout>
 
@@ -320,7 +320,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentBottom="true"
-                android:textColor="#ffff"
+                android:textColor="@color/white"
                 android:textSize="24sp"
                 android:text="@string/icon_cart"
                 android:gravity="center"

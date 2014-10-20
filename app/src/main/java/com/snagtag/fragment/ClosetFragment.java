@@ -137,13 +137,13 @@ public class ClosetFragment extends Fragment {
         TagHistoryItemPagerAdapter(int itemType) {
             switch (itemType) {
                 case TOPS:
-                    new MockParseService().getClosetTops(getActivity().getApplicationContext(), this);
+                    new MockParseService(getActivity().getApplicationContext()).getClosetTops(getActivity().getApplicationContext(), this);
                     break;
                 case BOTTOMS:
-                    new MockParseService().getClosetBottoms(getActivity().getApplicationContext(), this);
+                    new MockParseService(getActivity().getApplicationContext()).getClosetBottoms(getActivity().getApplicationContext(), this);
                     break;
                 case SHOES:
-                    new MockParseService().getClosetShoes(getActivity().getApplicationContext(), this);
+                    new MockParseService(getActivity().getApplicationContext()).getClosetShoes(getActivity().getApplicationContext(), this);
                     break;
             }
         }

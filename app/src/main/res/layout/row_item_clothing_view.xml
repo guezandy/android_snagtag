@@ -6,8 +6,8 @@
     android:layout_width="0dp"
     tools:layout_width="160dp"
     android:paddingBottom="2dp"
-    android:layout_height="210dp"
-    android:background="#ffff">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
     <com.snagtag.ui.IconCustomTextView
         android:id="@+id/delete_item"
         android:layout_width="25dp"
@@ -19,7 +19,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="2dp"
         android:gravity="center"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:layout_height="25dp"
         android:background="@drawable/circle_grey"/>
     <com.parse.ParseImageView
@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/item_description"
         android:textSize="12sp"
+        tools:visibility="gone"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         tools:text="Color: Red"/>
@@ -59,6 +60,7 @@
         android:textSize="12sp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
+        tools:visibility="gone"
         tools:text="Size: M"/>
     <TextView
         android:id="@+id/item_cost"
@@ -80,10 +82,11 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:textSize="22sp"
+        tools:visibility="gone"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/icon_cart"
-        android:textColor="#ffff"
+        android:textColor="@color/white"
         android:background="@drawable/circle_button"/>
 </RelativeLayout>

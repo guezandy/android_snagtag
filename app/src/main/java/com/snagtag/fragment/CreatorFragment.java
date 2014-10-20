@@ -125,7 +125,7 @@ public class CreatorFragment extends Fragment {
         mOutfitName = (TextView) mCreatorView.findViewById(R.id.input_outfit_name);
         mItemDetailPopup = mCreatorView.findViewById(R.id.item_detail_popup);
 
-        IParseService service = new MockParseService();
+        IParseService service = new MockParseService(getActivity().getApplicationContext());
 
 
         mOutfitGrid.setAdapter(service.getOutfitItemAdapter(getActivity(), null, null));
@@ -138,7 +138,7 @@ public class CreatorFragment extends Fragment {
 
     private void setupClosetScrollers() {
         mTopsView = (LinearLayout) mCreatorView.findViewById(R.id.tops_view);
-        new MockParseService().getTops(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+        new MockParseService(getActivity().getApplicationContext()).getTops(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mTops = items;
@@ -162,7 +162,7 @@ public class CreatorFragment extends Fragment {
 
 
         mBottomsView = (LinearLayout) mCreatorView.findViewById(R.id.bottoms_view);
-        new MockParseService().getBottoms(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+        new MockParseService(getActivity().getApplicationContext()).getBottoms(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mBottoms = items;
@@ -187,7 +187,7 @@ public class CreatorFragment extends Fragment {
         });
 
         mShoesView = (LinearLayout) mCreatorView.findViewById(R.id.shoes_view);
-        new MockParseService().getShoes(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+        new MockParseService(getActivity().getApplicationContext()).getShoes(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mShoes = items;

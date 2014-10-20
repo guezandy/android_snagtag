@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -32,7 +33,7 @@ public class CartFragment extends Fragment {
     private ViewFlipper mView;
     private LinearLayout storeListLayout;
     private IParseService mParseService;
-    private ParseQueryAdapter<CartItem> cartItemAdapter;
+    private BaseAdapter cartItemAdapter;
     private String selectedStore;
 
     @Override
@@ -44,7 +45,7 @@ public class CartFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = (ViewFlipper)inflater.inflate(R.layout.fragment_cart, container, false);
         storeListLayout = (LinearLayout)mView.findViewById(R.id.cart_list_store);
-        mParseService = new MockParseService();
+        mParseService = new MockParseService(getActivity().getApplicationContext());
         mParseService.getStoresByCartItems(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
             @Override
             public void onSuccess(List<String> items) {
@@ -94,7 +95,7 @@ public class CartFragment extends Fragment {
                                         openIndicator.setRotation(0);
                                         double total = 0.0;
                                         for(int i = 0 ; i < cartItemAdapter.getCount(); i++) {
-                                            CartItem item = cartItemAdapter.getItem(i);
+                                            CartItem item = (CartItem)cartItemAdapter.getItem(i);
                                             total = total + item.getItem().getPrice();
                                         }
                                         totalView.setText(""+total);
@@ -118,7 +119,7 @@ public class CartFragment extends Fragment {
                                 detailLayout.setVisibility(View.VISIBLE);
                                 openIndicator.setRotation(180);
                                 CartItemsObserver caObserver = new CartItemsObserver(null,itemGrid, countView, totalView);
-                                cartItemAdapter = (ParseQueryAdapter<CartItem>)mParseService.CartAdapter(getActivity().getApplicationContext(), storeName, caObserver);
+                                cartItemAdapter = mParseService.getCartItemAdapter(getActivity().getApplicationContext(), storeName, caObserver);
                                 caObserver.setItemsAdapter(cartItemAdapter);
                                 LinearLayout currentRow = null;
                                 for(int i = 0 ; i < cartItemAdapter.getCount(); i++) {
@@ -126,7 +127,7 @@ public class CartFragment extends Fragment {
                                     if(i%2 == 0) {
                                         currentRow = new LinearLayout(getActivity());
                                         currentRow.setOrientation(LinearLayout.HORIZONTAL);
-                                        currentRow.setBackgroundColor(Color.parseColor("#cccccc"));
+                                        currentRow.setBackgroundColor(Color.parseColor("@color/grey_light"));
                                         currentRow.setPadding(4,2,4,2);
                                         itemGrid.addView(currentRow);
                                     }
@@ -134,7 +135,7 @@ public class CartFragment extends Fragment {
                                     // Get params:
                                     LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
                                     if(loparams==null) {
-                                        loparams = new LinearLayout.LayoutParams(0, getDip(160), 49f);
+                                        loparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 49f);
                                         loparams.setMargins(2,0,2,0);
                                     }
                                     v.setLayoutParams(loparams);
@@ -177,17 +178,17 @@ public class CartFragment extends Fragment {
 
     class CartItemsObserver extends DataSetObserver {
 
-        private ParseQueryAdapter<CartItem>itemsAdapter;
+        private BaseAdapter itemsAdapter;
         private TextView itemsView, totalView;
         private LinearLayout grid;
-        public CartItemsObserver(ParseQueryAdapter<CartItem> itemsAdapter, LinearLayout grid, TextView itemsView, TextView totalView) {
+        public CartItemsObserver(BaseAdapter itemsAdapter, LinearLayout grid, TextView itemsView, TextView totalView) {
             this.itemsAdapter = itemsAdapter;
             this.totalView = totalView;
             this.itemsView = itemsView;
             this.grid = grid;
         }
 
-        public void setItemsAdapter(ParseQueryAdapter<CartItem> items) {
+        public void setItemsAdapter(BaseAdapter items) {
             this.itemsAdapter = items;
         }
 
@@ -196,7 +197,7 @@ public class CartFragment extends Fragment {
             double total = 0.0;
             LinearLayout currentRow = null;
             for(int i = 0 ; i < itemsAdapter.getCount(); i++) {
-               CartItem item = itemsAdapter.getItem(i);
+               CartItem item = (CartItem)itemsAdapter.getItem(i);
                 total = total + item.getItem().getPrice();
                 if(i%2 == 0) {
                     currentRow = new LinearLayout(getActivity());

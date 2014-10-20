@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="@dimen/item_selector_width"
-    android:background="#ffff"
+    android:background="@color/white"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
     <com.parse.ParseImageView
@@ -23,7 +23,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         tools:text="10/365"
-        android:textColor="#ffff"
+        android:textColor="@color/white"
         android:padding="6dp"
         android:textSize="12sp"
         android:layout_marginTop="12dp"

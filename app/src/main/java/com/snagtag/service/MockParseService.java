@@ -50,7 +50,14 @@ public class MockParseService implements IParseService {
     private int OUTFIT_ITEMS = 10;
 
     static int counter = 1;
+    private Context context;
+
     NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+    public MockParseService(Context context) {
+        this.context = context;
+    }
+
 
     @Override
     public void getStoresByTags(Context context, IParseCallback<List<String>> stores) {
@@ -165,13 +172,13 @@ public class MockParseService implements IParseService {
                 }
 
                 TextView color = (TextView) v.findViewById(R.id.item_color);
-                color.setText("");
+                color.setText(String.format(context.getResources().getString(R.string.item_color), item.getString("color")));
 
                 TextView size = (TextView) v.findViewById(R.id.item_size);
-                size.setText("");
+                size.setText(String.format(context.getResources().getString(R.string.item_size), item.getString("size")));
 
                 TextView cost = (TextView) v.findViewById(R.id.item_cost);
-                cost.setText(String.valueOf(item.getPrice()));
+                cost.setText(String.format(context.getResources().getString(R.string.item_cost), item.getPrice()));
 //TODO: Reload the list after each one of these is pressed.
                 com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
                 if (item.getInCart()) {
@@ -207,7 +214,7 @@ public class MockParseService implements IParseService {
     }
 
     @Override
-    public ParseQueryAdapter CartAdapter(final Context context, final String store, DataSetObserver dataChangedObserver) {
+    public BaseAdapter CartAdapter(final Context context, final String store, DataSetObserver dataChangedObserver) {
         // Adapter for the Parse query
         ParseQueryAdapter.QueryFactory<TagHistoryItem> factory =
                 new ParseQueryAdapter.QueryFactory<TagHistoryItem>() {
@@ -272,13 +279,13 @@ public class MockParseService implements IParseService {
                 }
 
                 TextView color = (TextView) v.findViewById(R.id.item_color);
-                color.setText("");
+                color.setText(String.format(context.getResources().getString(R.string.item_color), item.getString("color")));
 
                 TextView size = (TextView) v.findViewById(R.id.item_size);
-                size.setText("");
+                size.setText(String.format(context.getResources().getString(R.string.item_size), item.getString("size")));
 
                 TextView cost = (TextView) v.findViewById(R.id.item_cost);
-                cost.setText(String.valueOf(item.getPrice()));
+                cost.setText(String.format(context.getResources().getString(R.string.item_cost), item.getPrice()));
 //TODO: Reload the list after each one of these is pressed.
 
 
@@ -399,7 +406,7 @@ public class MockParseService implements IParseService {
 
         //Creating and returning an abstract inner class.
         ArrayAdapter<CartItem> cartItemAdapter =
-                new ArrayAdapter<CartItem>(context, R.layout.row_item_snag_view) {
+                new ArrayAdapter<CartItem>(context, R.layout.row_item_clothing_view) {
                     @Override
                     public int getCount() {
                         return CART_ITEMS;
@@ -515,7 +522,7 @@ public class MockParseService implements IParseService {
         private TextView size;
         private TextView cost;
         private ParseImageView image;
-        private TagHistoryItem item;
+
         private View itemCart;
 
         public RowItemClothingViewHolder(View rootView, TagHistoryItem item) {
@@ -529,14 +536,21 @@ public class MockParseService implements IParseService {
         }
 
         public void setItem(TagHistoryItem item) {
-            this.item = item;
             this.description.setText(item.getDescription());
-            this.cost.setText(nf.format(item.getPrice()));
+
+            Double priceVal = item.getPrice();
+            String colorVal = item.getString("color");
+            String sizeVal =  item.getString("size");
+
+            this.cost.setText(String.format(context.getResources().getString(R.string.item_cost), priceVal == null ? 0.00 : priceVal));
+            this.color.setText(String.format(context.getResources().getString(R.string.item_color), colorVal == null ? "" : colorVal));
+            this.size.setText(String.format(context.getResources().getString(R.string.item_size), sizeVal == null ? "" : sizeVal));
             this.image.setParseFile(item.getImage());
             this.image.loadInBackground();
             if (item.getInCart() && this.itemCart != null) {
                 this.itemCart.setEnabled(false);
             }
+
         }
     }
 

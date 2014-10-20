@@ -66,7 +66,7 @@ public class CheckoutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_checkout, container, false);
         mViewFlipper = (ViewFlipper)mView.findViewById(R.id.checkout_view_flipper);
-        mParseService = new MockParseService();
+        mParseService = new MockParseService(getActivity().getApplicationContext());
         itemListView = (ListView)mView.findViewById(R.id.items_list);
 
         mStoreNameView = (TextView)mView.findViewById(R.id.store_name);
@@ -110,7 +110,7 @@ public class CheckoutFragment extends Fragment {
         mCardName.setText("Noble Applications");
         mCardNumber.setText("Card #: xxxx xxxx xxxx 1234");
         mExpiration.setText("Exp Date: 10/14");
-        itemListView.setAdapter(new MockParseService().getCheckoutItemAdapter(getActivity().getApplicationContext(), mStore, new DataSetObserver() {
+        itemListView.setAdapter(new MockParseService(getActivity().getApplicationContext()).getCheckoutItemAdapter(getActivity().getApplicationContext(), mStore, new DataSetObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
