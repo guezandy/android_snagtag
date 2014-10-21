@@ -66,37 +66,39 @@ public class MockParseService implements IParseService {
         ParseRelation relation = user.getRelation("user_tags");
         ParseQuery query = relation.getQuery();
         query.whereEqualTo("visible", true);
-
+        final Set<String> set = new TreeSet<String>();
         final List<String> list = new ArrayList<String>();
 
         query.findInBackground(new FindCallback<TagHistoryItem>() {
             @Override
             public void done(List<TagHistoryItem> snags, ParseException e) {
                 if (e != null) {
-                    storesCallback.onFail(e.getMessage());
+                    // There was an error
                 } else {
                     // snags have all the Clothing the current user tagged.
                     for (TagHistoryItem snag : snags) {
                         Log.i(TAG, "query got: " + snag.getStore());
-
-                        list.add("Gap");
-                        list.add("Men's Warehouse");
-                        list.add(snag.getStore().toString());
+                        set.add(snag.getStore().toString());
                     }
+                    list.addAll(set);
+                    list.add("Gap");
+                    list.add("Men's Warehouse");
                     storesCallback.onSuccess(list);
                 }
             }
         });
+        //List<String> list = Arrays.asList(set.toArray(new String[0]));
+        Log.i(TAG, "Printing set: " + set.toString());
+        //list.addAll(set);
 
-        Log.i(TAG, "Printing set: " + list.toString());
     }
 
     @Override
-    public void getStoresByCartItems(Context context, IParseCallback<List<String>> stores) {
+    public void getStoresByCartItems(Context context, final IParseCallback<List<String>> storesCallback) {
         List<String> list = new ArrayList<String>();
         list.add("Gap");
         list.add("Men's Warehouse");
-        stores.onSuccess(list);
+        storesCallback.onSuccess(list);
     }
 
 
