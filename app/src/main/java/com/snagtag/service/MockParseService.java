@@ -101,6 +101,14 @@ public class MockParseService implements IParseService {
         storesCallback.onSuccess(list);
     }
 
+    @Override
+    public void getTagHistory(final Context context, final String storey, final IParseCallback<List<TagHistoryItem>> itemsCallback) {
+
+        //call itemsCallback.onSuccess with the List<TagHistoryItem> from Parse
+
+
+    }
+
 
     @Override
     public ParseQueryAdapter TagHistoryAdapter(final Context context, final String store, DataSetObserver dataChangedObserver) {
@@ -130,8 +138,7 @@ public class MockParseService implements IParseService {
                     }
                 };
         //setup query adapter
-        final ParseQueryAdapter<TagHistoryItem> tagHistoryPerStore;
-        tagHistoryPerStore = new ParseQueryAdapter<TagHistoryItem>(context, factory) {
+        final ParseQueryAdapter<TagHistoryItem> tagHistoryPerStore = new ParseQueryAdapter<TagHistoryItem>(context, factory) {
             final ParseQueryAdapter<TagHistoryItem> me = this;
 
             @Override
@@ -211,6 +218,7 @@ public class MockParseService implements IParseService {
             }
         };
         tagHistoryPerStore.registerDataSetObserver(dataChangedObserver);
+        Log.d("TAG_HISTORY_ITEM","TAG HISTORY ITEMS " + tagHistoryPerStore.getCount());
         return tagHistoryPerStore;
     }
 

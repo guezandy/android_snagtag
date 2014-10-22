@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -147,7 +148,7 @@ public class TagsDrawerFragment extends Fragment {
 
             @Override
             public void onFail(String message) {
-
+                Log.d("TAGS_DRAWER", "Parse failed " + message);
             }
         });
 
