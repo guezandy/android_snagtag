@@ -53,6 +53,8 @@
     <string name="item_cost">$ %1$.2f</string>
     <string name="item_color">Color: %1$s</string>
     <string name="item_history">Purchased from the %1$s on %2$s</string>
+    <string name="cart_store_count">%1$d Items</string>
+    <string name="cart_store_subtotal">Subtotal: $%1$f</string>
 
     <!--Checkout elements-->
     <string name="checkout_subtotal">Subtotal: $ %1$.2f</string>

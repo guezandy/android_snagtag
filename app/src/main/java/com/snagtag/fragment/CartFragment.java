@@ -35,7 +35,7 @@ public class CartFragment extends Fragment {
     private ViewFlipper mView;
     private LinearLayout storeListLayout;
     private ParseService mParseService;
-    private CartItemAdapter cartItemAdapter;
+
 
 
     @Override
@@ -80,10 +80,35 @@ public class CartFragment extends Fragment {
                                 }
                             });
 
+                            final LinearLayout itemGrid = (LinearLayout) storeView.findViewById(R.id.item_grid);
+                            CartItemsObserver caObserver = new CartItemsObserver(null, itemGrid, countView, totalView);
+                            final CartItemAdapter cartItemAdapter = new CartItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_cart_item);
+                            caObserver.setItemsAdapter(cartItemAdapter);
+                            cartItemAdapter.registerDataSetObserver(caObserver);
+
+                            new ParseService(getActivity().getApplicationContext()).getCartItems(getActivity().getApplicationContext(), store, new IParseCallback<List<CartItem>>() {
+                                @Override
+                                public void onSuccess(final List<CartItem> items) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            cartItemAdapter.setItems(items);
+                                            
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onFail(String message) {
+
+                                }
+                            });
+
+
                             header.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    final LinearLayout itemGrid = (LinearLayout) storeView.findViewById(R.id.item_grid);
+
                                     if (detailLayout.getVisibility() == View.VISIBLE) {
                                         ScaleAnimation anim = new ScaleAnimation(1, 1, 1, 0);
                                         anim.setDuration(300);
@@ -103,11 +128,10 @@ public class CartFragment extends Fragment {
                                                     CartItem item = (CartItem) cartItemAdapter.getItem(i);
                                                     total = total + item.getItem().getPrice();
                                                 }
-                                                totalView.setText(String.format(getString(R.id.item_subtotal), total));
-                                                countView.setText(String.format(getString(R.id.item_subtotal), cartItemAdapter.getCount()));
+
                                                 totalView.setVisibility(View.VISIBLE);
                                                 countView.setVisibility(View.VISIBLE);
-                                                itemGrid.removeAllViews();
+
                                             }
 
                                             @Override
@@ -123,42 +147,7 @@ public class CartFragment extends Fragment {
                                         detailLayout.startAnimation(anim);
                                         detailLayout.setVisibility(View.VISIBLE);
                                         openIndicator.setRotation(180);
-                                        CartItemsObserver caObserver = new CartItemsObserver(null, itemGrid, countView, totalView);
-                                        cartItemAdapter = new CartItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_cart_item);
-                                        caObserver.setItemsAdapter(cartItemAdapter);
 
-                                        new ParseService(getActivity().getApplicationContext()).getCartItems(getActivity().getApplicationContext(), store, new IParseCallback<List<CartItem>>() {
-                                            @Override
-                                            public void onSuccess(List<CartItem> items) {
-                                                cartItemAdapter.setItems(items);
-                                                LinearLayout currentRow = null;
-                                                for (int i = 0; i < cartItemAdapter.getCount(); i++) {
-
-                                                    if (i % 2 == 0) {
-                                                        currentRow = new LinearLayout(getActivity());
-                                                        currentRow.setOrientation(LinearLayout.HORIZONTAL);
-                                                        currentRow.setBackgroundColor(getResources().getColor(R.color.grey_light));
-                                                        currentRow.setPadding(4, 2, 4, 2);
-                                                        itemGrid.addView(currentRow);
-                                                    }
-                                                    View v = cartItemAdapter.getView(i, null, currentRow);
-                                                    // Get params:
-                                                    LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
-                                                    if (loparams == null) {
-                                                        loparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, COLUMN_WIDTH);
-                                                        loparams.setMargins(2, 0, 2, 0);
-                                                    }
-                                                    v.setLayoutParams(loparams);
-                                                    currentRow.addView(v);
-
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onFail(String message) {
-
-                                            }
-                                        });
 
 
 
@@ -209,22 +198,30 @@ public class CartFragment extends Fragment {
 
         @Override
         public void onChanged() {
-            double total = 0.0;
+            double totalCost = 0.0;
             LinearLayout currentRow = null;
+            grid.removeAllViews();
             for (int i = 0; i < itemsAdapter.getCount(); i++) {
-                CartItem item = (CartItem) itemsAdapter.getItem(i);
-                total = total + item.getItem().getPrice();
+                totalCost = totalCost + ((CartItem)itemsAdapter.getItem(i)).getItem().getPrice();
                 if (i % 2 == 0) {
                     currentRow = new LinearLayout(getActivity());
                     currentRow.setOrientation(LinearLayout.HORIZONTAL);
+                    currentRow.setBackgroundColor(getResources().getColor(R.color.grey_light));
+                    currentRow.setPadding(4, 2, 4, 2);
                     grid.addView(currentRow);
                 }
-
-
-                currentRow.addView(cartItemAdapter.getView(i, null, currentRow));
+                View v = itemsAdapter.getView(i, null, currentRow);
+                // Get params:
+                LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
+                if (loparams == null) {
+                    loparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, COLUMN_WIDTH);
+                    loparams.setMargins(2, 0, 2, 0);
+                }
+                v.setLayoutParams(loparams);
+                currentRow.addView(v);
             }
-            totalView.setText("" + total);
-            itemsView.setText(("" + itemsAdapter.getCount()));
+            totalView.setText(String.format(getString(R.string.cart_store_subtotal), totalCost));
+            itemsView.setText(String.format(getString(R.string.cart_store_count), itemsAdapter.getCount()));
         }
     }
 }
