@@ -102,18 +102,19 @@ public class MockParseService implements IParseService {
     }
 
     @Override
-    public void getTagHistory(final Context context, final String storey, final IParseCallback<List<TagHistoryItem>> itemsCallback) {
+    public void getTagHistory(final Context context, final String store, final IParseCallback<List<TagHistoryItem>> itemsCallback) {
 
         //call itemsCallback.onSuccess with the List<TagHistoryItem> from Parse
-        //Making the taghistory a part of the user:
+
         ParseUser user = ParseUser.getCurrentUser();
+        Log.i(TAG, user.toString());
         ParseRelation<TagHistoryItem> relation = user.getRelation("user_tags");
         ParseQuery query = relation.getQuery();
         //make sure user didn't delete any snags
-        query.whereEqualTo("visible", true);
+        query.whereEqualTo("visible", false);
 
         //TODO: no stores yet
-        //query.whereEqualTo("store", store);
+        query.whereEqualTo("store", store);
 
         //get ten most recent
         query.orderByDescending("createdAt");
@@ -126,6 +127,7 @@ public class MockParseService implements IParseService {
                     // There was an error
                 } else {
                     // results have all the Clothing the current user tagged.
+                    //Log.i(TAG, results.size());
                     itemsCallback.onSuccess(results);
                 }
             }
