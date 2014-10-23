@@ -1,6 +1,5 @@
 package com.snagtag.fragment;
 
-import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +12,13 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.snagtag.R;
-import com.snagtag.service.MockParseService;
+import com.snagtag.adapter.CartItemAdapter;
+import com.snagtag.models.CartItem;
+import com.snagtag.service.IParseCallback;
+import com.snagtag.service.ParseService;
 import com.snagtag.utils.Constant;
+
+import java.util.List;
 
 /**
  * Includes all the steps to checkout.
@@ -109,13 +113,20 @@ public class CheckoutFragment extends Fragment {
         mCardName.setText("Noble Applications");
         mCardNumber.setText("Card #: xxxx xxxx xxxx 1234");
         mExpiration.setText("Exp Date: 10/14");
-        itemListView.setAdapter(new MockParseService(getActivity().getApplicationContext()).getCheckoutItemAdapter(getActivity().getApplicationContext(), mStore, new DataSetObserver() {
+        final CartItemAdapter checkoutAdapter = new CartItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_checkout);
+        itemListView.setAdapter(checkoutAdapter);
+
+        new ParseService(getActivity().getApplicationContext()).getCartItems(getActivity().getApplicationContext(), mStore, new IParseCallback<List<CartItem>>() {
             @Override
-            public void onChanged() {
-                super.onChanged();
-                //TODO:Recalculate totals when data set changes.
+            public void onSuccess(List<CartItem> items) {
+                checkoutAdapter.setItems(items);
             }
-        }));
+
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
 
     }
 

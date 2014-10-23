@@ -16,7 +16,7 @@ import com.parse.ParseImageView;
 import com.snagtag.R;
 import com.snagtag.models.TagHistoryItem;
 import com.snagtag.service.IParseCallback;
-import com.snagtag.service.MockParseService;
+import com.snagtag.service.ParseService;
 
 import java.util.Collections;
 import java.util.List;
@@ -139,13 +139,13 @@ public class ClosetFragment extends Fragment {
         TagHistoryItemPagerAdapter(int itemType) {
             switch (itemType) {
                 case TOPS:
-                    new MockParseService(getActivity().getApplicationContext()).getClosetTops(getActivity().getApplicationContext(), this);
+                    new ParseService(getActivity().getApplicationContext()).getClosetTops(getActivity().getApplicationContext(), this);
                     break;
                 case BOTTOMS:
-                    new MockParseService(getActivity().getApplicationContext()).getClosetBottoms(getActivity().getApplicationContext(), this);
+                    new ParseService(getActivity().getApplicationContext()).getClosetBottoms(getActivity().getApplicationContext(), this);
                     break;
                 case SHOES:
-                    new MockParseService(getActivity().getApplicationContext()).getClosetShoes(getActivity().getApplicationContext(), this);
+                    new ParseService(getActivity().getApplicationContext()).getClosetShoes(getActivity().getApplicationContext(), this);
                     break;
             }
         }

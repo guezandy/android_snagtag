@@ -15,10 +15,10 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.snagtag.R;
+import com.snagtag.adapter.CartItemAdapter;
 import com.snagtag.models.CartItem;
 import com.snagtag.service.IParseCallback;
-import com.snagtag.service.IParseService;
-import com.snagtag.service.MockParseService;
+import com.snagtag.service.ParseService;
 import com.snagtag.utils.Constant;
 import com.snagtag.utils.FragmentUtil;
 
@@ -34,8 +34,8 @@ public class CartFragment extends Fragment {
 
     private ViewFlipper mView;
     private LinearLayout storeListLayout;
-    private IParseService mParseService;
-    private BaseAdapter cartItemAdapter;
+    private ParseService mParseService;
+    private CartItemAdapter cartItemAdapter;
 
 
     @Override
@@ -47,7 +47,7 @@ public class CartFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = (ViewFlipper) inflater.inflate(R.layout.fragment_cart, container, false);
         storeListLayout = (LinearLayout) mView.findViewById(R.id.cart_list_store);
-        mParseService = new MockParseService(getActivity().getApplicationContext());
+        mParseService = new ParseService(getActivity().getApplicationContext());
         mParseService.getStoresByCartItems(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
             @Override
             public void onSuccess(final List<String> items) {
@@ -124,29 +124,42 @@ public class CartFragment extends Fragment {
                                         detailLayout.setVisibility(View.VISIBLE);
                                         openIndicator.setRotation(180);
                                         CartItemsObserver caObserver = new CartItemsObserver(null, itemGrid, countView, totalView);
-                                        cartItemAdapter = mParseService.getCartItemAdapter(getActivity().getApplicationContext(), store, caObserver);
+                                        cartItemAdapter = new CartItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_cart_item);
                                         caObserver.setItemsAdapter(cartItemAdapter);
-                                        LinearLayout currentRow = null;
-                                        for (int i = 0; i < cartItemAdapter.getCount(); i++) {
 
-                                            if (i % 2 == 0) {
-                                                currentRow = new LinearLayout(getActivity());
-                                                currentRow.setOrientation(LinearLayout.HORIZONTAL);
-                                                currentRow.setBackgroundColor(getResources().getColor(R.color.grey_light));
-                                                currentRow.setPadding(4, 2, 4, 2);
-                                                itemGrid.addView(currentRow);
-                                            }
-                                            View v = cartItemAdapter.getView(i, null, currentRow);
-                                            // Get params:
-                                            LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
-                                            if (loparams == null) {
-                                                loparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, COLUMN_WIDTH);
-                                                loparams.setMargins(2, 0, 2, 0);
-                                            }
-                                            v.setLayoutParams(loparams);
-                                            currentRow.addView(v);
+                                        new ParseService(getActivity().getApplicationContext()).getCartItems(getActivity().getApplicationContext(), store, new IParseCallback<List<CartItem>>() {
+                                            @Override
+                                            public void onSuccess(List<CartItem> items) {
+                                                cartItemAdapter.setItems(items);
+                                                LinearLayout currentRow = null;
+                                                for (int i = 0; i < cartItemAdapter.getCount(); i++) {
 
-                                        }
+                                                    if (i % 2 == 0) {
+                                                        currentRow = new LinearLayout(getActivity());
+                                                        currentRow.setOrientation(LinearLayout.HORIZONTAL);
+                                                        currentRow.setBackgroundColor(getResources().getColor(R.color.grey_light));
+                                                        currentRow.setPadding(4, 2, 4, 2);
+                                                        itemGrid.addView(currentRow);
+                                                    }
+                                                    View v = cartItemAdapter.getView(i, null, currentRow);
+                                                    // Get params:
+                                                    LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) v.getLayoutParams();
+                                                    if (loparams == null) {
+                                                        loparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, COLUMN_WIDTH);
+                                                        loparams.setMargins(2, 0, 2, 0);
+                                                    }
+                                                    v.setLayoutParams(loparams);
+                                                    currentRow.addView(v);
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFail(String message) {
+
+                                            }
+                                        });
+
 
 
                                         totalView.setVisibility(View.GONE);

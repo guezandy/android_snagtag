@@ -16,14 +16,14 @@ import android.widget.ViewFlipper;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.snagtag.R;
+import com.snagtag.adapter.OutfitItemAdapter;
 import com.snagtag.animation.HideAnimation;
 import com.snagtag.animation.ShowAnimation;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.TagHistoryItem;
 import com.snagtag.scroll.CenteringHorizontalScrollView;
 import com.snagtag.service.IParseCallback;
-import com.snagtag.service.IParseService;
-import com.snagtag.service.MockParseService;
+import com.snagtag.service.ParseService;
 
 import java.util.List;
 
@@ -123,10 +123,21 @@ public class CreatorFragment extends Fragment {
         mOutfitName = (TextView) mCreatorView.findViewById(R.id.input_outfit_name);
         mItemDetailPopup = mCreatorView.findViewById(R.id.item_detail_popup);
 
-        IParseService service = new MockParseService(getActivity().getApplicationContext());
+        ParseService service = new ParseService(getActivity().getApplicationContext());
 
+        final OutfitItemAdapter outfitItemAdapter = new OutfitItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_outfit_view);
+        mOutfitGrid.setAdapter(outfitItemAdapter);
+        service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
+            @Override
+            public void onSuccess(List<OutfitItem> items) {
+                outfitItemAdapter.setItems(items);
+            }
 
-        mOutfitGrid.setAdapter(service.getOutfitItemAdapter(getActivity(), null, null));
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
 
         setupClosetScrollers();
         setOnClickListeners();
@@ -136,7 +147,7 @@ public class CreatorFragment extends Fragment {
 
     private void setupClosetScrollers() {
         mTopsView = (LinearLayout) mCreatorView.findViewById(R.id.tops_view);
-        new MockParseService(getActivity().getApplicationContext()).getTops(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+        new ParseService(getActivity().getApplicationContext()).getTops(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mTops = items;
@@ -160,7 +171,7 @@ public class CreatorFragment extends Fragment {
 
 
         mBottomsView = (LinearLayout) mCreatorView.findViewById(R.id.bottoms_view);
-        new MockParseService(getActivity().getApplicationContext()).getBottoms(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+        new ParseService(getActivity().getApplicationContext()).getBottoms(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mBottoms = items;
@@ -185,7 +196,7 @@ public class CreatorFragment extends Fragment {
         });
 
         mShoesView = (LinearLayout) mCreatorView.findViewById(R.id.shoes_view);
-        new MockParseService(getActivity().getApplicationContext()).getShoes(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+        new ParseService(getActivity().getApplicationContext()).getShoes(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mShoes = items;

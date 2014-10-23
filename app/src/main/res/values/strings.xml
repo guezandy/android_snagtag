@@ -94,7 +94,7 @@
     <!--Tutorial texts-->
     <string name="label_tutorial_title">Here\'s how it works:</string>
     <string name="label_tutorial_step_1">1. Swipe Snagtags with your phone, pick a size and color add them to your card</string>
-    <string name="label_tutorial_step_2">2. Use the Outfit Editor to match your Snags to items you already own</string>
+    <string name="label_tutorial_step_2">2. Use the Outfit Editor to match your Snags to mItems you already own</string>
     <string name="label_tutorial_step_3">3. Purchase your Snags easily and securely</string>
     <string name="label_get_snagging">Got it, get Snagging! &gt;&gt;</string>
 

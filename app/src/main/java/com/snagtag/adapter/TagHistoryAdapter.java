@@ -149,6 +149,6 @@ public class TagHistoryAdapter extends ParseQueryAdapter<TagHistoryItem> {
     private void deleteFromTagHistory(TagHistoryItem item) {
         item.setVisible(false);
         item.saveInBackground();
-        //TODO: unpin all items with false as visibility we don't need to store them locally
+        //TODO: unpin all mItems with false as visibility we don't need to store them locally
     }
 }
