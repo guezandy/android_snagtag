@@ -61,6 +61,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
                 item.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        mItems.remove(item);
                         TagHistoryItemAdapter.this.notifyDataSetChanged();
                     }
                 });
@@ -90,7 +91,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
 
         TextView cost = (TextView) v.findViewById(R.id.item_cost);
         cost.setText(String.format(mContext.getResources().getString(R.string.item_cost), item.getPrice()));
-//TODO: Reload the list after each one of these is pressed.
+
         com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
         if (item.getInCart()) {
             cart.setEnabled(false);

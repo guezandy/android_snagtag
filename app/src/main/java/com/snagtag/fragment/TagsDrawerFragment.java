@@ -105,7 +105,7 @@ public class TagsDrawerFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContainer = inflater.inflate(R.layout.fragment_tags_drawer, container);
-        //tagHistoryAdapter = new TagHistoryAdapter(getActivity());
+
         mStoreLayout = (LinearLayout) mContainer.findViewById(R.id.store_layout);
         mParseService.getStoresByTags(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
             @Override
@@ -138,7 +138,11 @@ public class TagsDrawerFragment extends Fragment {
                                     @Override
                                     public void onSuccess(List<TagHistoryItem> items) {
                                         gridAdapter.setItems(items);
-                                        flipper.setDisplayedChild(1);
+                                        if(items != null && items.size() > 0) {
+                                            flipper.setDisplayedChild(1);
+                                        } else {
+                                            flipper.setDisplayedChild(2);
+                                        }
                                     }
 
                                     @Override

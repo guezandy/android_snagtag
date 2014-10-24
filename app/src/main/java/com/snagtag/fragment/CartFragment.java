@@ -20,6 +20,7 @@ import com.snagtag.models.CartItem;
 import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
 import com.snagtag.utils.Constant;
+import com.snagtag.utils.FormatUtils;
 import com.snagtag.utils.FragmentUtil;
 
 import java.util.List;
@@ -33,10 +34,8 @@ public class CartFragment extends Fragment {
     private static final float COLUMN_WIDTH = 49f;
 
     private ViewFlipper mView;
-    private LinearLayout storeListLayout;
+    private LinearLayout mStoreListLayout;
     private ParseService mParseService;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class CartFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = (ViewFlipper) inflater.inflate(R.layout.fragment_cart, container, false);
-        storeListLayout = (LinearLayout) mView.findViewById(R.id.cart_list_store);
+        mStoreListLayout = (LinearLayout) mView.findViewById(R.id.cart_list_store);
         mParseService = new ParseService(getActivity().getApplicationContext());
         mParseService.getStoresByCartItems(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
             @Override
@@ -54,7 +53,11 @@ public class CartFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
+                        if(items == null || items.size()==0) {
+                            TextView noItemsView = new TextView(getActivity());
+                            noItemsView.setText("No Carts to display");
+                            mStoreListLayout.addView(noItemsView);
+                        }
                         for (final String store : items) {
                             final View storeView = inflater.inflate(R.layout.row_item_cart_store, null);
                             TextView title = (TextView) storeView.findViewById(R.id.title_store_name);
@@ -93,17 +96,15 @@ public class CartFragment extends Fragment {
                                         @Override
                                         public void run() {
                                             cartItemAdapter.setItems(items);
-                                            
                                         }
                                     });
                                 }
 
                                 @Override
                                 public void onFail(String message) {
-
+                                    //TODO:Show User error Message
                                 }
                             });
-
 
                             header.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -125,7 +126,7 @@ public class CartFragment extends Fragment {
                                                 openIndicator.setRotation(0);
                                                 double total = 0.0;
                                                 for (int i = 0; i < cartItemAdapter.getCount(); i++) {
-                                                    CartItem item = (CartItem) cartItemAdapter.getItem(i);
+                                                    CartItem item = cartItemAdapter.getItem(i);
                                                     total = total + item.getItem().getPrice();
                                                 }
 
@@ -147,21 +148,15 @@ public class CartFragment extends Fragment {
                                         detailLayout.startAnimation(anim);
                                         detailLayout.setVisibility(View.VISIBLE);
                                         openIndicator.setRotation(180);
-
-
-
-
                                         totalView.setVisibility(View.GONE);
                                         countView.setVisibility(View.GONE);
                                     }
                                 }
                             });
-                            storeListLayout.addView(storeView);
+                            mStoreListLayout.addView(storeView);
                         }
                     }
                 });
-
-
             }
 
             @Override
@@ -169,16 +164,12 @@ public class CartFragment extends Fragment {
 
             }
         });
-
-
         return mView;
     }
 
-    /*public int getDip(int pixel) {
-        float scale = getActivity().getBaseContext().getResources().getDisplayMetrics().density;
-        return (int) (pixel * scale + 0.5f);
-    }*/
-
+    /**
+     * Listens for changes to the cartItems and then updates the view.
+     */
     class CartItemsObserver extends DataSetObserver {
 
         private BaseAdapter itemsAdapter;
@@ -201,6 +192,7 @@ public class CartFragment extends Fragment {
             double totalCost = 0.0;
             LinearLayout currentRow = null;
             grid.removeAllViews();
+
             for (int i = 0; i < itemsAdapter.getCount(); i++) {
                 totalCost = totalCost + ((CartItem)itemsAdapter.getItem(i)).getItem().getPrice();
                 if (i % 2 == 0) {
@@ -220,7 +212,7 @@ public class CartFragment extends Fragment {
                 v.setLayoutParams(loparams);
                 currentRow.addView(v);
             }
-            totalView.setText(String.format(getString(R.string.cart_store_subtotal), totalCost));
+            totalView.setText(String.format(getString(R.string.cart_store_subtotal), FormatUtils.formatCurrency(totalCost)));
             itemsView.setText(String.format(getString(R.string.cart_store_count), itemsAdapter.getCount()));
         }
     }

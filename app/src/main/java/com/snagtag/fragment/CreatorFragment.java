@@ -129,8 +129,13 @@ public class CreatorFragment extends Fragment {
         mOutfitGrid.setAdapter(outfitItemAdapter);
         service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
             @Override
-            public void onSuccess(List<OutfitItem> items) {
-                outfitItemAdapter.setItems(items);
+            public void onSuccess(final List<OutfitItem> items) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        outfitItemAdapter.setItems(items);
+                    }
+                });
             }
 
             @Override

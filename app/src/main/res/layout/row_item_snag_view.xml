@@ -57,7 +57,14 @@
             android:padding="2dp"
 
             >
+
             <!-- Dynamically add row_item_clothing_view.xml here -->
         </com.snagtag.grid.FittingGridView>
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="No Snags at this store"
+            android:textSize="36sp"
+            android:layout_height="wrap_content" />
     </ViewFlipper>
 </LinearLayout>
