@@ -21,6 +21,7 @@ import android.widget.Toast;
 import static com.snagtag.utils.Constant.*;
 
 
+import com.parse.ParseUser;
 import com.snagtag.fragment.AccountFragment;
 import com.snagtag.fragment.CartFragment;
 
@@ -89,6 +90,11 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ParseUser user = ParseUser.getCurrentUser();
+        if(user == null) {
+            Intent i = new Intent(MainActivity.this, ParseLoginDispatchActivity.class);
+            startActivity(i);
+        }
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
