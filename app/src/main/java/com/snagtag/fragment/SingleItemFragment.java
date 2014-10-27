@@ -131,24 +131,35 @@ public void onItemSnagged(String nfcid) {
       /* 3 */
                 Log.i(TAG, "Add item to tag history table");
                 final TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
+
                 tag.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
       /* 5 */
                         //Adding to local database here to avoid thread overlap
                         //TODO: Check for unique
-                        tag.pinInBackground();
+                        //tag.pinInBackground();
+
                     }
                 }); //saves to the universal tag history table
-	  /* 4 */
-                ParseUser user = ParseUser.getCurrentUser();//gets the current user
-                if(user != null) { //Allows an nfc intent even if not registered.
-                    ParseRelation usersTags = user.getRelation("user_tags"); //gets all the users tags
-                    //TODO: Add if unique
-                    usersTags.add(tag);
-                    //userTags.addUnique(object);//add if unique
-                    user.saveEventually();
-                }
+
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.getInBackground(tag.getObjectId(), new GetCallback<TagHistoryItem>() {
+                    public void done(TagHistoryItem object, ParseException e) {
+                        if (e == null) {
+                            // object will be your game score
+                            ParseUser user = ParseUser.getCurrentUser();
+                            if(user != null) {
+                                ParseRelation relation = user.getRelation("user_tags");
+                                relation.add(object);
+                                user.saveInBackground();
+                            }
+                        } else {
+                            // something went wrong
+                        }
+                    }
+                });
+
             }
         }
     });
