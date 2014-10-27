@@ -13,11 +13,11 @@
         tools:src="@drawable/ic_launcher"/>
     <com.snagtag.ui.IconCustomTextView
         android:id="@+id/button_delete"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/delete_circle_diameter"
+        android:layout_height="@dimen/delete_circle_diameter"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:textSize="16dp"
+        android:textSize="@dimen/text_size_close"
         android:textColor="@color/white"
         android:gravity="center"
         android:text="@string/icon_delete"

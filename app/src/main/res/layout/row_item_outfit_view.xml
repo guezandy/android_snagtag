@@ -14,7 +14,7 @@
         android:layout_margin="12dp"
         android:text="@string/icon_delete"
         android:gravity="center"
-        android:textSize="24sp"
+        android:textSize="@dimen/text_size_close"
         android:textColor="@color/white"
         android:background="@drawable/circle_grey"
         />
