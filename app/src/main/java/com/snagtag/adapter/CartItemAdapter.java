@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 import com.parse.ParseImageView;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.TagHistoryItem;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -78,6 +81,7 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
         private TextView color;
         private TextView size;
         private TextView cost;
+        private TextView deleteButton;
         private ParseImageView image;
 
         private View itemCart;
@@ -89,10 +93,11 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
             this.cost = (TextView) rootView.findViewById(R.id.item_cost);
             this.image = (ParseImageView) rootView.findViewById(R.id.item_image);
             this.itemCart = rootView.findViewById(R.id.item_cart);
+            this.deleteButton = (TextView)rootView.findViewById(R.id.button_delete);
             setItem(item);
         }
 
-        public void setItem(TagHistoryItem item) {
+        public void setItem(final TagHistoryItem item) {
             if(this.description != null) {
                 this.description.setText(item.getDescription());
             }
@@ -115,7 +120,23 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
             if (item.getInCart() && this.itemCart != null) {
                 this.itemCart.setEnabled(false);
             }
-
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    item.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            for(Iterator<CartItem> iter = items.iterator(); iter.hasNext();) {
+                                CartItem cartItem = iter.next();
+                                if(cartItem.getItem()==item) {
+                                    iter.remove();
+                                }
+                            }
+                            CartItemAdapter.this.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
         }
     }
 }

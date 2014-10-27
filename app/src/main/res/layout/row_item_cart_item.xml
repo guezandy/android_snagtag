@@ -9,17 +9,17 @@
     tools:layout_width="160dp"
     android:layout_height="150dp"
     android:background="@color/white">
-    <TextView
-        android:id="@+id/delete_item"
-        android:layout_width="wrap_content"
-        android:text="X"
+    <com.snagtag.ui.IconCustomTextView
+        android:id="@+id/button_delete"
+        android:layout_width="@dimen/delete_circle_diameter"
+        android:text="@string/icon_delete"
         android:textSize="8sp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="2dp"
         android:gravity="center"
         android:textColor="@color/white"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/delete_circle_diameter"
         android:background="@drawable/circle_grey"/>
     <com.parse.ParseImageView
         android:id="@+id/item_image"

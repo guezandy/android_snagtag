@@ -118,8 +118,14 @@ public class CheckoutFragment extends Fragment {
 
         new ParseService(getActivity().getApplicationContext()).getCartItems(getActivity().getApplicationContext(), mStore, new IParseCallback<List<CartItem>>() {
             @Override
-            public void onSuccess(List<CartItem> items) {
-                checkoutAdapter.setItems(items);
+            public void onSuccess(final List<CartItem> items) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkoutAdapter.setItems(items);
+                    }
+                });
+
             }
 
             @Override

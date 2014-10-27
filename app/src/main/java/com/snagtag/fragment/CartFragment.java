@@ -67,6 +67,7 @@ public class CartFragment extends Fragment {
                             final View detailLayout = storeView.findViewById(R.id.detail_layout);
 
                             final TextView totalView = (TextView) storeView.findViewById(R.id.item_cost);
+                            final TextView totalViewFooter = (TextView) storeView.findViewById(R.id.item_subtotal);
                             final TextView countView = (TextView) storeView.findViewById(R.id.item_summary);
 
                             View checkout = storeView.findViewById(R.id.button_checkout);
@@ -84,7 +85,7 @@ public class CartFragment extends Fragment {
                             });
 
                             final LinearLayout itemGrid = (LinearLayout) storeView.findViewById(R.id.item_grid);
-                            CartItemsObserver caObserver = new CartItemsObserver(null, itemGrid, countView, totalView);
+                            CartItemsObserver caObserver = new CartItemsObserver(null, itemGrid, countView, totalView, totalViewFooter);
                             final CartItemAdapter cartItemAdapter = new CartItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_cart_item);
                             caObserver.setItemsAdapter(cartItemAdapter);
                             cartItemAdapter.registerDataSetObserver(caObserver);
@@ -173,13 +174,14 @@ public class CartFragment extends Fragment {
     class CartItemsObserver extends DataSetObserver {
 
         private BaseAdapter itemsAdapter;
-        private TextView itemsView, totalView;
+        private TextView itemsView, totalView, totalViewFooter;
         private LinearLayout grid;
 
-        public CartItemsObserver(BaseAdapter itemsAdapter, LinearLayout grid, TextView itemsView, TextView totalView) {
+        public CartItemsObserver(BaseAdapter itemsAdapter, LinearLayout grid, TextView itemsView, TextView totalView, TextView totalViewFooter) {
             this.itemsAdapter = itemsAdapter;
             this.totalView = totalView;
             this.itemsView = itemsView;
+            this.totalViewFooter = totalViewFooter;
             this.grid = grid;
         }
 
@@ -212,7 +214,19 @@ public class CartFragment extends Fragment {
                 v.setLayoutParams(loparams);
                 currentRow.addView(v);
             }
+            //Add an empty view if there are an odd number of items
+            if(itemsAdapter.getCount()%2 != 0) {
+                LinearLayout empty = new LinearLayout(getActivity());
+                LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) empty.getLayoutParams();
+                if (loparams == null) {
+                    loparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, COLUMN_WIDTH);
+                    loparams.setMargins(2, 0, 2, 0);
+                }
+                empty.setLayoutParams(loparams);
+                ((LinearLayout)grid.getChildAt(grid.getChildCount()-1)).addView(empty);
+            }
             totalView.setText(String.format(getString(R.string.cart_store_subtotal), FormatUtils.formatCurrency(totalCost)));
+            totalViewFooter.setText(String.format(getString(R.string.cart_store_subtotal), FormatUtils.formatCurrency(totalCost)));
             itemsView.setText(String.format(getString(R.string.cart_store_count), itemsAdapter.getCount()));
         }
     }

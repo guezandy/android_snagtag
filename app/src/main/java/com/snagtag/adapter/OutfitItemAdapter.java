@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
 import com.parse.ParseImageView;
 import com.snagtag.R;
 import com.snagtag.models.OutfitItem;
@@ -75,6 +77,7 @@ public class OutfitItemAdapter extends ArrayAdapter<OutfitItem> {
         private ParseImageView topImage;
         private ParseImageView bottomImage;
         private ParseImageView shoesImage;
+        private TextView deleteView;
         private TextView outfitName;
 
         public OutfitItemClothingHolder(View rootView, OutfitItem item) {
@@ -83,10 +86,11 @@ public class OutfitItemAdapter extends ArrayAdapter<OutfitItem> {
             this.bottomImage = (ParseImageView) rootView.findViewById(R.id.image_bottom);
             this.shoesImage = (ParseImageView) rootView.findViewById(R.id.image_shoes);
             this.outfitName = (TextView) rootView.findViewById(R.id.text_outfit_name);
+            this.deleteView = (TextView) rootView.findViewById(R.id.button_delete);
             setItem(item);
         }
 
-        public void setItem(OutfitItem item) {
+        public void setItem(final OutfitItem item) {
             this.item = item;
             topImage.setParseFile(item.getTopImage());
             topImage.loadInBackground();
@@ -95,6 +99,20 @@ public class OutfitItemAdapter extends ArrayAdapter<OutfitItem> {
             shoesImage.setParseFile(item.getShoesImage());
             shoesImage.loadInBackground();
             outfitName.setText(item.getOutfitTitle());
+            deleteView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    item.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            items.remove(item);
+                            OutfitItemAdapter.this.notifyDataSetChanged();
+                        }
+                    });
+
+
+                }
+            });
         }
     }
 }
