@@ -1,12 +1,17 @@
 package com.snagtag;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.ClothingItem;
@@ -20,6 +25,11 @@ import com.snagtag.models.TagHistoryItem;
 
 public class SnagtagApplication extends Application {
     private final static String TAG = SnagtagApplication.class.getSimpleName();
+    public ParseUser user;
+    // Key for saving the search distance preference
+    private static final String KEY_PARSE_USER = "user";
+    private static SharedPreferences preferences;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -33,7 +43,7 @@ public class SnagtagApplication extends Application {
         ParseObject.registerSubclass(OutfitItem.class);
         ParseObject.registerSubclass(TagHistoryItem.class);
         ParseObject.registerSubclass(CartItem.class);
-
+        preferences = getSharedPreferences("com.snagtag", Context.MODE_PRIVATE);
         /*
             Initialize the ability to store data locally
          */
@@ -60,7 +70,7 @@ public class SnagtagApplication extends Application {
          * Learn more about the ParseUser class:
          * https://www.parse.com/docs/android_guide#users
          */
-        ParseUser.enableAutomaticUser();
+        //ParseUser.enableAutomaticUser();
 
         /*
          * For more information on app security and Parse ACL:
@@ -75,5 +85,32 @@ public class SnagtagApplication extends Application {
         defaultACL.setPublicReadAccess(true);
 
         ParseACL.setDefaultACL(defaultACL, true);
+
+
+    }
+
+    public static void setUserId(String userId) {
+        preferences.edit().putString(KEY_PARSE_USER, userId).commit();
+    }
+
+    public static ParseUser getUser() {
+          final String userId = preferences.getString(KEY_PARSE_USER, "");
+
+          ParseQuery<ParseUser> query = ParseUser.getQuery();
+          query.getInBackground(userId, new GetCallback<ParseUser>(){
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if(user != null) {
+                    Log.i(TAG, "We got the user in the application class");
+                    Log.i(TAG, user.getString("first_name"));
+                    //theUser = user;
+                }
+                else {
+                    Log.i(TAG, "We didnt get the user in the class");
+                }
+            }
+          });
+          return ParseUser.getCurrentUser();
+
     }
 }

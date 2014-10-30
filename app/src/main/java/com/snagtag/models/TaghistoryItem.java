@@ -1,5 +1,7 @@
 package com.snagtag.models;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -14,6 +16,8 @@ import com.parse.ParseUser;
 
 @ParseClassName("TagHistoryItem")
 public class TagHistoryItem extends ParseObject {
+    private final String TAG = TagHistoryItem.class.getSimpleName();
+
 /*
     A tag contains:
     unique id : tagId
@@ -24,7 +28,40 @@ public class TagHistoryItem extends ParseObject {
     //TagModel constructor with a clothingItem
     public TagHistoryItem(ClothingItem tagged) {
         this.setBarcode(tagged.getBarcode());
+
+        ParseUser user = ParseUser.getCurrentUser();
+//        Log.i(TAG, user.getString("first_name"));
         this.setUser(ParseUser.getCurrentUser());
+
+        this.setRelation(this);
+        //theUser.saveInBackground();
+
+        //do we want to add more info in a tag
+        //YES so we can save the info to access them off line
+        //We need:
+        //Store
+        //description
+        //color selected (default to no color selected or one color)
+        //size selected (default prompt them to pick one)
+        this.setStore(tagged.getStore());
+        this.setDescription(tagged.getDescription());
+        //this.put("size", tagged.getString("size")); //does each clothing item have a size?
+        this.setPrice(tagged.getPrice());
+        this.setImage(tagged.getMainImage());
+        this.setInCart(false);
+        this.setInCloset(false);
+        this.setVisible(true);
+    }
+
+    public TagHistoryItem(ClothingItem tagged, ParseUser user) {
+        this.setBarcode(tagged.getBarcode());
+
+       // ParseUser user = ParseUser.getCurrentUser();
+        Log.i(TAG, user.getString("first_name"));
+        this.setUser(user);
+
+        //this.setRelation(this);
+        //theUser.saveInBackground();
 
         //do we want to add more info in a tag
         //YES so we can save the info to access them off line
@@ -119,4 +156,12 @@ public class TagHistoryItem extends ParseObject {
     public String getBarcode() { return getString("barcode");   }
 
     public void setBarcode(String barcode) { this.put("barcode", barcode);}
+
+    public void setRelation(final TagHistoryItem item) {
+        if(item != null) {
+            Log.i(TAG, "Adding to relation");
+            ParseRelation relation = ParseUser.getCurrentUser().getRelation("user_tags");
+            relation.add(item);
+        }
+    }
 }

@@ -20,6 +20,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.snagtag.R;
+import com.snagtag.SnagtagApplication;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.TagHistoryItem;
 
@@ -63,6 +64,11 @@ public class SingleItemFragment extends Fragment {
         mItemView = (RelativeLayout) inflater.inflate(
                 R.layout.fragment_item_detail_view, container, false);
         Log.i(TAG, "ID is: " + barcode);
+
+        ParseUser u = SnagtagApplication.getUser();
+        if(u!= null) {
+            Log.i(TAG, u.getString("first_name"));
+        }
         brand = (TextView) mItemView.findViewById(R.id.label_brand);
         description = (TextView) mItemView.findViewById(R.id.label_description);
         price = (TextView) mItemView.findViewById(R.id.label_price);
@@ -70,6 +76,7 @@ public class SingleItemFragment extends Fragment {
 
         //TODO: Move into service
         onItemSnagged(barcode);
+        createRelation(ParseUser.getCurrentUser());
 
         return mItemView;
     }
@@ -132,36 +139,32 @@ public void onItemSnagged(String nfcid) {
                 Log.i(TAG, "Add item to tag history table");
                 final TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
 
-                tag.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-      /* 5 */
-                        //Adding to local database here to avoid thread overlap
-                        //TODO: Check for unique
-                        //tag.pinInBackground();
-
-                    }
-                }); //saves to the universal tag history table
-
-                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
-                query.getInBackground(tag.getObjectId(), new GetCallback<TagHistoryItem>() {
-                    public void done(TagHistoryItem object, ParseException e) {
-                        if (e == null) {
-                            // object will be your game score
-                            ParseUser user = ParseUser.getCurrentUser();
-                            if(user != null) {
-                                ParseRelation relation = user.getRelation("user_tags");
-                                relation.add(object);
-                                user.saveInBackground();
-                            }
-                        } else {
-                            // something went wrong
-                        }
-                    }
-                });
-
+                //tag.saveInBackground(); //saves to the universal tag history table
+                Log.i(TAG, "item saved");
             }
         }
     });
+    }
+
+    public void createRelation(final ParseUser user) {
+        if(user == null) {
+            Log.i(TAG, "user is null");
+        } else {
+            Log.i(TAG, "user is not null");
+            final ParseRelation<TagHistoryItem> relation = user.getRelation("user_tags");
+            if(relation == null) {
+                Log.i(TAG, "relation is empty");
+            } else {
+                Log.i(TAG, "relation is not empty");
+            }
+            final ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+            query.getFirstInBackground(new GetCallback<TagHistoryItem>() {
+                @Override
+                public void done(final TagHistoryItem item, ParseException e) {
+                      //  relation.add(item);
+                      //  user.saveInBackground();
+                }
+            });
+        }
     }
 }

@@ -86,12 +86,12 @@ public class ParseLoginDispatchActivity extends Activity {
         //TODO: remove this debugging code set to true to skip login
         boolean debugMode = true;
         if (debugMode) {
-            username.setText("demo@snagtagapp.com");
+            username.setText("demo2@snagtagapp.com");
             password.setText("demo");
             loginButton.callOnClick();
         }
     }
-
+//TODO: fix login failed
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -147,6 +147,7 @@ public class ParseLoginDispatchActivity extends Activity {
                     Toast.makeText(getApplicationContext(),
                             "Welcome, " + user.getString("first_name"),
                             Toast.LENGTH_SHORT).show();
+                    SnagtagApplication.setUserId(user.getObjectId());
                     Intent i = new Intent(ParseLoginDispatchActivity.this,
                             MainActivity.class);
                     startActivity(i);
