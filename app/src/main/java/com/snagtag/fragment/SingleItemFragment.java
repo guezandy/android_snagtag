@@ -139,7 +139,7 @@ public void onItemSnagged(String nfcid) {
                 Log.i(TAG, "Add item to tag history table");
                 final TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
 
-                //tag.saveInBackground(); //saves to the universal tag history table
+                tag.saveInBackground(); //saves to the universal tag history table
                 Log.i(TAG, "item saved");
             }
         }

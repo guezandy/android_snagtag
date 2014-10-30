@@ -1,6 +1,7 @@
 package com.snagtag.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -240,15 +241,23 @@ public class CreatorFragment extends Fragment {
         imageView.loadInBackground();
     }
 
-    private void setSelected(View tagIndicator, ParseImageView imageView, ParseFile image, boolean inCloset, CenteringHorizontalScrollView scroller, int scrollIndex) {
+    private void setSelected(View tagIndicator, ParseImageView imageView, ParseFile image, boolean inCloset, final CenteringHorizontalScrollView scroller, int scrollIndex) {
         if (!inCloset) {
             tagIndicator.setVisibility(View.VISIBLE);
         }
         imageView.setParseFile(image);
         imageView.loadInBackground();
-        float offset = getResources().getDimension(R.dimen.item_selector_width) * scrollIndex;
-        scroller.setScrollX((int) offset);
-        scroller.setCenter();
+        final float offset = getResources().getDimension(R.dimen.item_selector_width) * scrollIndex;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scroller.setScrollX((int) offset);
+                scroller.setCenter();
+            }
+        }, 200);
+
+
 
     }
 

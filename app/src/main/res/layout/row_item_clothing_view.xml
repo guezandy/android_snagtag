@@ -12,7 +12,7 @@
         android:id="@+id/delete_item"
         android:layout_width="@dimen/delete_circle_diameter"
         android:text="@string/icon_delete"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_close"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"

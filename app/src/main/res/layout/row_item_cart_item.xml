@@ -13,7 +13,7 @@
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_circle_diameter"
         android:text="@string/icon_delete"
-        android:textSize="8sp"
+        android:textSize="@dimen/text_size_close"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="2dp"
