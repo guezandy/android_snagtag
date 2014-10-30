@@ -141,6 +141,41 @@ public void onItemSnagged(String nfcid) {
 
                 tag.saveInBackground(); //saves to the universal tag history table
                 Log.i(TAG, "item saved");
+
+                tag.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+      /* 5 */
+                        //Adding to local database here to avoid thread overlap
+                        //TODO: Check for unique
+                        tag.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+
+                            }
+                        });
+
+                    }
+                }); //saves to the universal tag history table
+
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.getInBackground(tag.getObjectId(), new GetCallback<TagHistoryItem>() {
+                    public void done(TagHistoryItem object, ParseException e) {
+                        if (e == null) {
+                            // object will be your game score
+                            ParseUser user = ParseUser.getCurrentUser();
+
+                            if(user != null) {
+                                ParseRelation relation = user.getRelation("user_tags");
+                                relation.add(object);
+                                user.saveInBackground();
+                            }
+                        } else {
+                            // something went wrong
+                        }
+                    }
+                });
+
             }
         }
     });

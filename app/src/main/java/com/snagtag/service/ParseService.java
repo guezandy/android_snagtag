@@ -193,10 +193,7 @@ public class ParseService {
             }
         });
         t.start();
-
-
     }
-
 
     public void getTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
         final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
@@ -207,15 +204,11 @@ public class ParseService {
                     TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
                     mockItems.add(item);
                 }
-
                 callback.onSuccess(mockItems);
             }
         });
         t.start();
-
-
     }
-
 
     public void getBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
         final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
@@ -303,6 +296,8 @@ public class ParseService {
         });
         t.start();
     }
+
+
     //TODO: Remove me, for testing only
     private TagHistoryItem buildDummyTagHistoryItem(String store, int i, Context context) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
