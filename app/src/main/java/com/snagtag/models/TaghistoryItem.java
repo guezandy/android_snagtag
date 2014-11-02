@@ -28,12 +28,9 @@ public class TagHistoryItem extends ParseObject {
     //TagModel constructor with a clothingItem
     public TagHistoryItem(ClothingItem tagged) {
         this.setBarcode(tagged.getBarcode());
-
-        ParseUser user = ParseUser.getCurrentUser();
-//        Log.i(TAG, user.getString("first_name"));
         this.setUser(ParseUser.getCurrentUser());
 
-        this.setRelation(this);
+//        this.setRelation(this);
         //theUser.saveInBackground();
 
         //do we want to add more info in a tag
@@ -51,34 +48,11 @@ public class TagHistoryItem extends ParseObject {
         this.setInCart(false);
         this.setInCloset(false);
         this.setVisible(true);
+
+        ParseUser theUser = this.getUser();
+        Log.i(TAG, "Inside the get user: "+theUser.getString("first_name"));
     }
 
-    public TagHistoryItem(ClothingItem tagged, ParseUser user) {
-        this.setBarcode(tagged.getBarcode());
-
-       // ParseUser user = ParseUser.getCurrentUser();
-        Log.i(TAG, user.getString("first_name"));
-        this.setUser(user);
-
-        //this.setRelation(this);
-        //theUser.saveInBackground();
-
-        //do we want to add more info in a tag
-        //YES so we can save the info to access them off line
-        //We need:
-        //Store
-        //description
-        //color selected (default to no color selected or one color)
-        //size selected (default prompt them to pick one)
-        this.setStore(tagged.getStore());
-        this.setDescription(tagged.getDescription());
-        //this.put("size", tagged.getString("size")); //does each clothing item have a size?
-        this.setPrice(tagged.getPrice());
-        this.setImage(tagged.getMainImage());
-        this.setInCart(false);
-        this.setInCloset(false);
-        this.setVisible(true);
-    }
 
     public TagHistoryItem() {
         //required default constructer
@@ -109,11 +83,11 @@ public class TagHistoryItem extends ParseObject {
     }
 
     public void setUser(ParseUser user) {
-        //put("user", user);
-        if(user != null) {
-            ParseRelation relation = this.getRelation("user");
-            relation.add(user);
-        }
+        put("user", user);
+        //if(user != null) {
+        //    ParseRelation relation = this.getRelation("user");
+        //    relation.add(user);
+        //}
     }
 //TODO: fix this!
     public ParseUser getUser() {
@@ -139,6 +113,7 @@ public class TagHistoryItem extends ParseObject {
 
     public Double getPrice() {
         return (Double)this.getNumber("price");
+        //return Double.parseDouble(this.getString("price"));
     }
 
     public void setPrice(Double price) {
@@ -157,11 +132,11 @@ public class TagHistoryItem extends ParseObject {
 
     public void setBarcode(String barcode) { this.put("barcode", barcode);}
 
-    public void setRelation(final TagHistoryItem item) {
-        if(item != null) {
-            Log.i(TAG, "Adding to relation");
-            ParseRelation relation = ParseUser.getCurrentUser().getRelation("user_tags");
-            relation.add(item);
-        }
-    }
+//    public void setRelation(final TagHistoryItem item) {
+//        if(item != null) {
+//            Log.i(TAG, "Adding to relation");
+//            ParseRelation relation = ParseUser.getCurrentUser().getRelation("user_tags");
+//            relation.add(item);
+//        }
+//    }
 }

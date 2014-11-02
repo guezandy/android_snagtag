@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -23,6 +24,8 @@ import com.snagtag.R;
 import com.snagtag.SnagtagApplication;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.TagHistoryItem;
+
+import java.util.List;
 
 /**
  * This fragment displays a single clothing item
@@ -50,10 +53,20 @@ public class SingleItemFragment extends Fragment {
     private TextView description;
     private TextView price;
     private ParseImageView image;
-
+    private String tagObjectId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "Inside on resume");
+        while(tagObjectId != null) {
+            Log.i(TAG, "TagObjectId is null");
+        }
+//        createRelation(ParseUser.getCurrentUser(), tagObjectId);
     }
 
     @Override
@@ -65,10 +78,10 @@ public class SingleItemFragment extends Fragment {
                 R.layout.fragment_item_detail_view, container, false);
         Log.i(TAG, "ID is: " + barcode);
 
-        ParseUser u = SnagtagApplication.getUser();
-        if(u!= null) {
-            Log.i(TAG, u.getString("first_name"));
-        }
+//        ParseUser u = SnagtagApplication.getUser();
+//        if(u!= null) {
+//            Log.i(TAG, u.getString("first_name"));
+//        }
         brand = (TextView) mItemView.findViewById(R.id.label_brand);
         description = (TextView) mItemView.findViewById(R.id.label_description);
         price = (TextView) mItemView.findViewById(R.id.label_price);
@@ -76,8 +89,6 @@ public class SingleItemFragment extends Fragment {
 
         //TODO: Move into service
         onItemSnagged(barcode);
-        createRelation(ParseUser.getCurrentUser());
-
         return mItemView;
     }
 
@@ -137,51 +148,36 @@ public void onItemSnagged(String nfcid) {
 
       /* 3 */
                 Log.i(TAG, "Add item to tag history table");
-                final TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
-
+                TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
+      /* 5 */
                 tag.saveInBackground(); //saves to the universal tag history table
                 Log.i(TAG, "item saved");
+                tagObjectId = tag.getObjectId();
 
-                tag.saveInBackground(new SaveCallback() {
+                ParseUser theUser = ParseUser.getCurrentUser();
+                //createRelation(theUser, tag.getObjectId());
+
+                Log.i(TAG, "The current user is:"+theUser.getString("first_name"));
+                ParseRelation relation = theUser.getRelation("user_tags");
+                Log.i(TAG, "the relation is: "+relation.toString());
+                //relation.add(tag);
+                //theUser.saveInBackground();
+
+                relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
                     @Override
-                    public void done(ParseException e) {
-      /* 5 */
-                        //Adding to local database here to avoid thread overlap
-                        //TODO: Check for unique
-                        tag.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-
-                            }
-                        });
-
-                    }
-                }); //saves to the universal tag history table
-
-                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
-                query.getInBackground(tag.getObjectId(), new GetCallback<TagHistoryItem>() {
-                    public void done(TagHistoryItem object, ParseException e) {
-                        if (e == null) {
-                            // object will be your game score
-                            ParseUser user = ParseUser.getCurrentUser();
-
-                            if(user != null) {
-                                ParseRelation relation = user.getRelation("user_tags");
-                                relation.add(object);
-                                user.saveInBackground();
-                            }
-                        } else {
-                            // something went wrong
+                    public void done(List<ParseObject> list, ParseException e) {
+                        for(ParseObject p : list) {
+                            Log.i(TAG, "Checking the relation: " + p.getObjectId());
                         }
                     }
                 });
-
+                Log.i(TAG, "The user is saved");
             }
         }
     });
     }
 
-    public void createRelation(final ParseUser user) {
+    public void createRelation(final ParseUser user, final String latestTagId) {
         if(user == null) {
             Log.i(TAG, "user is null");
         } else {
@@ -191,13 +187,16 @@ public void onItemSnagged(String nfcid) {
                 Log.i(TAG, "relation is empty");
             } else {
                 Log.i(TAG, "relation is not empty");
+
             }
             final ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
-            query.getFirstInBackground(new GetCallback<TagHistoryItem>() {
+            query.getInBackground(latestTagId, new GetCallback<TagHistoryItem>() {
                 @Override
                 public void done(final TagHistoryItem item, ParseException e) {
-                      //  relation.add(item);
-                      //  user.saveInBackground();
+                    Log.i(TAG, "Inside create relation and the item adding to relation is: "+item.getDescription());
+                        relation.add(item);
+                    Log.i(TAG, "User is: "+user.getString("first_name"));
+                        user.saveInBackground();
                 }
             });
         }
