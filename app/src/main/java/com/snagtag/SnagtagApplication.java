@@ -16,6 +16,7 @@ import com.parse.ParseUser;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.OutfitItem;
+import com.snagtag.models.StoreItem;
 import com.snagtag.models.TagHistoryItem;
 
 /**
@@ -43,6 +44,7 @@ public class SnagtagApplication extends Application {
         ParseObject.registerSubclass(OutfitItem.class);
         ParseObject.registerSubclass(TagHistoryItem.class);
         ParseObject.registerSubclass(CartItem.class);
+        ParseObject.registerSubclass(StoreItem.class);
         preferences = getSharedPreferences("com.snagtag", Context.MODE_PRIVATE);
         /*
             Initialize the ability to store data locally
