@@ -196,8 +196,8 @@ public void onItemSnagged(String nfcid) {
             query.getFirstInBackground(new GetCallback<TagHistoryItem>() {
                 @Override
                 public void done(final TagHistoryItem item, ParseException e) {
-                      //  relation.add(item);
-                      //  user.saveInBackground();
+                      relation.add(item);
+                      user.saveInBackground();
                 }
             });
         }
