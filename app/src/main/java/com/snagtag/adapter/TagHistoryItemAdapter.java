@@ -8,10 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
@@ -58,14 +61,21 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
             public void onClick(View v) {
                 // delete From Tag History
                 item.setVisible(false);
-                item.saveInBackground(new SaveCallback() {
+                item.saveInBackground();
+
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.getInBackground(item.getObjectId(), new GetCallback<TagHistoryItem>() {
                     @Override
-                    public void done(ParseException e) {
-                        mItems.remove(item);
-                        TagHistoryItemAdapter.this.notifyDataSetChanged();
+                    public void done(TagHistoryItem tagHistoryItem, ParseException e) {
+                        tagHistoryItem.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                mItems.remove(item);
+                                TagHistoryItemAdapter.this.notifyDataSetChanged();
+                            }
+                        });
                     }
                 });
-
                 //TODO: unpin all mItems with false as visibility we don't need to store them locally
             }
         });
@@ -84,7 +94,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
         }
 
         TextView color = (TextView) v.findViewById(R.id.item_color);
-        color.setText(String.format(mContext.getResources().getString(R.string.item_color), item.getString("color")));
+        color.setText(String.format(mContext.getResources().getString(R.string.item_color), item.getObjectId()/*item.getString("color")*/));
 
         TextView size = (TextView) v.findViewById(R.id.item_size);
         size.setText(String.format(mContext.getResources().getString(R.string.item_size), item.getString("size")));
@@ -94,7 +104,10 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
 
         com.snagtag.ui.IconCustomTextView cart = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.item_cart);
         if (item.getInCart()) {
+            //if in the cart then setEnabled to false
             cart.setEnabled(false);
+        } else {
+            cart.setEnabled(true);
         }
         cart.setOnClickListener(new View.OnClickListener() {
             @Override

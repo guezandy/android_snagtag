@@ -4,6 +4,7 @@ package com.snagtag.models;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Date;
@@ -26,6 +27,8 @@ public class CartItem extends ParseObject {
     public CartItem(TagHistoryItem item) {
         put("item", item);
         put("user", ParseUser.getCurrentUser());
+        put("itemId", item.getObjectId());
+        put("visible", true);
     }
 
     public void setItem(TagHistoryItem i) {
@@ -35,4 +38,5 @@ public class CartItem extends ParseObject {
     public TagHistoryItem getItem() {
         return (TagHistoryItem)this.get("item");
     }
+
 }

@@ -1,6 +1,7 @@
 package com.snagtag.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.parse.DeleteCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseImageView;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.TagHistoryItem;
+import com.snagtag.service.ParseService;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -22,6 +27,7 @@ import java.util.List;
  * Created by benjamin on 10/23/14.
  */
 public class CartItemAdapter extends ArrayAdapter<CartItem> {
+    private final String TAG = CartItemAdapter.class.getSimpleName();
     private Context mContext;
     private int mView;
 
@@ -102,11 +108,11 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
                 this.description.setText(item.getDescription());
             }
 
-            Double priceVal = item.getPrice();
+            //Double priceVal = item.getPrice();
             String colorVal = item.getString("color");
             String sizeVal = item.getString("size");
 
-            this.cost.setText(String.format(mContext.getResources().getString(R.string.item_cost), priceVal == null ? 0.00 : priceVal));
+            //this.cost.setText(String.format(mContext.getResources().getString(R.string.item_cost), priceVal == null ? 0.00 : priceVal));
             if(this.color != null) {
                 this.color.setText(String.format(mContext.getResources().getString(R.string.item_color), colorVal == null ? "" : colorVal));
             }
@@ -123,18 +129,27 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    item.deleteInBackground(new DeleteCallback() {
+                    item.setInCart(false);
+                    item.saveInBackground();
+                    ParseQuery<CartItem> query = ParseQuery.getQuery("CartItem");
+                    //query.whereEqualTo("user", ParseUser.getCurrentUser());
+                    query.whereEqualTo("itemId", item.getObjectId());
+                    query.getFirstInBackground(new GetCallback<CartItem>() {
                         @Override
-                        public void done(ParseException e) {
-                            for(Iterator<CartItem> iter = items.iterator(); iter.hasNext();) {
-                                CartItem cartItem = iter.next();
-                                if(cartItem.getItem()==item) {
-                                    iter.remove();
-                                }
+                        public void done(CartItem cartItem, ParseException e) {
+                            if(cartItem == null) {
+                                Log.i(TAG, "Didnt get the cart item to delete");
+                            } else {
+                                Log.i(TAG, "Deleting item");
+                                cartItem.deleteInBackground(new DeleteCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                    }
+                                });
                             }
-                            CartItemAdapter.this.notifyDataSetChanged();
                         }
                     });
+                    CartItemAdapter.this.notifyDataSetChanged();
                 }
             });
         }
