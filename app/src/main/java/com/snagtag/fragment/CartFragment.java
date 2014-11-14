@@ -4,6 +4,7 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.parse.ParseException;
 import com.snagtag.R;
 import com.snagtag.adapter.CartItemAdapter;
 import com.snagtag.models.CartItem;
@@ -196,6 +198,13 @@ public class CartFragment extends Fragment {
             grid.removeAllViews();
 
             for (int i = 0; i < itemsAdapter.getCount(); i++) {
+                CartItem cartItem = ((CartItem)itemsAdapter.getItem(i));
+                try {
+                    cartItem.getItem().fetchIfNeeded();
+                } catch(ParseException e) {
+                    Log.d("PARSE", e.getMessage());
+                }
+
                 totalCost = totalCost + ((CartItem)itemsAdapter.getItem(i)).getItem().getPrice();
                 if (i % 2 == 0) {
                     currentRow = new LinearLayout(getActivity());

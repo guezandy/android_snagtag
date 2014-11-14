@@ -52,6 +52,7 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
 
     @Override
     public CartItem getItem(int position) {
+
         return items.get(position);
     }
 
@@ -144,12 +145,16 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
                                 cartItem.deleteInBackground(new DeleteCallback() {
                                     @Override
                                     public void done(ParseException e) {
+                                        if(e != null) {
+                                            items.remove(item);
+                                            CartItemAdapter.this.notifyDataSetChanged();
+                                        }
                                     }
                                 });
                             }
                         }
                     });
-                    CartItemAdapter.this.notifyDataSetChanged();
+
                 }
             });
         }
