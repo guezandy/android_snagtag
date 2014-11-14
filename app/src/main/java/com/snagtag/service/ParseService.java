@@ -16,6 +16,7 @@ import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.OutfitItem;
+import com.snagtag.models.StoreItem;
 import com.snagtag.models.TagHistoryItem;
 
 import java.io.ByteArrayOutputStream;
@@ -72,9 +73,9 @@ public class ParseService {
                         set.add(snag.getStore().toString());
                     }
                     list.addAll(set);
-                    if(APPDEBUG) {
-                               list.add("Gap");
-                               list.add("Men's Warehouse");
+                    if (APPDEBUG) {
+                        list.add("Gap");
+                        list.add("Men's Warehouse");
                     }
                     storesCallback.onSuccess(list);
                 }
@@ -381,6 +382,35 @@ public class ParseService {
             }
         });
         t.start();
+    }
+
+    public void getAllStores(final Context context, final IParseCallback<List<StoreItem>> callback) {
+        final List<StoreItem> mockItems = new ArrayList<StoreItem>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+                    StoreItem item = buildDummyStoreItem(i, context);
+                    mockItems.add(item);
+                }
+
+                callback.onSuccess(mockItems);
+            }
+        });
+        t.start();
+    }
+
+    private StoreItem buildDummyStoreItem(int i, Context context) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] bitmapdata = stream.toByteArray();
+        StoreItem item = new StoreItem();
+        item.setImage(new ParseFile("store "+i, bitmapdata));
+        item.setStoreDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu.");
+        item.setStoreName(i + "Consectetur adipiscing elit");
+        return item;
+
     }
 
 

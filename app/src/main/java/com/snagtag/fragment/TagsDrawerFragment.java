@@ -107,6 +107,14 @@ public class TagsDrawerFragment extends Fragment {
         mContainer = inflater.inflate(R.layout.fragment_tags_drawer, container);
 
         mStoreLayout = (LinearLayout) mContainer.findViewById(R.id.store_layout);
+
+        return mContainer;
+    }
+
+    private void loadStores() {
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
+        mStoreLayout.removeAllViews();
+
         mParseService.getStoresByTags(getActivity().getApplicationContext(), new IParseCallback<List<String>>() {
             @Override
             public void onSuccess(List<String> items) {
@@ -162,9 +170,6 @@ public class TagsDrawerFragment extends Fragment {
                 Log.d("TAGS_DRAWER", "Parse failed " + message);
             }
         });
-
-
-        return mContainer;
     }
 
     public boolean isDrawerOpen() {
@@ -210,6 +215,7 @@ public class TagsDrawerFragment extends Fragment {
 
             @Override
             public void onDrawerOpened(View drawerView) {
+                loadStores();
                 super.onDrawerOpened(drawerView);
                 if (!isAdded()) {
                     return;

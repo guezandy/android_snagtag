@@ -6,6 +6,7 @@ import android.database.DataSetObserver;
 import android.widget.BaseAdapter;
 
 import com.parse.ParseQueryAdapter;
+import com.snagtag.models.StoreItem;
 import com.snagtag.models.TagHistoryItem;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public interface IParseService {
     public ParseQueryAdapter TagHistoryAdapter(Context context, String store, DataSetObserver dataChangedObserver);
 
     public void getTagHistory(final Context context, final String storey, final IParseCallback<List<TagHistoryItem>> itemsCallback);
+
+    public void getAllStores(final Context context, final IParseCallback<List<StoreItem>> itemsCallback);
     /**
      *Returns cart items
      * @param context

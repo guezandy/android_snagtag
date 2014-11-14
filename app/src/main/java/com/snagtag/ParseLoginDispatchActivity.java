@@ -144,7 +144,7 @@ public class ParseLoginDispatchActivity extends Activity {
         Log.i(TAG, "userLogin");
         ParseUser.logInInBackground(mUserEmail, mPassword, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
-                if (user != null) {
+                if (e == null) {
                     Toast.makeText(getApplicationContext(),
                             "Welcome, " + user.getString("first_name"),
                             Toast.LENGTH_SHORT).show();
@@ -159,6 +159,7 @@ public class ParseLoginDispatchActivity extends Activity {
                     Toast.makeText(getApplicationContext(),
                             "Login failed please try again", Toast.LENGTH_SHORT)
                             .show();
+                    ParseLoginDispatchActivity.this.progressDialog.dismiss();
                 }
             }
         });
