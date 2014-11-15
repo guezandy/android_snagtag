@@ -90,7 +90,6 @@ public class SnagtagApplication extends Application {
 
         ParseACL.setDefaultACL(defaultACL, true);
 
-
     }
 
     public static void setUserId(String userId) {

@@ -88,6 +88,7 @@ public class CreatorFragment extends Fragment {
 
     private boolean mOutfitCreatorOpen = false;
 
+    private ParseService mParseService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,7 @@ public class CreatorFragment extends Fragment {
         mSnagIndicatorShoes = mCreatorView.findViewById(R.id.snag_indicator_shoes);
         mSnagIndicatorTop = mCreatorView.findViewById(R.id.snag_indicator_top);
 
+        //TODO: Imageview on details
         mItemStore = (TextView) mCreatorView.findViewById(R.id.item_store);
         mItemDescription = (TextView) mCreatorView.findViewById(R.id.item_description);
         mItemColor = (TextView) mCreatorView.findViewById(R.id.item_color);
@@ -363,18 +365,8 @@ public class CreatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO: grab selected items, add to Outfit and save...
-                //OutfitItem newOutfit = new OutfitItem(mSelectedTop, mSelectedBottom, mSelectedShoes);
-                OutfitItem newOutfit = new OutfitItem();
-                newOutfit.saveInBackground(new SaveCallback(){
-                    @Override
-                    public void done(ParseException e) {
-                        if(e != null) {
-                            Log.i(TAG, "Save error: "+e.getMessage());
-                        } else {
-                            Log.i(TAG, "Done no errors");
-                        }
-                    }
-                });
+                mParseService = new ParseService(view.getContext());
+                mParseService.saveNewOutfit(view.getContext(), mSelectedTop, mSelectedBottom, mSelectedShoes);
                 Log.i(TAG, "new outfit created");
                 closeBottomSlider();
                 mCreatorView.setDisplayedChild(OUTFIT_LIST);

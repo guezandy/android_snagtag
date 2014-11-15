@@ -15,6 +15,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 import com.snagtag.ParseLoginDispatchActivity;
 import com.snagtag.R;
@@ -260,8 +261,24 @@ public class ParseService {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                ParseQuery<OutfitItem> query = ParseQuery.getQuery("OutfitModel");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("visible", true);
+                //get ten most recent
+                query.orderByDescending("createdAt");
 
-                for (int i = 0; i < OUTFIT_ITEMS; i++) {
+                query.findInBackground(new FindCallback<OutfitItem>() {
+                    @Override
+                    public void done(List<OutfitItem> outfits, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            itemCallback.onSuccess(outfits);
+                        }
+                    }
+                });
+
+/*                for (int i = 0; i < OUTFIT_ITEMS; i++) {
                     OutfitItem item = new OutfitItem();
                     TagHistoryItem top = buildDummyTagHistoryItem("", i, context);
                     TagHistoryItem bottom = buildDummyTagHistoryItem("", i, context);
@@ -282,7 +299,7 @@ public class ParseService {
                     mockOutfitItems.add(item);
                 }
                 itemCallback.onSuccess(mockOutfitItems);
-
+*/
             }
         });
         t.start();
@@ -558,6 +575,20 @@ public class ParseService {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
                     Log.e(TAG, "Login failed: "+e.getMessage());
+                }
+            }
+        });
+    }
+
+    public void saveNewOutfit(Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes) {
+        final OutfitItem newOutfit = new OutfitItem(mTop, mBottom, mShoes);
+        newOutfit.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null) {
+                    Log.i(TAG, "New outfit save failed with error: "+e.getMessage());
+                } else {
+                    Log.i(TAG, "New outfit saved!");
                 }
             }
         });

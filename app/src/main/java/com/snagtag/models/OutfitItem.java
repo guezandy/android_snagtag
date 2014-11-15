@@ -3,6 +3,7 @@ package com.snagtag.models;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by Owner on 9/24/2014.
@@ -28,7 +29,7 @@ public class OutfitItem extends ParseObject {
         this.setShoesInCloset(shoes);
 
         this.setOwnEntireOutfit();
-
+        this.setUser();
     }
 
     public void setTopRelation(TagHistoryItem top) {
@@ -80,6 +81,7 @@ public class OutfitItem extends ParseObject {
     public Boolean getTopInCloset() {
         return this.getBoolean("topInCloset");
     }
+
     public void setBottomInCloset(TagHistoryItem bottom) {
         put("bottomInCloset", bottom.getInCloset());
     }
@@ -110,5 +112,13 @@ public class OutfitItem extends ParseObject {
 
     public Boolean getOwnEntireOutfit() {
         return this.getBoolean("own_outfit");
+    }
+
+    public void setUser() {
+        this.put("user", ParseUser.getCurrentUser());
+    }
+
+    public ParseUser getUser() {
+        return this.getParseUser("user");
     }
 }
