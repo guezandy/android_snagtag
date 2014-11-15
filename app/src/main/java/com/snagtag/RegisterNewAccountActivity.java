@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+import com.snagtag.service.ParseService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity for registering new accounts. This prompts a user for a user name
@@ -22,26 +26,28 @@ import com.parse.SignUpCallback;
  */
 public class RegisterNewAccountActivity extends Activity {
     private final String TAG = RegisterNewAccountActivity.class.getSimpleName();
+
+    protected EditText mEditUsername;
 	protected EditText mEditFirstName;
 	protected EditText mEditLastName;
 	protected EditText mEditEmailAddress;
 	protected EditText mEditPassword;
 	protected EditText mEditPasswordConfirm;
 	protected Button mRegisterAccount;
+    private ParseService mParseService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_register);
-
+        mEditUsername = (EditText) findViewById(R.id.username);
 		mEditFirstName = (EditText) findViewById(R.id.fname);
 		mEditLastName = (EditText) findViewById(R.id.lname);
 		mEditEmailAddress = (EditText) findViewById(R.id.unEmail);
 		mEditPassword = (EditText) findViewById(R.id.pass);
 		mEditPasswordConfirm = (EditText) findViewById(R.id.comPass);
 		mRegisterAccount = (Button) findViewById(R.id.registerButton);
-
 		mRegisterAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -52,11 +58,23 @@ public class RegisterNewAccountActivity extends Activity {
 
 	}
 
+    public List<String> getUserInformation() {
+        final List<String> registerDetails = new ArrayList<String>();
+        registerDetails.add(0, mEditUsername.getText().toString());
+        registerDetails.add(1, mEditPassword.getText().toString());
+        registerDetails.add(2, mEditEmailAddress.getText().toString());
+        registerDetails.add(3, mEditFirstName.getText().toString());
+        registerDetails.add(4, mEditLastName.getText().toString());
+
+        return registerDetails;
+    }
 	public void registerAccount(View view) {
 		if (validateFields()) {
 			if (validatePasswordMatch()) {
-				processSignup(view);
-			} else {
+                //processSignup(view);
+                mParseService = new ParseService(view.getContext());
+                mParseService.registerNewUser(view.getContext(), getUserInformation());
+            } else {
 				Toast.makeText(this, "Password doesn't match",
 						Toast.LENGTH_SHORT).show();
 			}

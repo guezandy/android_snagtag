@@ -29,6 +29,7 @@ public class UserModel extends ParseUser {
     public String getAgeRange() {
         return this.getString("age");
     }
+
     //set firstname: first_name;
     public void setFirstName(String fname) {
         this.put("first_name", fname);
@@ -39,7 +40,6 @@ public class UserModel extends ParseUser {
     }
 
     //set lastname: last_name
-
     public void setLastName(String lname) {
         this.put("last_name", lname);
     }
@@ -52,15 +52,42 @@ public class UserModel extends ParseUser {
     public void setPhoneNumber(String number) {
         this.put("phone", number);
     }
+
     public String getPhoneNumber() {
         return this.getString("phone");
     }
 
-    //set street address: shipping_address
+    public void setAddress(String address) {
+        this.put("address", address);
+    }
 
-    //set zip code: shipping_zip
+    public String getAddress() {
+        return this.getString("address");
+    }
 
-    //set billing address:/bill_address
+    public void setState(String state) {
+        this.put("state", state);
+    }
 
-    //set billing zip: bill_zip
+    public String getState() {
+        return this.getString("state");
+    }
+
+    public void setZipcode(String zipcode) {
+        this.put("zipcode", zipcode);
+    }
+
+    public String getZipcode() {
+        return this.getString("zipcode");
+    }
+
+    public void setCity(String city) {
+        this.put("city", city);
+    }
+
+    public String getCity(String city) {
+        return this.getString("city");
+    }
+
+
 }

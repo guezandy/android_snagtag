@@ -7,7 +7,8 @@
         android:id="@+id/registerScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >-->
-        <EditText
+
+    <EditText
             android:id="@+id/fname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +34,14 @@
             android:hint="Enter Email"
             android:inputType="textEmailAddress" />
 
-        <EditText
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/username"
+        android:layout_gravity="center_horizontal"
+        android:hint="Enter Username" />
+
+    <EditText
             android:id="@+id/pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +58,15 @@
             android:inputType="textPassword" />
 
 
-        <Button
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/address"
+        android:hint="Enter Address" />
+
+    <Button
             android:id="@+id/registerButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

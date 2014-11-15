@@ -1,9 +1,11 @@
 package com.snagtag.service;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -13,11 +15,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+import com.snagtag.ParseLoginDispatchActivity;
 import com.snagtag.R;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.StoreItem;
 import com.snagtag.models.TagHistoryItem;
+import com.snagtag.models.UserModel;
 
 import java.io.ByteArrayOutputStream;
 import java.text.NumberFormat;
@@ -398,6 +403,58 @@ public class ParseService {
             }
         });
         t.start();
+    }
+
+    public void registerNewUser(final Context context, List<String> registerDetails) {
+        final UserModel user = new UserModel();
+        // username is set to email
+        user.setUsername(registerDetails.get(0));
+        user.setPassword(registerDetails.get(1));
+        user.setEmail(registerDetails.get(2));
+        user.setFirstName(registerDetails.get(3));
+        user.setLastName(registerDetails.get(4));
+
+        if(registerDetails.size() > 5) {
+            user.setAddress(registerDetails.get(5));
+        }
+        if(registerDetails.size() > 6) {
+            user.setCity(registerDetails.get(6));
+        }
+        if(registerDetails.size() > 7) {
+            user.setState(registerDetails.get(7));
+        }
+        if(registerDetails.size() > 8) {
+            user.setZipcode(registerDetails.get(8));
+        }
+        if(registerDetails.size() > 9) {
+            user.setPhoneNumber(registerDetails.get(9));
+        }
+        if(registerDetails.size() > 10) {
+            user.setAgeRange(registerDetails.get(10));
+        }
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(
+                            context,
+                            "Registration Successful\nSending Confirmation Email",
+                            Toast.LENGTH_SHORT).show();
+                    // TODO: Email notification???
+                    user.setEmail(user.getEmail());
+                    // Hooray! Let them use the app now.
+                    Intent i = new Intent(context, ParseLoginDispatchActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.getApplicationContext().startActivity(i);
+                } else {
+                    Toast.makeText(context, "Registration Failed: "+e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                    // Sign up didn't succeed. Look at the ParseException
+                    // to figure out what went wrong
+                    Log.e(TAG, "Login failed: "+e.getMessage());
+                }
+            }
+        });
     }
 
     private StoreItem buildDummyStoreItem(int i, Context context) {
