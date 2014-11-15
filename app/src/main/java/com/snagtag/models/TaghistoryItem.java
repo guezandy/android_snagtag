@@ -139,4 +139,23 @@ public class TagHistoryItem extends ParseObject {
 //            relation.add(item);
 //        }
 //    }
+
+    public void setType(String type) {
+        this.put("type", type);
+    }
+
+    public int getType() {
+       String type = this.getString("type");
+       if(type.equals("top/bottom")) {
+           return 1;
+       } else if(type.equals("top")) {
+           return 2;
+       } else if(type.equals("bottom")) {
+           return 3;
+       } else if(type.equals("shoe")) {
+           return 4;
+       } else {
+           return 0;
+       }
+    }
 }

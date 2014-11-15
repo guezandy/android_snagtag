@@ -27,6 +27,7 @@ import com.snagtag.models.UserModel;
 import java.io.ByteArrayOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -160,7 +161,7 @@ public class ParseService {
         //make sure user didn't delete any snags
         //query.whereEqualTo("visible", false);
 
-        //TODO: no stores yet
+
         ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.whereEqualTo("store", store);
@@ -288,31 +289,67 @@ public class ParseService {
     }
 
     public void getTops(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
-        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        final List<TagHistoryItem> tops = new ArrayList<TagHistoryItem>();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < SNAGS_PER_STORE; i++) {
-                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-                    mockItems.add(item);
-                }
-                callback.onSuccess(mockItems);
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                query.whereEqualTo("type", "top");
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//                }
+                //callback.onSuccess(tops);
             }
         });
         t.start();
     }
 
     public void getBottoms(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
-        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        final List<TagHistoryItem> bottoms = new ArrayList<TagHistoryItem>();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < SNAGS_PER_STORE; i++) {
-                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-                    mockItems.add(item);
-                }
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                String[] types = {"bottom", "top/bottom"};
+                query.whereContainedIn("type", Arrays.asList(types));
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//                }
 
-                callback.onSuccess(mockItems);
+                //callback.onSuccess(bottoms);
             }
         });
         t.start();
@@ -320,16 +357,34 @@ public class ParseService {
 
 
     public void getShoes(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
-        final List<TagHistoryItem> mockItems = new ArrayList<TagHistoryItem>();
+        final List<TagHistoryItem> shoes = new ArrayList<TagHistoryItem>();
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < SNAGS_PER_STORE; i++) {
-                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-                    mockItems.add(item);
-                }
-                callback.onSuccess(mockItems);
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                query.whereEqualTo("type", "shoe");
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//                }
+               // callback.onSuccess(shoes);
 
             }
         });
@@ -344,12 +399,29 @@ public class ParseService {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < SNAGS_PER_STORE; i++) {
-                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-                    mockItems.add(item);
-                }
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                query.whereEqualTo("type", "top");
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
 
-                callback.onSuccess(mockItems);
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//                }
+//                callback.onSuccess(mockItems);
             }
         });
         t.start();
@@ -361,12 +433,30 @@ public class ParseService {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < SNAGS_PER_STORE; i++) {
-                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-                    mockItems.add(item);
-                }
 
-                callback.onSuccess(mockItems);
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                String[] types = {"bottom", "top/bottom"};
+                query.whereContainedIn("type", Arrays.asList(types));
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//               }
+//                callback.onSuccess(mockItems);
             }
         });
         t.start();
@@ -378,12 +468,28 @@ public class ParseService {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < SNAGS_PER_STORE; i++) {
-                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
-                    mockItems.add(item);
-                }
-
-                callback.onSuccess(mockItems);
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                query.whereEqualTo("type", "shoe");
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//                }
+//                callback.onSuccess(mockItems);
             }
         });
         t.start();

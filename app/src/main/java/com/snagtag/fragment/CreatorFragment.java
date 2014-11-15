@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.SaveCallback;
 import com.snagtag.R;
 import com.snagtag.adapter.OutfitItemAdapter;
 import com.snagtag.animation.HideAnimation;
@@ -34,6 +37,7 @@ import java.util.List;
  * Created by benjamin on 9/22/14.
  */
 public class CreatorFragment extends Fragment {
+    private final String TAG = CreatorFragment.class.getSimpleName();
     private static final int OUTFIT_LIST = 0;
     private static final int OUTFIT_VIEW = 1;
 
@@ -194,7 +198,7 @@ public class CreatorFragment extends Fragment {
         mBottomsScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped(View view, int index) {
-                mSelectedBottom = mTops.get(index - 1);
+                mSelectedBottom = mBottoms.get(index - 1);
                 mBottomImageView.setParseFile(mSelectedBottom.getImage());
                 mBottomImageView.loadInBackground();
 
@@ -218,7 +222,7 @@ public class CreatorFragment extends Fragment {
         mShoesScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped(View view, int index) {
-                mSelectedShoes = mTops.get(index - 1);
+                mSelectedShoes = mShoes.get(index - 1);
                 mShoesImageView.setParseFile(mSelectedShoes.getImage());
                 mShoesImageView.loadInBackground();
             }
@@ -359,7 +363,19 @@ public class CreatorFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO: grab selected items, add to Outfit and save...
-
+                //OutfitItem newOutfit = new OutfitItem(mSelectedTop, mSelectedBottom, mSelectedShoes);
+                OutfitItem newOutfit = new OutfitItem();
+                newOutfit.saveInBackground(new SaveCallback(){
+                    @Override
+                    public void done(ParseException e) {
+                        if(e != null) {
+                            Log.i(TAG, "Save error: "+e.getMessage());
+                        } else {
+                            Log.i(TAG, "Done no errors");
+                        }
+                    }
+                });
+                Log.i(TAG, "new outfit created");
                 closeBottomSlider();
                 mCreatorView.setDisplayedChild(OUTFIT_LIST);
             }
