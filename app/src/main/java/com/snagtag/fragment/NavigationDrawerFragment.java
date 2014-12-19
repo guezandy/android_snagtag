@@ -2,6 +2,7 @@ package com.snagtag.fragment;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,12 +27,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookRequestError;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.ProfilePictureView;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
+import com.snagtag.ParseLoginDispatchActivity;
 import com.snagtag.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.snagtag.utils.Constant.ACCOUNT;
 import static com.snagtag.utils.Constant.CART;
 import static com.snagtag.utils.Constant.CLOSET;
+import static com.snagtag.utils.Constant.FAVORITES;
+import static com.snagtag.utils.Constant.OUTFITS;
 import static com.snagtag.utils.Constant.OUTFIT_CREATOR;
+import static com.snagtag.utils.Constant.SNAGS;
 import static com.snagtag.utils.Constant.STORES;
 import static com.snagtag.utils.Constant.TERMS;
 
@@ -40,6 +57,8 @@ import static com.snagtag.utils.Constant.TERMS;
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
+    private final static String TAG = NavigationDrawerFragment.class.getSimpleName();
+
 
     /**
      * Remember the position of the selected item.
@@ -66,9 +85,11 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 4;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private ProfilePictureView userProfilePictureView;
+    private TextView userNameView;
 
     public NavigationDrawerFragment() {
     }
@@ -101,19 +122,30 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+        View mView = (View)inflater.inflate(R.layout.fragment_navigation_drawer,container,false);
+        userProfilePictureView = (ProfilePictureView) mView.findViewById(R.id.userProfilePicture);
+        userNameView = (TextView) mView.findViewById(R.id.user_name);
+        mDrawerListView = (ListView) mView.findViewById(R.id.navigation_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
+
+        // Fetch Facebook user info if the session is active
+        Session session = ParseFacebookUtils.getSession();
+        if (session != null && session.isOpened()) {
+            makeMeRequest();
+        }
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
 
                 new String[]{
+                        getString(R.string.title_section_viewsnags),
+                        getString(R.string.title_section_viewoutfits),
+                        getString(R.string.title_section_favorites),
                         getString(R.string.title_section_cart),
                         getString(R.string.title_section_outfits),
                         getString(R.string.title_section_closet),
@@ -127,13 +159,21 @@ public class NavigationDrawerFragment extends Fragment {
                 ((TextView)view.findViewById(R.id.title_navigation)).setText(getItem(position));
                 ImageView icon = ((ImageView)view.findViewById(R.id.icon_navigation));
                 switch(position) {
+                    case SNAGS:
+                        icon.setImageResource(R.drawable.cart);
+                        break;
+                    case OUTFITS:
+                        icon.setImageResource(R.drawable.cart);
+                        break;
+                    case FAVORITES:
+                        icon.setImageResource(R.drawable.cart);
+                        break;
                     case CART:
                         icon.setImageResource(R.drawable.cart);
                         break;
                     case OUTFIT_CREATOR:
                         icon.setImageResource(R.drawable.outfit);
                         break;
-
                     case CLOSET:
                         icon.setImageResource(R.drawable.closet);
                         break;
@@ -143,7 +183,6 @@ public class NavigationDrawerFragment extends Fragment {
                     case ACCOUNT:
                         icon.setImageResource(R.drawable.account);
                         break;
-
                     case TERMS:
                         icon.setImageResource(R.drawable.terms);
                         break;
@@ -155,7 +194,7 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return mView;
     }
 
     public boolean isDrawerOpen() {
@@ -315,5 +354,97 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+
+    private void makeMeRequest() {
+        Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
+                new Request.GraphUserCallback() {
+                    @Override
+                    public void onCompleted(GraphUser user, Response response) {
+                        if (user != null) {
+                            // Create a JSON object to hold the profile info
+                            JSONObject userProfile = new JSONObject();
+                            try {
+                                // Populate the JSON object
+                                userProfile.put("facebookId", user.getId());
+                                userProfile.put("first_name", user.getName());
+                                if (user.getProperty("gender") != null) {
+                                    userProfile.put("gender", user.getProperty("gender"));
+                                }
+                                if (user.getProperty("email") != null) {
+                                    userProfile.put("email", user.getProperty("email"));
+                                }
+
+                                // Save the user profile info in a user property
+                                ParseUser currentUser = ParseUser.getCurrentUser();
+                                currentUser.put("profile", userProfile);
+                                currentUser.saveInBackground();
+
+                                // Show the user info
+                                updateViewsWithProfileInfo();
+                            } catch (JSONException e) {
+                                Log.d(TAG, "Error parsing returned user data. " + e);
+                            }
+
+                        } else if (response.getError() != null) {
+                            if ((response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_RETRY) ||
+                                    (response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_REOPEN_SESSION)) {
+                                Log.d(TAG, "The facebook session was invalidated." + response.getError());
+                                logout();
+                            } else {
+                                Log.d(TAG,
+                                        "Some other error: " + response.getError());
+                            }
+                        }
+                    }
+                }
+        );
+        request.executeAsync();
+    }
+
+    private void updateViewsWithProfileInfo() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser.has("profile")) {
+            JSONObject userProfile = currentUser.getJSONObject("profile");
+            try {
+
+                if (userProfile.has("facebookId")) {
+                    userProfilePictureView.setProfileId(userProfile.getString("facebookId"));
+                } else {
+                    // Show the default, blank user profile picture
+                    userProfilePictureView.setProfileId(null);
+                }
+
+                if (userProfile.has("first_name")) {
+                    userNameView.setText(userProfile.getString("first_name"));
+                } else {
+                    userNameView.setText("");
+                }
+            } catch (JSONException e) {
+                Log.d(TAG, "Error parsing saved user data.");
+            }
+        } else {
+            if(currentUser.getString("first_name") != null) {
+                userNameView.setText(currentUser.getString("first_name"));
+            } else {
+                userNameView.setText("SnagTag User");
+            }
+        }
+    }
+
+    private void logout() {
+        // Log the user out
+        ParseUser.logOut();
+
+        // Go to the login view
+        startLoginActivity();
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(getActivity(), ParseLoginDispatchActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

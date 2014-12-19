@@ -10,17 +10,21 @@
     <string name="title_section_terms">Terms</string>
     <string name="title_snagtag">Snagtag</string>
     <string name="title_tutorial">Tutorial</string>
+    <string name="title_section_viewsnags">Snags</string>
+    <string name="title_section_viewoutfits">Outfits</string>
+    <string name="title_section_favorites">Favorites</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="action_tags">Tags</string>
+    <string name="action_logout">Logout</string>
     <string name="tip_snag">Look for these tags at your favorite stores and start Snagging!</string>
     <string name="button_closet">Closet Button</string>
     <string name="button_cart">Cart Button</string>
     <string name="button_back_arrow">Back Button</string>
     <string name="title_measurements">Measurements:</string>
-    <string name="facebook_app_id">361633490641874</string>
+    <string name="facebook_app_id">1518067891776005</string>
 
     <!--Put dialog messages here-->
     <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
@@ -99,6 +103,7 @@
     <string name="label_tutorial_step_2">2. Use the Outfit Editor to match your Snags to mItems you already own</string>
     <string name="label_tutorial_step_3">3. Purchase your Snags easily and securely</string>
     <string name="label_get_snagging">Got it, get Snagging! &gt;&gt;</string>
+    <string name="latest_snags">Latest Snags</string>
 
     <!--Image content descriptons-->
     <string name="content_description_snag">Snag Label</string>

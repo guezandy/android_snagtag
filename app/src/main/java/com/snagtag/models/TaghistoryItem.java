@@ -30,24 +30,16 @@ public class TagHistoryItem extends ParseObject {
         this.setBarcode(tagged.getBarcode());
         this.setUser(ParseUser.getCurrentUser());
 
-//        this.setRelation(this);
-        //theUser.saveInBackground();
-
-        //do we want to add more info in a tag
-        //YES so we can save the info to access them off line
-        //We need:
-        //Store
-        //description
-        //color selected (default to no color selected or one color)
-        //size selected (default prompt them to pick one)
         this.setStore(tagged.getStore());
         this.setDescription(tagged.getDescription());
+        this.setType(tagged.getType());
         //this.put("size", tagged.getString("size")); //does each clothing item have a size?
         this.setPrice(tagged.getPrice());
         this.setImage(tagged.getMainImage());
         this.setInCart(false);
         this.setInCloset(false);
         this.setVisible(true);
+        this.setFavorite(false);
 
         ParseUser theUser = this.getUser();
         Log.i(TAG, "Inside the get user: "+theUser.getString("first_name"));
@@ -139,6 +131,14 @@ public class TagHistoryItem extends ParseObject {
 //            relation.add(item);
 //        }
 //    }
+
+    public void setFavorite(Boolean fav) {
+        this.put("favorite", fav);
+    }
+
+    public Boolean getFavorite() {
+        return this.getBoolean("favorite");
+    }
 
     public void setType(String type) {
         this.put("type", type);

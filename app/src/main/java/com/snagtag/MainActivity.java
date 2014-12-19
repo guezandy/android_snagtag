@@ -1,6 +1,7 @@
 package com.snagtag;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,12 +34,15 @@ import com.parse.ParseFacebookUtils;
 
 import com.snagtag.fragment.ClosetFragment;
 import com.snagtag.fragment.CreatorFragment;
+import com.snagtag.fragment.HomeFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
 import com.snagtag.fragment.SingleItemFragment;
 import com.snagtag.fragment.StoreFragment;
 import com.snagtag.fragment.TagsDrawerFragment;
 import com.snagtag.fragment.TermsFragment;
 import com.snagtag.fragment.TutorialFragment;
+import com.snagtag.fragment.ViewOutfitFragment;
+import com.snagtag.fragment.ViewSnagFragment;
 import com.snagtag.interfaces.NFCHandler;
 import com.snagtag.utils.NfcUtils;
 
@@ -79,10 +83,6 @@ public class MainActivity extends ActionBarActivity
      * NfcAdapter android class used to communicate with nfc on phone
      */
     private NfcAdapter mNfcAdapter;
-
-
-
-
 
 
     @Override
@@ -153,6 +153,18 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
 
         switch(position) {
+            case SNAGS:
+                getSupportFragmentManager().popBackStackImmediate();
+                replaceFragment(new ViewSnagFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewsnags));
+                break;
+            case OUTFITS:
+                getSupportFragmentManager().popBackStackImmediate();
+                replaceFragment(new ViewOutfitFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewoutfits));
+                break;
+            case FAVORITES:
+                getSupportFragmentManager().popBackStackImmediate();
+                replaceFragment(new HomeFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_favorites));
+                break;
             case CART:
                 getSupportFragmentManager().popBackStackImmediate();
                 replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
@@ -211,6 +223,9 @@ public class MainActivity extends ActionBarActivity
                     mDrawer.closeDrawer(mNavigationDrawerFragment.getView());
                 }
             }
+            return true;
+        } if(id == R.id.action_logout) {
+            logout();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -352,5 +367,20 @@ public class MainActivity extends ActionBarActivity
                 });
         request.executeAsync();
 
+    }
+
+    private void logout() {
+        // Log the user out
+        ParseUser.logOut();
+
+        // Go to the login view
+        startLoginActivity();
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, ParseLoginDispatchActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

@@ -28,6 +28,10 @@ public class OutfitItem extends ParseObject {
         this.setBottomInCloset(bottom);
         this.setShoesInCloset(shoes);
 
+        this.setTopDescription(top);
+        this.setBottomDescription(bottom);
+        this.setShoesDescription(shoes);
+
         this.setOwnEntireOutfit();
         this.setUser();
     }
@@ -120,5 +124,28 @@ public class OutfitItem extends ParseObject {
 
     public ParseUser getUser() {
         return this.getParseUser("user");
+    }
+
+    public void setTopDescription(TagHistoryItem top) {
+        this.put("top_description", top.getDescription());
+    }
+    public String getTopDescription() {
+        return this.getString("top_description");
+    }
+
+    public void setBottomDescription(TagHistoryItem bottom) {
+        this.put("bottom_description", bottom.getDescription());
+    }
+
+    public String getBottomDescription() {
+        return this.getString("bottom_description");
+    }
+
+    public void setShoesDescription(TagHistoryItem shoes) {
+        this.put("shoes_description", shoes.getDescription());
+    }
+
+    public String getShoesDescription() {
+        return this.getString("shoes_description");
     }
 }

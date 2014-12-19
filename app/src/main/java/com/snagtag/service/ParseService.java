@@ -153,23 +153,15 @@ public class ParseService {
 
     public void getTagHistory(final Context context, final String store, final IParseCallback<List<TagHistoryItem>> itemsCallback) {
 
-        //call itemsCallback.onSuccess with the List<TagHistoryItem> from Parse
-
-        //ParseUser user = ParseUser.getCurrentUser();
-        //Log.i(TAG, user.toString());
-        //ParseRelation<TagHistoryItem> relation = user.getRelation("user_tags");
-        //ParseQuery query = relation.getQuery();
-        //make sure user didn't delete any snags
-        //query.whereEqualTo("visible", false);
-
 
         ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.whereEqualTo("store", store);
-        //query.whereEqualTo("visible", true);
         //get ten most recent
-        query.orderByDescending("createdAt");
         query.setLimit(SNAGS_PER_STORE);
+        //query.whereEqualTo("visible", true);
+        query.orderByDescending("createdAt");
+
 
         query.findInBackground(new FindCallback<TagHistoryItem>() {
             @Override
@@ -262,7 +254,7 @@ public class ParseService {
             @Override
             public void run() {
                 ParseQuery<OutfitItem> query = ParseQuery.getQuery("OutfitModel");
-                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("user", ParseUser.getCurrentUser());
                 //query.whereEqualTo("visible", true);
                 //get ten most recent
                 query.orderByDescending("createdAt");
@@ -406,8 +398,6 @@ public class ParseService {
             }
         });
         t.start();
-
-
     }
 
 

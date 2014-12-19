@@ -64,6 +64,14 @@ public class ClothingItem extends ParseObject {
         put("item_price", price);
     }
 
+    public void setType(String type) {
+        this.put("type", type);
+    }
+
+    public String getType() {
+        return this.getString("type");
+    }
+
     //	public Date getDate() {
 //		return (Date) getString("date");
 //	}
