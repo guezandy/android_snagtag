@@ -23,7 +23,8 @@
         android:id="@+id/image_top"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@id/button_delete"
+        android:layout_alignParentTop="true"
+        android:layout_margin="12dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
@@ -33,23 +34,40 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_below="@id/image_top"
+        android:layout_margin="12dp"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
         tools:src="@drawable/ic_launcher"/>
     <com.parse.ParseImageView
         android:id="@+id/image_bottom"
         android:layout_width="150dp"
-        android:layout_height="350dp"
+        android:layout_height="300dp"
         android:layout_toEndOf="@id/image_top"
         android:layout_toRightOf="@id/image_top"
         android:layout_below="@id/button_delete"
         tools:src="@drawable/ic_launcher"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/share"
+        android:orientation="horizontal"
+        android:layout_below="@id/image_shoes"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shareButton"
+            android:text="Share" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
-        android:layout_below="@id/image_shoes"
+        android:layout_below="@id/share"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true">
 
@@ -58,9 +76,10 @@
             android:layout_below="@id/image_shoes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Outfit 1"
+            tools:text="Outfit Name"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="25dp"
-            android:layout_marginBottom="25dp"/>
+            android:layout_marginBottom="5dp"/>
     </ScrollView>
+
 </RelativeLayout>

@@ -153,25 +153,26 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
 
         switch(position) {
-            case SNAGS:
-                getSupportFragmentManager().popBackStackImmediate();
-                replaceFragment(new ViewSnagFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewsnags));
+            case HOME:
+                replaceFragment(new HomeFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_terms));
                 break;
+//            case SNAGS:
+//                getSupportFragmentManager().popBackStackImmediate();
+//                replaceFragment(new ViewSnagFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewsnags));
+//                break;
             case OUTFITS:
-                getSupportFragmentManager().popBackStackImmediate();
-                replaceFragment(new ViewOutfitFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewoutfits));
-                break;
-            case FAVORITES:
-                getSupportFragmentManager().popBackStackImmediate();
-                replaceFragment(new HomeFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_favorites));
-                break;
-            case CART:
-                getSupportFragmentManager().popBackStackImmediate();
-                replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
-                break;
-            case OUTFIT_CREATOR:
                 replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
                 break;
+//                getSupportFragmentManager().popBackStackImmediate();
+//                replaceFragment(new ViewOutfitFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewoutfits));
+//                break;
+//            case CART:
+//                getSupportFragmentManager().popBackStackImmediate();
+//                replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
+//                break;
+//            case OUTFIT_CREATOR:
+//                replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
+//                break;
             case CLOSET:
                 replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_closet));
                 break;
@@ -227,6 +228,9 @@ public class MainActivity extends ActionBarActivity
         } if(id == R.id.action_logout) {
             logout();
             return true;
+        } if(id == R.id.action_cart) {
+            replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
+
         }
         return super.onOptionsItemSelected(item);
     }

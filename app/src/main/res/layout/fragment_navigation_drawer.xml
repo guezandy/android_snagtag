@@ -23,6 +23,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/userProfilePicture"
             android:textStyle="bold"
+            android:text="Username"
             android:textSize="15sp" />
 
     </RelativeLayout>

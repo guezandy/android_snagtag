@@ -50,7 +50,7 @@ public final class HomeViewPagerFragment extends Fragment {
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
         layout.setGravity(Gravity.CENTER);
-        layout.addView(text);
+       // layout.addView(text);
         layout.addView(image);
 
         return layout;

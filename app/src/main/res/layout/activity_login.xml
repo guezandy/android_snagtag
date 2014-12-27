@@ -10,47 +10,58 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ParseLoginDispatchActivity" >
-    <!--<ScrollView
-        android:id="@+id/loginScroll"
+
+    <ScrollView
         android:layout_width="match_parent"
-            android:layout_height="match_parent" >-->
-        <ImageView
-            android:id="@+id/itemImg"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:src="@drawable/logo_shrunk" />
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true">
 
-        <EditText
-            android:id="@+id/loginUsername"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress" >
-        </EditText>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/loginPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
+    <ImageView
+        android:id="@+id/itemImg"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo_shrunk" />
+
+    <EditText
+        android:id="@+id/loginUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_default_bg"
+        android:layout_marginTop="-2dp"
+        android:padding="10dp"
+        android:hint="User Name"
+        android:textColorHint="#bbbbbb"
+        android:drawableLeft="@drawable/tag"/>
+    <EditText
+        android:id="@+id/loginPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_bottom_bg"
+        android:layout_marginTop="-2dp"
+        android:padding="10dp"
+        android:hint="Password"
+        android:textColorHint="#bbbbbb"
+        android:password="true"
+        android:drawableLeft="@drawable/tag"/>
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_login_bg"
             android:text="Login to SnagTag" />
-
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Register for SnagTag" />
-
+        </LinearLayout>
+</ScrollView>
 
         <Button
             android:id="@+id/fbLoginButton"
@@ -60,12 +71,22 @@
             android:layout_marginTop="10dp"
             android:text="Login using Facebook"
             android:textColor="#fff"
+            android:background="@drawable/com_facebook_button_blue"
             android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:text="Register for SnagTag" />
 
         <TextView
             android:id="@+id/errorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
-   <!-- </ScrollView>-->
+
 </LinearLayout>

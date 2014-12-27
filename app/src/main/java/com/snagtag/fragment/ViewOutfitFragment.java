@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ import java.util.List;
  * Created by benjamin on 10/19/14.
  */
 public class ViewOutfitFragment extends Fragment {
+    private final String TAG = ViewOutfitFragment.class.getSimpleName();
+
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
@@ -64,17 +67,17 @@ public class ViewOutfitFragment extends Fragment {
     List<OutfitItem> CONTENT = new ArrayList<OutfitItem>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final Context context = getActivity().getBaseContext();
-        mView = inflater.inflate(R.layout.fragment_outfit_viewpager, container, false);
-        mPager = (ViewPager) mView.findViewById(R.id.pager);
-
-        /*new ParseService(getActivity().getApplicationContext()).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "Insdie on create");
+            new ParseService(getActivity().getApplicationContext()).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
             @Override
             public void onSuccess(List<OutfitItem> items) {
+                Log.i(TAG, "Insdie on success of parse service");
                 if(items != null && items.size() > 0) {
                     for(OutfitItem item : items) {
-                        CONTENT.add(item);
+                        Log.i(TAG, "Insdie for loop");
+                        //CONTENT.add(item);
                     }
                 } else {
                 }
@@ -82,9 +85,19 @@ public class ViewOutfitFragment extends Fragment {
 
             @Override
             public void onFail(String message) {
-
+                Log.i(TAG, "Insdie on fail");
             }
-        });*/
+        });
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final Context context = getActivity().getBaseContext();
+        mView = inflater.inflate(R.layout.fragment_outfit_viewpager, container, false);
+        mPager = (ViewPager) mView.findViewById(R.id.pager);
+
+        Log.i(TAG, "onCreateView");
 
         for (int i = 0; i < NUM_PAGES; i++) {
                     OutfitItem item = new OutfitItem();
@@ -113,7 +126,7 @@ public class ViewOutfitFragment extends Fragment {
         mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager());
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPager.setAdapter(mPagerAdapter);
-
+        Log.i(TAG, "Adapter set");
         return mView;
     }
 

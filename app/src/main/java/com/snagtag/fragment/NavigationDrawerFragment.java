@@ -42,12 +42,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.snagtag.utils.Constant.ACCOUNT;
-import static com.snagtag.utils.Constant.CART;
+//import static com.snagtag.utils.Constant.CART;
 import static com.snagtag.utils.Constant.CLOSET;
-import static com.snagtag.utils.Constant.FAVORITES;
+//import static com.snagtag.utils.Constant.FAVORITES;
+import static com.snagtag.utils.Constant.HOME;
 import static com.snagtag.utils.Constant.OUTFITS;
-import static com.snagtag.utils.Constant.OUTFIT_CREATOR;
-import static com.snagtag.utils.Constant.SNAGS;
+//import static com.snagtag.utils.Constant.OUTFIT_CREATOR;
+//import static com.snagtag.utils.Constant.SNAGS;
 import static com.snagtag.utils.Constant.STORES;
 import static com.snagtag.utils.Constant.TERMS;
 
@@ -85,7 +86,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 4;
+    private int mCurrentSelectedPosition = HOME;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     private ProfilePictureView userProfilePictureView;
@@ -143,11 +144,8 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
 
                 new String[]{
-                        getString(R.string.title_section_viewsnags),
+                        getString(R.string.title_section_home),
                         getString(R.string.title_section_viewoutfits),
-                        getString(R.string.title_section_favorites),
-                        getString(R.string.title_section_cart),
-                        getString(R.string.title_section_outfits),
                         getString(R.string.title_section_closet),
                         getString(R.string.title_section_stores),
                         getString(R.string.title_section_account),
@@ -159,21 +157,15 @@ public class NavigationDrawerFragment extends Fragment {
                 ((TextView)view.findViewById(R.id.title_navigation)).setText(getItem(position));
                 ImageView icon = ((ImageView)view.findViewById(R.id.icon_navigation));
                 switch(position) {
-                    case SNAGS:
+                    case HOME:
                         icon.setImageResource(R.drawable.cart);
                         break;
                     case OUTFITS:
-                        icon.setImageResource(R.drawable.cart);
-                        break;
-                    case FAVORITES:
-                        icon.setImageResource(R.drawable.cart);
-                        break;
-                    case CART:
-                        icon.setImageResource(R.drawable.cart);
-                        break;
-                    case OUTFIT_CREATOR:
                         icon.setImageResource(R.drawable.outfit);
                         break;
+//                    case OUTFIT_CREATOR:
+//                        icon.setImageResource(R.drawable.outfit);
+//                        break;
                     case CLOSET:
                         icon.setImageResource(R.drawable.closet);
                         break;

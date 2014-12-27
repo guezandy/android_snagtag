@@ -5,6 +5,11 @@
         android:icon="@drawable/tag"
         android:orderInCategory="100"
         app:showAsAction="always" />
+    <item android:id="@+id/action_cart"
+        android:title="Cart"
+        android:icon="@drawable/cart"
+        app:showAsAction="always"
+    />
     <item android:id="@+id/action_logout"
         android:title="@string/action_logout"
         android:orderInCategory="100"

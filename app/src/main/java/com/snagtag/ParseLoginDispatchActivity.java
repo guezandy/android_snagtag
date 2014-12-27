@@ -30,12 +30,12 @@ public class ParseLoginDispatchActivity extends Activity {
     private final String TAG = ParseLoginDispatchActivity.class.getSimpleName();
     private Button fbLoginButton;
     private Button loginButton;
-    private Button registerButton;
+    private TextView registerButton;
     private Dialog progressDialog;
 
     private EditText username;
     private EditText password;
-    private String mUserEmail;
+    private String mUsername;
     private String mPassword;
     private TextView mErrorMessage;
 
@@ -44,7 +44,7 @@ public class ParseLoginDispatchActivity extends Activity {
         Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        username = (EditText) findViewById(R.id.loginUsername);
+        username = (EditText) findViewById(R.id .loginUsername);
         password = (EditText) findViewById(R.id.loginPassword);
         mErrorMessage = (TextView) findViewById(R.id.errorMessage);
 
@@ -57,7 +57,7 @@ public class ParseLoginDispatchActivity extends Activity {
             }
         });
 
-        registerButton = (Button) findViewById(R.id.registerButton);
+        registerButton = (TextView) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
@@ -85,7 +85,7 @@ public class ParseLoginDispatchActivity extends Activity {
         }
 
         //TODO: remove this debugging code set to true to skip login
-        boolean debugMode = true;
+        boolean debugMode = false;
         if (debugMode) {
             username.setText("demo2@snagtagapp.com");
             password.setText("demo");
@@ -109,9 +109,9 @@ public class ParseLoginDispatchActivity extends Activity {
         ParseLoginDispatchActivity.this.progressDialog = ProgressDialog.show(
                 ParseLoginDispatchActivity.this, "", "Logging in...", true);
         if (validateFields()) {
-            mUserEmail = username.getText().toString();
+            mUsername = username.getText().toString();
             mPassword = password.getText().toString();
-            if (TextUtils.isEmpty(mUserEmail) || TextUtils.isEmpty(mPassword)) {
+            if (TextUtils.isEmpty(mUsername) || TextUtils.isEmpty(mPassword)) {
                 mErrorMessage
                         .setText("Please enter a valid username and password.");
                 this.progressDialog.dismiss();
@@ -142,7 +142,7 @@ public class ParseLoginDispatchActivity extends Activity {
      */
     public void userLogin() {
         Log.i(TAG, "userLogin");
-        ParseUser.logInInBackground(mUserEmail, mPassword, new LogInCallback() {
+        ParseUser.logInInBackground(mUsername, mPassword, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
                     Toast.makeText(getApplicationContext(),

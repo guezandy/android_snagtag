@@ -6,7 +6,8 @@
     <string name="title_section_closet">Closet</string>
     <string name="title_section_outfits">Outfit Creator</string>
     <string name="title_section_stores">Stores</string>
-    <string name="title_section_account">Account</string>
+    <string name="title_section_account">Account Settings</string>
+    <string name="title_section_home">Home</string>
     <string name="title_section_terms">Terms</string>
     <string name="title_snagtag">Snagtag</string>
     <string name="title_tutorial">Tutorial</string>
@@ -26,6 +27,12 @@
     <string name="title_measurements">Measurements:</string>
     <string name="facebook_app_id">1518067891776005</string>
 
+
+    <!-- Register strings-->
+    <string name="label_register_1" >1. User Info</string>
+    <string name="label_register_2" >2. Shipping Info</string>
+    <string name="label_register_3">3. Register</string>
+    <string name="register_button">Register </string>
     <!--Put dialog messages here-->
     <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
     <string name="dialog_exit">Are you sure you want to exit Snagtag?</string>
@@ -167,6 +174,44 @@
         <item>West Virginia</item>
         <item>Wisconsin</item>
         <item>Wyoming</item>
+    </string-array>
+
+    <string-array name="exp_month" >
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="exp_year" >
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+        <item>2029</item>
+        <item>2030</item>
+        <item>2031</item>
+        <item>2032</item>
+        <item>2033</item>
     </string-array>
 
     <string-array name="states_abbreviations">

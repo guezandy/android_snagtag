@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/step_bar"
+        android:layout_below="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+
+        android:background="#dddddd">
+        <TextView
+            android:id="@+id/edit_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"
+            android:text="@string/label_register_1"/>
+        <TextView
+            android:id="@+id/shipping_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/label_step_2"/>
+        <TextView
+            android:id="@+id/review_header"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:text="@string/label_register_3"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey_light">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="4dp">
+        </LinearLayout>
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/arrow_forward"
+            android:text="@string/icon_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:paddingRight="24dp"
+            android:paddingEnd="24dp"
+            android:layout_centerVertical="true"
+            android:textSize="28sp"
+            android:textColor="@color/grey_dark"
+            />
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/arrow_back"
+            android:text="@string/icon_left"
+            android:textSize="28sp"
+            android:textColor="@color/grey_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="24dp"
+            android:paddingStart="24dp"
+            android:paddingRight="24dp"
+            android:paddingEnd="24dp"
+            />
+        <TextView
+            android:id="@+id/button_place_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/button_shape"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:text="@string/register_button"/>
+    </RelativeLayout>
+
+    <!--It seemed appropriate to just flip the view for the center content when 'navigating through checkout'-->
+    <ViewFlipper
+        android:id="@+id/checkout_view_flipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/step_bar"
+        android:layout_above="@id/navigation_bar">
+
+        <!-- Step 1, Edit Order -->
+        <RelativeLayout
+            android:id="@+id/edit_order_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+<!-- Items in the first page go here -->
+            <EditText
+                android:id="@+id/fname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_top_bg"
+                android:layout_marginTop="-2dp"
+                android:padding="10dp"
+                android:hint="Enter First Name"
+                android:textColorHint="#bbbbbb"
+                android:inputType="textPersonName"
+                android:drawableLeft="@drawable/tag">
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/lname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fname"
+                android:hint="Enter Last Name"
+                android:inputType="textPersonName"
+                android:background="@drawable/edittext_default_bg"
+                android:layout_marginTop="-2dp"
+                android:padding="10dp"
+                android:textColorHint="#bbbbbb"
+                android:drawableLeft="@drawable/tag"/>
+
+            <EditText
+                android:id="@+id/unEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lname"
+                android:hint="Enter Email"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/edittext_default_bg"
+                android:layout_marginTop="-2dp"
+                android:padding="10dp"
+                android:textColorHint="#bbbbbb"
+                android:drawableLeft="@drawable/tag"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/username"
+                android:layout_below="@id/unEmail"
+                android:layout_gravity="center_horizontal"
+                android:hint="Enter Username"
+                android:background="@drawable/edittext_default_bg"
+                android:layout_marginTop="-2dp"
+                android:padding="10dp"
+                android:textColorHint="#bbbbbb"
+                android:drawableLeft="@drawable/tag"/>
+
+            <EditText
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/username"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:background="@drawable/edittext_default_bg"
+                android:layout_marginTop="-2dp"
+                android:padding="10dp"
+                android:textColorHint="#bbbbbb"
+                android:drawableLeft="@drawable/tag"/>
+
+            <EditText
+                android:id="@+id/comPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pass"
+                android:ems="10"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:background="@drawable/edittext_bottom_bg"
+                android:layout_marginTop="-2dp"
+                android:padding="10dp"
+                android:textColorHint="#bbbbbb"
+                android:drawableLeft="@drawable/tag"/>
+
+
+
+        </RelativeLayout>
+
+        <!-- Step 2, Shipping & Billing -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center|left"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:background="@color/grey_light"
+                    android:text="Shipping Address"
+                    android:textColor="#000000"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+                    <EditText
+                        android:id="@+id/shipping_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="3"
+                        android:hint="Enter Street Address"
+                        android:inputType="textPostalAddress"
+                        android:background="@drawable/edittext_top_bg"
+                        android:layout_marginTop="-2dp"
+                        android:padding="10dp"
+                        android:textColorHint="#bbbbbb"
+                        android:drawableLeft="@drawable/tag"/>
+                    <EditText
+                        android:id="@+id/shipping_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter City"
+                        android:background="@drawable/edittext_default_bg"
+                        android:layout_marginTop="-2dp"
+                        android:padding="10dp"
+                        android:textColorHint="#bbbbbb"
+                        android:drawableLeft="@drawable/tag"/>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+                        <Spinner
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/shipping_state"
+                            android:layout_below="@+id/comPass"
+                            android:layout_centerHorizontal="true" />
+                        <EditText
+                            android:id="@+id/shipping_zipcode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter Zipcode"
+                            android:background="@drawable/edittext_default_bg"
+                            android:layout_marginTop="-2dp"
+                            android:padding="10dp"
+                            android:textColorHint="#bbbbbb"
+                            android:drawableLeft="@drawable/tag"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center|start"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:background="@color/grey_light"
+                    android:text="Billing"
+                    android:textColor="#000000"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+                    <EditText
+                        android:id="@+id/card_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name on Card"
+                        android:background="@drawable/edittext_top_bg"
+                        android:layout_marginTop="-2dp"
+                        android:padding="10dp"
+                        android:textColorHint="#bbbbbb"
+                        android:drawableLeft="@drawable/tag"/>
+                    <EditText
+                        android:id="@+id/card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Card Number"
+                        android:background="@drawable/edittext_top_bg"
+                        android:layout_marginTop="-2dp"
+                        android:padding="10dp"
+                        android:textColorHint="#bbbbbb"
+                        android:drawableLeft="@drawable/tag"/>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Exp Month: "/>
+                        <Spinner
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:id="@+id/expiration_month"
+                            android:padding="5dp"
+                            android:layout_centerHorizontal="true" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Exp Year: "/>
+                        <Spinner
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:id="@+id/expiration_year"
+                            android:padding="5dp"
+                            android:layout_centerHorizontal="true" />
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/stripe_verify"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:background="@drawable/stripe_btn_default_holo_dark"
+                        android:text="Verify Using Stripe" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+
+        <!-- Step 3, Review -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center|left"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="@color/grey_light"
+                android:text="Items"
+                android:textColor="#000000"/>
+            <HorizontalScrollView
+                android:id="@+id/list_items_purchase"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center|left"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="@color/grey_light"
+                android:text="Order Details"
+                android:textColor="#000000"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/ship_to_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+                <TextView
+                    android:id="@+id/user_and_billing_summary_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="11sp"
+                    tools:text="Ship to:\nLindsay Smith\n123 Main St.\n\nMilwaukee, WI 53202\n\nCard #:XXXX XXXX XXXX 1234\nExp Date: 01/18"/>
+                <TextView
+                    android:id="@+id/shipping_label"
+                    android:textColor="#111111"
+                    android:textSize="11sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    tools:text="Free Shipping($50 min)\n4-9 business days"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_light"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp">
+                <TextView
+                    android:id="@+id/label_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Product Total"/>
+                <TextView
+                    android:id="@+id/label_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@id/label_total"
+                    android:text="Tax"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@id/label_tax"
+                    android:text="Shipping &amp; Handling"/>
+
+                <TextView
+                    android:id="@+id/value_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    tools:text="$165.00"/>
+                <TextView
+                    android:id="@+id/value_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/value_total"
+                    android:layout_marginRight="12dp"
+                    tools:text="$9.90"/>
+                <TextView
+                    android:id="@+id/value_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@id/value_tax"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    tools:text="Free"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/total_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#999999"
+                    android:layout_marginBottom="12dp"
+                    android:layout_below="@id/value_shipping"
+                    />
+                <TextView
+                    android:id="@+id/value_order_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/total_separator"
+                    android:layout_marginRight="12dp"
+
+                    tools:text="Total: $174.90"
+
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </ViewFlipper>
+</RelativeLayout>

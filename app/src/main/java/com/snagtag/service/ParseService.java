@@ -99,8 +99,6 @@ public class ParseService {
             list.add("Men's Warehouse");
             storesCallback.onSuccess(list);
         } else {
-            //ORRRRR: Taghistory items whose incart is true?
-
             ParseQuery<ParseObject> query = ParseQuery.getQuery("CartItem");
             query.whereEqualTo("user", ParseUser.getCurrentUser());
             query.whereEqualTo("visible", true);
@@ -212,10 +210,10 @@ public class ParseService {
                             final List<CartItem> innerList = new ArrayList<CartItem>();
                             for (CartItem singleCartItem : entireCart) {
                                 Log.i(TAG, "cart items query: " + singleCartItem.getString("itemId"));
-                                innerList.add(singleCartItem);
+                                if(singleCartItem.getParseObject("item").getString("store").equals(store))
+                                    innerList.add(singleCartItem);
                             }
                             itemsCallback.onSuccess(innerList);
-
                         }
                     }
                 });

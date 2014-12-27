@@ -20,26 +20,26 @@
         />
    <com.parse.ParseImageView
        android:id="@+id/image_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@id/button_delete"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="25dp"
         tools:src="@drawable/ic_launcher"/>
     <com.parse.ParseImageView
         android:id="@+id/image_shoes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@id/image_top"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         tools:src="@drawable/ic_launcher"/>
     <com.parse.ParseImageView
         android:id="@+id/image_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/image_top"
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        android:layout_toEndOf="@id/image_shoes"
         android:layout_toRightOf="@id/image_top"
         android:layout_below="@id/button_delete"
         tools:src="@drawable/ic_launcher"/>
