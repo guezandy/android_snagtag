@@ -116,8 +116,10 @@
     <string name="content_description_snag">Snag Label</string>
     <string name="content_description_closet">Closet Image</string>
     <string name="content_description_cart">Cart Image</string>
+    <string name="stripe_card_sample">pk_test_eXaSf12Sd74O11x8KpbvAPgb</string>
 
     <string-array name="states">
+        <item> </item>
         <item>Alabama</item>
         <item>Alaska</item>
         <item>American Samoa</item>
@@ -177,6 +179,7 @@
     </string-array>
 
     <string-array name="exp_month" >
+        <item> </item>
         <item>01</item>
         <item>02</item>
         <item>03</item>
@@ -192,6 +195,7 @@
     </string-array>
 
     <string-array name="exp_year" >
+        <item> </item>
         <item>2014</item>
         <item>2015</item>
         <item>2016</item>
@@ -215,6 +219,7 @@
     </string-array>
 
     <string-array name="states_abbreviations">
+        <item> </item>
         <item>AL</item>
         <item>AR</item>
         <item>AZ</item>

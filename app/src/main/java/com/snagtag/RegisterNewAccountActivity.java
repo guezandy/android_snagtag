@@ -24,6 +24,7 @@ import com.snagtag.adapter.CartItemAdapter;
 import com.snagtag.models.CartItem;
 import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
+import com.stripe.exception.AuthenticationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +44,11 @@ public class RegisterNewAccountActivity extends Activity {
 	protected EditText mEditEmailAddress;
 	protected EditText mEditPassword;
 	protected EditText mEditPasswordConfirm;
-	protected Button mRegisterAccount;
+
+	protected View mRegisterAccount;
     private ParseService mParseService;
-    private View mView;
-    private String mStore;
     private ViewFlipper mViewFlipper;
-    private ListView itemListView;
 
-
-    private TextView mStoreNameView;
     private View mArrowForward;
     private View mArrowBack;
     private Spinner states;
@@ -60,18 +57,19 @@ public class RegisterNewAccountActivity extends Activity {
     private TextView mEditHeader;
     private TextView mShippingHeader;
     private TextView mReviewHeader;
-    private View mPlaceOrderButton;
-    private View mApplyDiscountCodeButton;
+
 
     //Shipping fields
-    private TextView mUserName;
-    private TextView mCityStateZip;
-    private TextView mStreetAddress;
+    private EditText shippingAddress;
+    private EditText shippingCity;
+    private EditText shippingZipcode;
 
     //Card fields
-    private TextView mCardName;
-    private TextView mCardNumber;
-    private TextView mExpiration;
+    private EditText mCardName;
+    private EditText mCardNumber;
+    private Button VerifyStripe;
+    String mMonth;
+    String mYear;
 
     private static final int EDIT = 0;
     private static final int SHIPPING = 1;
@@ -81,28 +79,36 @@ public class RegisterNewAccountActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//setContentView(R.layout.activity_register);
         setContentView(R.layout.activity_register_steps);
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.checkout_view_flipper);
 
-//        itemListView = (ListView) findViewById(R.id.items_list);
-
-//        mStoreNameView = (TextView) findViewById(R.id.store_name);
         mArrowForward = findViewById(R.id.arrow_forward);
         mArrowBack = findViewById(R.id.arrow_back);
-        mPlaceOrderButton = findViewById(R.id.button_place_order);
+        mRegisterAccount = findViewById(R.id.button_place_order);
 
         mEditHeader = (TextView) findViewById(R.id.edit_header);
         mShippingHeader = (TextView) findViewById(R.id.shipping_header);
         mReviewHeader = (TextView) findViewById(R.id.review_header);
 
+
+        /**
+         * Page one
+         */
         mEditUsername = (EditText) findViewById(R.id.username);
         mEditFirstName = (EditText) findViewById(R.id.fname);
         mEditLastName = (EditText) findViewById(R.id.lname);
         mEditEmailAddress = (EditText) findViewById(R.id.unEmail);
         mEditPassword = (EditText) findViewById(R.id.pass);
         mEditPasswordConfirm = (EditText) findViewById(R.id.comPass);
+
+        /**
+         *  Shipping
+         */
+
+        shippingAddress = (EditText) findViewById(R.id.shipping_address);
+        shippingCity = (EditText) findViewById(R.id.shipping_city);
+        shippingZipcode = (EditText) findViewById(R.id.shipping_zipcode);
 
         states = (Spinner) findViewById(R.id.shipping_state);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -122,30 +128,50 @@ public class RegisterNewAccountActivity extends Activity {
             }
         });
 
+        /**
+         * Billing
+         */
+        mCardName = (EditText) findViewById(R.id.card_name);
+        mCardNumber = (EditText) findViewById(R.id.card_name);
+
         Spinner month = (Spinner) findViewById(R.id.expiration_month);
         ArrayAdapter<CharSequence> month_adapter = ArrayAdapter.createFromResource(this,
                 R.array.exp_month, android.R.layout.simple_spinner_item);
         month_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         month.setAdapter(month_adapter);
+        month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                mMonth = (String) parent.getItemAtPosition(pos);
+                Log.i(TAG, "Month is:" + mMonth);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mMonth = "";
+                Log.i(TAG, "Month is: "+ mMonth);
+            }
+        });
 
         Spinner year = (Spinner) findViewById(R.id.expiration_year);
         ArrayAdapter<CharSequence> year_adapter = ArrayAdapter.createFromResource(this,
                 R.array.exp_year, android.R.layout.simple_spinner_item);
         year_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year.setAdapter(year_adapter);
+        year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                mYear = (String) parent.getItemAtPosition(pos);
+                Log.i(TAG, "year is:" + mYear);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mYear = "";
+                Log.i(TAG, "Year is: "+mYear);
+            }
+        });
 
+        VerifyStripe = (Button) findViewById(R.id.stripe_verify);
 
-
-//        mUserName = (TextView) findViewById(R.id.user_name);
-//        mStreetAddress = (TextView) findViewById(R.id.street_address);
-//        mCityStateZip = (TextView) findViewById(R.id.city_state_zip);
-
-//        mCardName = (TextView) findViewById(R.id.card_name);
-//        mCardNumber = (TextView) findViewById(R.id.card_number);
- //       mExpiration = (TextView) findViewById(R.id.card_expiration);
-
-
-   //     setOrderInformation();
         setOnClickListeners(this);
 	}
 
@@ -156,6 +182,12 @@ public class RegisterNewAccountActivity extends Activity {
         registerDetails.add(2, mEditEmailAddress.getText().toString());
         registerDetails.add(3, mEditFirstName.getText().toString());
         registerDetails.add(4, mEditLastName.getText().toString());
+
+        //registerDetails.add(5, shippingAddress.getText().toString());
+        //registerDetails.add(6, shippingCity.getText().toString());
+        //registerDetails.add(7, shippingZipcode.getText().toString());
+        //registerDetails.add(8, state);
+        //registerDetails.add(9, customerStripeId);
 
         return registerDetails;
     }
@@ -219,6 +251,7 @@ public class RegisterNewAccountActivity extends Activity {
 		user.put("first_name", mEditFirstName.getText().toString());
 		user.put("last_name", mEditLastName.getText().toString());
 
+
 		user.signUpInBackground(new SignUpCallback() {
 			@Override
 			public void done(ParseException e) {
@@ -244,21 +277,7 @@ public class RegisterNewAccountActivity extends Activity {
 		});
 	}
 
-    /**
-     * Set all the billing, shippping, and item information.
-     */
-    private void setOrderInformation() {
-        //TODO: get the info for this order and set it instead of the placeholder text.
-        mStoreNameView.setText(mStore + " Cart");
-        mUserName.setText("Sample Name");
-        mStreetAddress.setText("30 W. Mifflin, Suite 404");
-        mCityStateZip.setText("Madison, WI 53719");
 
-        mCardName.setText("Noble Applications");
-        mCardNumber.setText("Card #: xxxx xxxx xxxx 1234");
-        mExpiration.setText("Exp Date: 10/14");
-
-    }
 
     /**
      * We have a lot of click listeners in this view, so I'm adding them in a separate method just to keep things organized.
@@ -271,6 +290,7 @@ public class RegisterNewAccountActivity extends Activity {
                     mViewFlipper.setInAnimation(act, R.anim.in_from_right);
                     mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
                     mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
+                    registerAccount(view);
                     updateView(mViewFlipper.getDisplayedChild());
                 }
             }
@@ -289,13 +309,33 @@ public class RegisterNewAccountActivity extends Activity {
                 }
             }
         });
-        mPlaceOrderButton.setOnClickListener(new View.OnClickListener() {
+        mRegisterAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "Were in the register button");
+                //registerAccount(view);
+
                 //TODO: Place order and show receipt (Should probably add receipt to users receipts and open the order history to this order.
             }
         });
+        VerifyStripe.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Log.i(TAG, "Were verifying stripe");
+               mParseService = new ParseService(view.getContext());
+               String mCVV = "564";
+               String theCardNumber = "4117706003521667";
+               String theMonth = "09";
+               String theYear = "18";
+               try {
+                   //mParseService.registerStripeCustomer(view.getContext(), mCardNumber.getText().toString(), mMonth, mYear, mCVV);
+                   mParseService.registerStripeCustomer(view.getContext(), theCardNumber, theMonth, theYear, mCVV);
 
+               } catch(AuthenticationException e ) {
+                   Log.e(TAG, e.getMessage());
+               }
+           }
+        });
     }
 
     /**
@@ -310,22 +350,23 @@ public class RegisterNewAccountActivity extends Activity {
                 mShippingHeader.setTypeface(Typeface.DEFAULT);
                 mReviewHeader.setTypeface(Typeface.DEFAULT);
                 mArrowForward.setVisibility(View.VISIBLE);
-                mPlaceOrderButton.setVisibility(View.GONE);
+                mRegisterAccount.setVisibility(View.GONE);
                 break;
             case SHIPPING:
                 mEditHeader.setTypeface(Typeface.DEFAULT);
                 mShippingHeader.setTypeface(Typeface.DEFAULT_BOLD);
                 mReviewHeader.setTypeface(Typeface.DEFAULT);
                 mArrowForward.setVisibility(View.GONE);
-                mPlaceOrderButton.setVisibility(View.VISIBLE);
+                mRegisterAccount.setVisibility(View.VISIBLE);
                 break;
             case REVIEW:
                 mEditHeader.setTypeface(Typeface.DEFAULT);
                 mShippingHeader.setTypeface(Typeface.DEFAULT);
                 mReviewHeader.setTypeface(Typeface.DEFAULT_BOLD);
                 mArrowForward.setVisibility(View.GONE);
-                mPlaceOrderButton.setVisibility(View.VISIBLE);
+                mRegisterAccount.setVisibility(View.VISIBLE);
                 break;
         }
     }
+
 }

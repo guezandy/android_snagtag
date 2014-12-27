@@ -8,7 +8,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -29,9 +31,14 @@ import java.io.ByteArrayOutputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import com.stripe.android.*;
+import com.stripe.android.model.Card;
+import com.stripe.android.model.Token;
+import com.stripe.exception.AuthenticationException;
 
 /**
  * Service class to handle interactions with Parse.
@@ -525,24 +532,6 @@ public class ParseService {
         user.setFirstName(registerDetails.get(3));
         user.setLastName(registerDetails.get(4));
 
-        if(registerDetails.size() > 5) {
-            user.setAddress(registerDetails.get(5));
-        }
-        if(registerDetails.size() > 6) {
-            user.setCity(registerDetails.get(6));
-        }
-        if(registerDetails.size() > 7) {
-            user.setState(registerDetails.get(7));
-        }
-        if(registerDetails.size() > 8) {
-            user.setZipcode(registerDetails.get(8));
-        }
-        if(registerDetails.size() > 9) {
-            user.setPhoneNumber(registerDetails.get(9));
-        }
-        if(registerDetails.size() > 10) {
-            user.setAgeRange(registerDetails.get(10));
-        }
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
@@ -554,9 +543,9 @@ public class ParseService {
                     // TODO: Email notification???
                     user.setEmail(user.getEmail());
                     // Hooray! Let them use the app now.
-                    Intent i = new Intent(context, ParseLoginDispatchActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.getApplicationContext().startActivity(i);
+                    //Intent i = new Intent(context, ParseLoginDispatchActivity.class);
+                    //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //context.getApplicationContext().startActivity(i);
                 } else {
                     Toast.makeText(context, "Registration Failed: "+e.getMessage(),
                             Toast.LENGTH_SHORT).show();
@@ -612,5 +601,53 @@ public class ParseService {
         item.setVisible(i % 4 == 0);
         item.setImage(new ParseFile("item " + i, bitmapdata));
         return item;
+    }
+
+    /**
+     * Register a stripe customer
+     */
+
+    public void registerStripeCustomer(Context context, String cardNumber, String expMonth, String expYear, String CVV) throws AuthenticationException {
+        Log.i(TAG, "Registering stripe customer in the service");
+        Card card = new Card(cardNumber, Integer.parseInt(expMonth), Integer.parseInt(expYear), CVV);
+        card.validateNumber();
+        card.validateExpMonth();
+        card.validateExpYear();
+        card.validateCVC();
+        card.validateCard();
+        Log.i(TAG, "Card validated");
+        Stripe stripe = new Stripe(context.getString(R.string.stripe_card_sample));
+        Log.i(TAG, "NEw stripe create");
+        stripe.createToken(
+                card,
+                new TokenCallback() {
+                    public void onSuccess(Token token) {
+                        Log.i(TAG, "token created on callback");
+                        // Send token to your server
+                        HashMap body = new HashMap<String, Object>();
+                        body.put("stripeToken",token.getId());
+                        //String email = ParseUser.getCurrentUser().getString("email");
+                        String email = "edeleon4@mit.edu";
+                        body.put("descriptionEmail", email );
+                        ParseCloud.callFunctionInBackground("createCustomer", body , new FunctionCallback<String>() {
+                            @Override
+                            public void done(String result, ParseException e) {
+                                if (e == null) {
+                                    // result is "Hello world!"
+                                    Log.i(TAG, "parse cloud code ran successfully");
+                                    Log.i(TAG, result);
+                                }else{
+                                    Log.e(TAG,e.getMessage());
+                                }
+                            }
+                        });
+                    }
+                    public void onError(Exception error) {
+                        // Show localized error message
+                        Log.i(TAG, error.getMessage().toString());
+                    }
+                }
+        );
+
     }
 }

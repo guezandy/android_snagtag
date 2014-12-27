@@ -31,5 +31,6 @@ dependencies {
     compile files('libs/Parse-1.6.0.jar')
     compile project(':facebook')
     compile project(':library')
+    compile project(':stripe')
 
 }
