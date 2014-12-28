@@ -629,15 +629,13 @@ public class ParseService {
                         //String email = ParseUser.getCurrentUser().getString("email");
                         String email = "edeleon4@mit.edu";
                         body.put("descriptionEmail", email );
-                        ParseCloud.callFunctionInBackground("createCustomer", body , new FunctionCallback<String>() {
+                        ParseCloud.callFunctionInBackground("createCustomer", body , new FunctionCallback<Object>() {
                             @Override
-                            public void done(String result, ParseException e) {
+                            public void done(Object result, ParseException e) {
                                 if (e == null) {
                                     // result is "Hello world!"
                                     Log.i(TAG, "parse cloud code ran successfully");
-                                    Log.i(TAG, result);
-                                }else{
-                                    Log.e(TAG,e.getMessage());
+                                    //Log.i(TAG, result);
                                 }
                             }
                         });

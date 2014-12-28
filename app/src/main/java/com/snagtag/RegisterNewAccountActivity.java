@@ -323,10 +323,11 @@ public class RegisterNewAccountActivity extends Activity {
            public void onClick(View view) {
                Log.i(TAG, "Were verifying stripe");
                mParseService = new ParseService(view.getContext());
-               String mCVV = "564";
-               String theCardNumber = "4117706003521667";
-               String theMonth = "09";
-               String theYear = "18";
+
+               String mCVV = "123";
+               String theCardNumber = "4242424242424242";
+               String theMonth = "12";
+               String theYear = "14";
                try {
                    //mParseService.registerStripeCustomer(view.getContext(), mCardNumber.getText().toString(), mMonth, mYear, mCVV);
                    mParseService.registerStripeCustomer(view.getContext(), theCardNumber, theMonth, theYear, mCVV);
