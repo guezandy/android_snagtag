@@ -617,7 +617,7 @@ public class ParseService {
         card.validateCard();
         Log.i(TAG, "Card validated");
         Stripe stripe = new Stripe(context.getString(R.string.stripe_card_sample));
-        Log.i(TAG, "NEw stripe create");
+        Log.i(TAG, "New stripe create");
         stripe.createToken(
                 card,
                 new TokenCallback() {
@@ -626,8 +626,8 @@ public class ParseService {
                         // Send token to your server
                         HashMap body = new HashMap<String, Object>();
                         body.put("stripeToken",token.getId());
-                        //String email = ParseUser.getCurrentUser().getString("email");
-                        String email = "edeleon4@mit.edu";
+                        String email = ParseUser.getCurrentUser().getString("email");
+                        //String email = "edeleon4@mit.edu";
                         body.put("descriptionEmail", email );
                         ParseCloud.callFunctionInBackground("createCustomer", body , new FunctionCallback<Object>() {
                             @Override
