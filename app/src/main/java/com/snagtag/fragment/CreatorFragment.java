@@ -18,7 +18,6 @@ import android.widget.ViewFlipper;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
-import com.parse.SaveCallback;
 import com.snagtag.R;
 import com.snagtag.adapter.OutfitItemAdapter;
 import com.snagtag.animation.HideAnimation;
@@ -28,6 +27,7 @@ import com.snagtag.models.TagHistoryItem;
 import com.snagtag.scroll.CenteringHorizontalScrollView;
 import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
+
 
 import java.util.List;
 
@@ -90,6 +90,8 @@ public class CreatorFragment extends Fragment {
 
     private ParseService mParseService;
 
+    private OutfitItemAdapter mOutfitItemAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,15 +134,25 @@ public class CreatorFragment extends Fragment {
 
         ParseService service = new ParseService(getActivity().getApplicationContext());
 
-        final OutfitItemAdapter outfitItemAdapter = new OutfitItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_outfit_view);
-        mOutfitGrid.setAdapter(outfitItemAdapter);
+        mOutfitItemAdapter = new OutfitItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_outfit_view);
+        mOutfitGrid.setAdapter(mOutfitItemAdapter);
         service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
             @Override
             public void onSuccess(final List<OutfitItem> items) {
+                /*if(items != null) {
+                    try {
+                        for (OutfitItem item : items) {
+                            item.getTopImage().getData();
+                            Log.d("IMAGE_DATA", "Image for " + item.getTopDescription());
+                        }
+                    } catch(ParseException e) {
+                        Log.d("IMAGE_DATA", e.getMessage());
+                    }
+                }*/
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        outfitItemAdapter.setItems(items);
+                        mOutfitItemAdapter.setItems(items);
                     }
                 });
             }
@@ -262,9 +274,6 @@ public class CreatorFragment extends Fragment {
                 scroller.setCenter();
             }
         }, 200);
-
-
-
     }
 
     /**
@@ -364,9 +373,19 @@ public class CreatorFragment extends Fragment {
         mButtonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: grab selected items, add to Outfit and save...
+
                 mParseService = new ParseService(view.getContext());
-                mParseService.saveNewOutfit(view.getContext(), mSelectedTop, mSelectedBottom, mSelectedShoes);
+                mParseService.saveNewOutfit(view.getContext(), mSelectedTop, mSelectedBottom, mSelectedShoes, new IParseCallback<OutfitItem>() {
+                    @Override
+                    public void onSuccess(OutfitItem item) {
+                        mOutfitItemAdapter.addItem(item);
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+
+                    }
+                });
                 Log.i(TAG, "new outfit created");
                 closeBottomSlider();
                 mCreatorView.setDisplayedChild(OUTFIT_LIST);

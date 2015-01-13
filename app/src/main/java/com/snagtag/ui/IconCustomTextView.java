@@ -13,18 +13,24 @@ public class IconCustomTextView extends TextView {
 
     public IconCustomTextView(Context context) {
         super(context);
-        setTypeface(FontAwesome.getInstance(context).getTypeFace());
+        if(!this.isInEditMode()) {
+            setTypeface(FontAwesome.getInstance(context).getTypeFace());
+        }
     }
 
     public IconCustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setTypeface(FontAwesome.getInstance(context).getTypeFace());
+        if(!this.isInEditMode()) {
+            setTypeface(FontAwesome.getInstance(context).getTypeFace());
+        }
     }
 
     public IconCustomTextView(Context context, AttributeSet attrs,
                                 int defStyle) {
         super(context, attrs, defStyle);
-        setTypeface(FontAwesome.getInstance(context).getTypeFace());
+            if(!this.isInEditMode()) {
+                setTypeface(FontAwesome.getInstance(context).getTypeFace());
+            }
     }
 
 }

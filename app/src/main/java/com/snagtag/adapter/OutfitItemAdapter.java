@@ -1,6 +1,10 @@
 package com.snagtag.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v4.util.LruCache;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.parse.DeleteCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.snagtag.R;
 import com.snagtag.models.OutfitItem;
@@ -23,17 +29,41 @@ public class OutfitItemAdapter extends ArrayAdapter<OutfitItem> {
     private Context mContext;
     private int mView;
 
+    private LruCache<String, Bitmap> mMemoryCache;
+
     private List<OutfitItem> items = Collections.emptyList();
 
     public OutfitItemAdapter(Context context, int view) {
         super(context, view);
         mContext = context;
         mView = view;
+
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/8th of the available memory for this memory cache.
+        final int cacheSize = maxMemory / 8;
+
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                // The cache size will be measured in kilobytes rather than
+                // number of items.
+                return bitmap.getByteCount() / 1024;
+            }
+        };
     }
 
     public void setItems(List<OutfitItem> items) {
         this.items = items;
         notifyDataSetChanged();
+    }
+
+    public void addItem(OutfitItem item) {
+        boolean exists = this.items.contains(item);
+        if(!exists) {
+            this.items.add(item);
+            this.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -90,14 +120,52 @@ public class OutfitItemAdapter extends ArrayAdapter<OutfitItem> {
             setItem(item);
         }
 
+        private void setImageFile(final ParseFile file, final ParseImageView view) {
+            Bitmap cached = mMemoryCache.get(file.getUrl());
+            if(cached != null) {
+                view.setImageBitmap(cached);
+            } else {
+                file.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] bytes, ParseException e) {
+                        Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        Log.d("IMAGECACHE", file.getUrl());
+
+                        mMemoryCache.put(file.getUrl(), img);
+                        view.setImageBitmap(img);
+                        view.invalidate();
+                    }
+                });
+            }
+        }
+
         public void setItem(final OutfitItem item) {
             this.item = item;
-            topImage.setParseFile(item.getTopImage());
-            topImage.loadInBackground();
-            bottomImage.setParseFile(item.getBottomImage());
-            bottomImage.loadInBackground();
-            shoesImage.setParseFile(item.getShoesImage());
-            shoesImage.loadInBackground();
+
+            if(item.getTopImage() != null) {
+                setImageFile(item.getTopImage(), topImage);
+            } else {
+                topImage.setImageBitmap(null);
+            }
+
+            //topImage.setParseFile(item.getTopImage());
+            //topImage.loadInBackground();
+
+            if(item.getBottomImage() != null) {
+                setImageFile(item.getBottomImage(), bottomImage);
+            } else {
+                bottomImage.setImageBitmap(null);
+            }
+            //bottomImage.setParseFile(item.getBottomImage());
+           // bottomImage.loadInBackground();
+
+           if(item.getShoesImage() != null) {
+               setImageFile(item.getShoesImage(), shoesImage);
+           } else {
+               shoesImage.setImageBitmap(null);
+           }
+           //shoesImage.setParseFile(item.getShoesImage());
+           // shoesImage.loadInBackground();
             outfitName.setText(item.getOutfitTitle());
             deleteView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,8 +177,6 @@ public class OutfitItemAdapter extends ArrayAdapter<OutfitItem> {
                             OutfitItemAdapter.this.notifyDataSetChanged();
                         }
                     });
-
-
                 }
             });
         }

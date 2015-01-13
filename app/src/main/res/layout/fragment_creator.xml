@@ -28,8 +28,10 @@
             android:background="@color/grey_light"
             android:horizontalSpacing="2dp"
             android:verticalSpacing="2dp"
-            android:padding="2dp"></GridView>
+            android:padding="2dp"
+            ></GridView>
     </RelativeLayout>
+
 
     <RelativeLayout
         android:orientation="vertical"

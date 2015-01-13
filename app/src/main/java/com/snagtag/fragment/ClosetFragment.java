@@ -18,6 +18,7 @@ import com.snagtag.models.TagHistoryItem;
 import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
 
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class ClosetFragment extends Fragment {
     private TextView mItemSize;
     private TextView mItemCost;
     private TextView mItemHistory;
+    private ParseImageView mItemDetailImage;
 
     private View mButtonReorder;
     private View mHeaderFilter;
@@ -61,6 +63,7 @@ public class ClosetFragment extends Fragment {
         mItemSize = (TextView)mView.findViewById(R.id.item_size);
         mItemCost = (TextView)mView.findViewById(R.id.item_cost);
         mItemHistory = (TextView)mView.findViewById(R.id.item_history);
+        mItemDetailImage = (ParseImageView)mView.findViewById(R.id.item_image);
 
         mButtonReorder = mView.findViewById(R.id.button_reorder);
         mHeaderFilter = mView.findViewById(R.id.header_filter);
@@ -119,11 +122,14 @@ public class ClosetFragment extends Fragment {
 
     private void showDetail(TagHistoryItem selectedItem) {
         mItemDetailPopup.setVisibility(View.VISIBLE);
-        mItemHistory.setText(selectedItem.getString("history"));
-        mItemColor.setText(selectedItem.getString("color"));
-        mItemCost.setText(selectedItem.getPrice().toString());
+        mItemHistory.setText("history not in object");
+        mItemColor.setText("color not in object");
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        mItemCost.setText(format.format(selectedItem.getPrice()));
         mItemDescription.setText(selectedItem.getDescription());
-        mItemSize.setText(selectedItem.getString("size"));
+        mItemSize.setText("size not in object");
+        mItemDetailImage.setParseFile(selectedItem.getImage());
+        mItemDetailImage.loadInBackground();
 
     }
 

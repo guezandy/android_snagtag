@@ -24,12 +24,14 @@
         android:layout_height="100dp"
         android:layout_below="@id/button_delete"
         android:layout_marginLeft="10dp"
+       android:background="#99ccff"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="10dp"
         tools:src="@drawable/ic_launcher"/>
     <com.parse.ParseImageView
         android:id="@+id/image_shoes"
         android:layout_width="100dp"
+        android:background="#cc99ff"
         android:layout_height="100dp"
         android:layout_below="@id/image_top"
         android:layout_marginLeft="10dp"
@@ -39,9 +41,11 @@
         android:id="@+id/image_bottom"
         android:layout_width="100dp"
         android:layout_height="200dp"
+        android:scaleType="fitCenter"
         android:layout_toEndOf="@id/image_shoes"
         android:layout_toRightOf="@id/image_top"
         android:layout_below="@id/button_delete"
+        android:background="#ccff99"
         tools:src="@drawable/ic_launcher"/>
     <TextView
         android:id="@+id/text_outfit_name"

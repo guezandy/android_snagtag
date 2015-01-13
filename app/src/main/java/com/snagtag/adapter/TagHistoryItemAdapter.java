@@ -88,7 +88,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
                 @Override
                 public void done(byte[] data, ParseException e) {
                     // nothing to do
-                    Log.i("TAG", "Image uploaded: " + item.getStore() + " , " + item.getDescription());
+                    Log.i("TAG", "Image loaded: " + item.getStore() + " , " + item.getDescription());
                 }
             });
         }

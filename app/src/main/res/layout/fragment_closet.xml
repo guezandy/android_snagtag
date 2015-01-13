@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/label_tops"
-            android:padding="12dp"
-            android:textSize="24sp"
+            android:padding="6dp"
+            android:textSize="18sp"
             android:background="@color/grey_dark"/>
         <android.support.v4.view.ViewPager
             android:id="@+id/scroll_tops"
@@ -34,8 +34,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/label_bottoms"
-            android:padding="12dp"
-            android:textSize="24sp"
+            android:padding="6dp"
+            android:textSize="18sp"
             android:background="@color/grey_dark"/>
         <android.support.v4.view.ViewPager
             android:id="@+id/scroll_bottoms"
@@ -49,8 +49,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="@string/label_shoes"
-            android:padding="12dp"
-            android:textSize="24sp"
+            android:padding="6dp"
+            android:textSize="18sp"
             android:background="@color/grey_dark"/>
         <android.support.v4.view.ViewPager
             android:id="@+id/scroll_shoes"

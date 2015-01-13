@@ -16,22 +16,24 @@ public class OutfitItem extends ParseObject {
     }
 
     public OutfitItem(TagHistoryItem top, TagHistoryItem bottom, TagHistoryItem shoes) {
-        this.setTopRelation(top);
-        this.setBottomRelation(bottom);
-        this.setShoesRelation(shoes);
-
-        this.setTopImage(top);
-        this.setBottomImage(bottom);
-        this.setShoesImage(shoes);
-
-        this.setTopInCloset(top);
-        this.setBottomInCloset(bottom);
-        this.setShoesInCloset(shoes);
-
-        this.setTopDescription(top);
-        this.setBottomDescription(bottom);
-        this.setShoesDescription(shoes);
-
+        if(top != null) {
+            this.setTopRelation(top);
+            this.setTopImage(top);
+            this.setTopInCloset(top);
+            this.setTopDescription(top);
+        }
+        if(bottom != null) {
+            this.setBottomRelation(bottom);
+            this.setBottomImage(bottom);
+            this.setBottomInCloset(bottom);
+            this.setBottomDescription(bottom);
+        }
+        if(shoes != null) {
+            this.setShoesRelation(shoes);
+            this.setShoesImage(shoes);
+            this.setShoesInCloset(shoes);
+            this.setShoesDescription(shoes);
+        }
         this.setOwnEntireOutfit();
         this.setUser();
     }

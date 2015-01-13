@@ -8,6 +8,18 @@
     android:paddingBottom="2dp"
     android:layout_height="wrap_content"
     android:background="@color/white">
+
+    <com.parse.ParseImageView
+        android:id="@+id/item_image"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/circle_grey"
+        android:scaleType="fitCenter"
+        />
     <com.snagtag.ui.IconCustomTextView
         android:id="@+id/delete_item"
         android:layout_width="@dimen/delete_circle_diameter"
@@ -22,16 +34,6 @@
         android:textColor="@color/white"
         android:layout_height="@dimen/delete_circle_diameter"
         android:background="@drawable/circle_grey"/>
-    <com.parse.ParseImageView
-        android:id="@+id/item_image"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="1dp"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        tools:src="@drawable/circle_grey"
-        android:scaleType="fitCenter"
-        />
     <TextView
         android:id="@+id/item_description"
         android:layout_width="match_parent"

@@ -557,7 +557,7 @@ public class ParseService {
         });
     }
 
-    public void saveNewOutfit(Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes) {
+    public void saveNewOutfit(Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes,  final IParseCallback<OutfitItem> callback) {
         final OutfitItem newOutfit = new OutfitItem(mTop, mBottom, mShoes);
         newOutfit.saveInBackground(new SaveCallback() {
             @Override
@@ -566,6 +566,7 @@ public class ParseService {
                     Log.i(TAG, "New outfit save failed with error: "+e.getMessage());
                 } else {
                     Log.i(TAG, "New outfit saved!");
+                    callback.onSuccess(newOutfit);
                 }
             }
         });

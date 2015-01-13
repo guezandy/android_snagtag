@@ -5,14 +5,13 @@ android {
     buildToolsVersion '20.0.0'
 
     defaultConfig {
-        applicationId "com.viewpagerindicator"
         minSdkVersion 14
         targetSdkVersion 20
     }
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }

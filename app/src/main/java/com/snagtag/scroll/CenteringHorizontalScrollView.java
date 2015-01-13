@@ -112,10 +112,11 @@ public class CenteringHorizontalScrollView extends HorizontalScrollView {
         mCurrentView = parent.getChildAt(((int)offset));
         currentIdx = (int)offset;
 
-
-        int scrollX = (mCurrentView.getLeft() - (screenWidth / 2))
-                + (mCurrentView.getWidth() / 2);
-        this.smoothScrollTo(scrollX, 0);
+        if(mCurrentView != null) {
+            int scrollX = (mCurrentView.getLeft() - (screenWidth / 2))
+                    + (mCurrentView.getWidth() / 2);
+            this.smoothScrollTo(scrollX, 0);
+        }
     }
 
 

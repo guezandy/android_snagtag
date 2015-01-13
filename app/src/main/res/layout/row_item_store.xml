@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="#333333"
+        android:layout_toRightOf="@id/image_store"
         android:layout_margin="12dp"
         tools:text="Lululemon"/>
     <com.snagtag.ui.IconCustomTextView
