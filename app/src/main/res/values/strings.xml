@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Snagtag</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
     <string name="title_section_tags">Tags</string>
     <string name="title_section_cart">Cart</string>
     <string name="title_section_closet">Closet</string>
@@ -26,40 +29,41 @@
     <string name="button_back_arrow">Back Button</string>
     <string name="title_measurements">Measurements:</string>
     <string name="facebook_app_id">1518067891776005</string>
+    <string name="next">Continue to Shipping and Billing..</string>
+    <string name="start">Start Snagging > </string>
 
-
-    <!-- Register strings-->
-    <string name="label_register_1" >1. User Info</string>
-    <string name="label_register_2" >2. Shipping Info</string>
+    <!-- Register strings -->
+    <string name="label_register_1">1. About you</string>
+    <string name="label_register_2">2. Shipping and Billing</string>
     <string name="label_register_3">3. Register</string>
     <string name="register_button">Register </string>
-    <!--Put dialog messages here-->
+    <!-- Put dialog messages here -->
     <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
     <string name="dialog_exit">Are you sure you want to exit Snagtag?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">Yes</string>
 
-    <!--font awesome icons go here-->
-    <string name="icon_cart">&#xf07a;</string>
-    <string name="icon_creator">&#xf0f6;</string>
-    <string name="icon_closet">&#xf0f6;</string>
-    <string name="icon_terms">&#xf0f6;</string>
-    <string name="icon_account">&#xf007;</string>
-    <string name="icon_store">&#xf0f8;</string>
-    <string name="icon_delete">&#xf00d;</string>
-    <string name="icon_right">&#xf054;</string>
-    <string name="icon_left">&#xf053;</string>
-    <string name="icon_down">&#xf078;</string>
-    <string name="icon_remove">&#xf068;</string>
-    <string name="icon_add">&#xf067;</string>
-    <string name="icon_check">&#xf00c;</string>
-    <string name="icon_tag">&#xf02b;</string>
-    <string name="icon_reorder">&#xf07a; Reorder</string>
+    <!-- font awesome icons go here -->
+    <string name="icon_cart"></string>
+    <string name="icon_creator"></string>
+    <string name="icon_closet"></string>
+    <string name="icon_terms"></string>
+    <string name="icon_account"></string>
+    <string name="icon_store"></string>
+    <string name="icon_delete"></string>
+    <string name="icon_right"></string>
+    <string name="icon_left"></string>
+    <string name="icon_down"></string>
+    <string name="icon_remove"></string>
+    <string name="icon_add"></string>
+    <string name="icon_check"></string>
+    <string name="icon_tag"></string>
+    <string name="icon_reorder"> Reorder</string>
 
-    <!--cart labels -->
+    <!-- cart labels -->
     <string name="label_cart_items">%n Items</string>
 
-    <!--Item labels for formatting-->
+    <!-- Item labels for formatting -->
     <string name="item_size">Size: %1$s</string>
     <string name="item_cost">$ %1$.2f</string>
     <string name="item_color">Color: %1$s</string>
@@ -67,13 +71,14 @@
     <string name="cart_store_count">%1$d Items</string>
     <string name="cart_store_subtotal">Subtotal: %1$s</string>
 
-    <!--Checkout elements-->
+    <!-- Checkout elements -->
     <string name="checkout_subtotal">Subtotal: $ %1$.2f</string>
     <string name="checout_total">Total: $ %1$.2f</string>
     <string name="checkout_shipping">%1$s business days</string>
     <string name="checkout_item_count">%1$d Items</string>
 
-    <!--Account elements
+    <!--
+     Account elements
      NAME
      ADDRESS
      CITY, STATE ZIP
@@ -82,11 +87,11 @@
     <string name="user_card_number">Card #: XXXX XXXX XXXX %1$s</string>
     <string name="user_exp_date">Exp Date: %1$s</string>
 
-    <!--Multi-use elements-->
+    <!-- Multi-use elements -->
     <string name="dollar">$ %1$.2f</string>
     <string name="order_number">Order #%1$s</string>
 
-    <!--Labels-->
+    <!-- Labels -->
     <string name="label_saved_addresses">Saved Addresses</string>
     <string name="label_saved_cards">Saved Cards</string>
     <string name="label_orders">Orders</string>
@@ -96,6 +101,7 @@
     <string name="label_step_1">1. Edit Order</string>
     <string name="label_step_2">2. Shipping &amp; Billing</string>
     <string name="label_step_3">3. Review</string>
+    <string name="label_get_started">3. Get started</string>
     <string name="label_tops">Tops</string>
     <string name="label_bottoms">Bottoms</string>
     <string name="label_shoes">Shoes</string>
@@ -104,22 +110,22 @@
     <string name="label_set_default">Set as Default</string>
     <string name="label_checkout">Checkout</string>
     <string name="label_find_a_store">Find a store</string>
-    <!--Tutorial texts-->
+    <!-- Tutorial texts -->
     <string name="label_tutorial_title">Here\'s how it works:</string>
     <string name="label_tutorial_step_1">1. Swipe Snagtags with your phone, pick a size and color add them to your card</string>
     <string name="label_tutorial_step_2">2. Use the Outfit Editor to match your Snags to mItems you already own</string>
     <string name="label_tutorial_step_3">3. Purchase your Snags easily and securely</string>
-    <string name="label_get_snagging">Got it, get Snagging! &gt;&gt;</string>
+    <string name="label_get_snagging">Got it, get Snagging! >></string>
     <string name="latest_snags">Latest Snags</string>
 
-    <!--Image content descriptons-->
+    <!-- Image content descriptons -->
     <string name="content_description_snag">Snag Label</string>
     <string name="content_description_closet">Closet Image</string>
     <string name="content_description_cart">Cart Image</string>
     <string name="stripe_card_sample">pk_test_eXaSf12Sd74O11x8KpbvAPgb</string>
 
     <string-array name="states">
-        <item> </item>
+        <item></item>
         <item>Alabama</item>
         <item>Alaska</item>
         <item>American Samoa</item>
@@ -177,9 +183,8 @@
         <item>Wisconsin</item>
         <item>Wyoming</item>
     </string-array>
-
-    <string-array name="exp_month" >
-        <item> </item>
+    <string-array name="exp_month">
+        <item></item>
         <item>01</item>
         <item>02</item>
         <item>03</item>
@@ -193,9 +198,8 @@
         <item>11</item>
         <item>12</item>
     </string-array>
-
-    <string-array name="exp_year" >
-        <item> </item>
+    <string-array name="exp_year">
+        <item></item>
         <item>2014</item>
         <item>2015</item>
         <item>2016</item>
@@ -217,9 +221,8 @@
         <item>2032</item>
         <item>2033</item>
     </string-array>
-
     <string-array name="states_abbreviations">
-        <item> </item>
+        <item></item>
         <item>AL</item>
         <item>AR</item>
         <item>AZ</item>
@@ -271,5 +274,9 @@
         <item>WI</item>
         <item>WY</item>
     </string-array>
+
+    <string name="title_activity_launch">LaunchActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

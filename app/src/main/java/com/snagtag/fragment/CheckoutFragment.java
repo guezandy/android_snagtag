@@ -11,9 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.adapter.CartItemAdapter;
 import com.snagtag.models.CartItem;
+import com.snagtag.models.StripeOrderModel;
 import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
 import com.snagtag.utils.Constant;
@@ -123,6 +125,7 @@ public class CheckoutFragment extends Fragment {
                     @Override
                     public void run() {
                         checkoutAdapter.setItems(items);
+                        StripeOrderModel order = new StripeOrderModel(ParseUser.getCurrentUser(), items, mStore);
                     }
                 });
 

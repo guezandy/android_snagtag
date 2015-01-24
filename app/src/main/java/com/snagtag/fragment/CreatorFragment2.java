@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,29 +37,32 @@ import java.util.List;
  * <p/>
  * Created by benjamin on 9/22/14.
  */
-public class CreatorFragment extends Fragment {
-    private final String TAG = CreatorFragment.class.getSimpleName();
+public class CreatorFragment2 extends Fragment {
+    private final String TAG = CreatorFragment2.class.getSimpleName();
     private static final int OUTFIT_LIST = 0;
     private static final int OUTFIT_VIEW = 1;
 
     private ViewFlipper mCreatorView;
     private LinearLayout mBottomSlider;
     private LinearLayout mOutfitSelectSlider;
-    private GridView mOutfitGrid;
+    //private GridView mOutfitGrid;
     private View mButtonNewOutfit;
     private View mSelectorChevron;
 
     private LinearLayout mTopsView;
     private LinearLayout mBottomsView;
     private LinearLayout mShoesView;
+    private LinearLayout mAccView;
 
     private CenteringHorizontalScrollView mTopsScrollView;
     private CenteringHorizontalScrollView mBottomsScrollView;
     private CenteringHorizontalScrollView mShoesScrollView;
+    private CenteringHorizontalScrollView mAccScrollView;
 
     private ParseImageView mTopImageView;
     private ParseImageView mBottomImageView;
     private ParseImageView mShoesImageView;
+    private ParseImageView mAccImageView;
 
     private View mButtonCart;
     private View mButtonSave;
@@ -74,6 +78,7 @@ public class CreatorFragment extends Fragment {
     private View mSnagIndicatorTop;
     private View mSnagIndicatorBottom;
     private View mSnagIndicatorShoes;
+    private View mSnagIndicatorAcc;
 
     private View mItemDetailPopup;
 
@@ -81,10 +86,12 @@ public class CreatorFragment extends Fragment {
     List<TagHistoryItem> mTops;
     List<TagHistoryItem> mBottoms;
     List<TagHistoryItem> mShoes;
+    List<TagHistoryItem> mAcc;
 
     private TagHistoryItem mSelectedTop;
     private TagHistoryItem mSelectedShoes;
     private TagHistoryItem mSelectedBottom;
+    private TagHistoryItem mSelectedAcc;
 
     private boolean mOutfitCreatorOpen = false;
 
@@ -100,20 +107,26 @@ public class CreatorFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mCreatorView = (ViewFlipper) inflater.inflate(
-                R.layout.fragment_creator, container, false);
+                R.layout.fragment_creator2, container, false);
         mBottomSlider = (LinearLayout) mCreatorView.findViewById(R.id.bottom_slider);
         mOutfitSelectSlider = (LinearLayout) mCreatorView.findViewById(R.id.outfit_select_slider);
-        mOutfitGrid = (GridView) mCreatorView.findViewById(R.id.grid_outfit);
+        //mOutfitGrid = (GridView) mCreatorView.findViewById(R.id.grid_outfit);
         mButtonNewOutfit = mCreatorView.findViewById(R.id.button_new);
         mSelectorChevron = mCreatorView.findViewById(R.id.selector_chevron);
+
+        replaceFragment(new ViewOutfitFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
 
         mTopsScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.tops_scroll_view);
         mBottomsScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.bottoms_scroll_view);
         mShoesScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.shoes_scroll_view);
+        mAccScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.acc_scroll_view);
+
 
         mTopImageView = (ParseImageView) mCreatorView.findViewById(R.id.image_top_selected);
         mBottomImageView = (ParseImageView) mCreatorView.findViewById(R.id.image_bottom_selected);
         mShoesImageView = (ParseImageView) mCreatorView.findViewById(R.id.image_shoe_selected);
+        mAccImageView = (ParseImageView) mCreatorView.findViewById(R.id.image_acc_selected);
+
 
         mButtonCart = mCreatorView.findViewById(R.id.button_cart);
         mButtonSave = mCreatorView.findViewById(R.id.button_snag);
@@ -122,7 +135,7 @@ public class CreatorFragment extends Fragment {
         mSnagIndicatorBottom = mCreatorView.findViewById(R.id.snag_indicator_bottom);
         mSnagIndicatorShoes = mCreatorView.findViewById(R.id.snag_indicator_shoes);
         mSnagIndicatorTop = mCreatorView.findViewById(R.id.snag_indicator_top);
-
+        mSnagIndicatorAcc = mCreatorView.findViewById(R.id.snag_indicator_acc);
         //TODO: Imageview on details
         mItemStore = (TextView) mCreatorView.findViewById(R.id.item_store);
         mItemDescription = (TextView) mCreatorView.findViewById(R.id.item_description);
@@ -134,12 +147,12 @@ public class CreatorFragment extends Fragment {
 
         ParseService service = new ParseService(getActivity().getApplicationContext());
 
-        mOutfitItemAdapter = new OutfitItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_outfit_view);
+/*        mOutfitItemAdapter = new OutfitItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_outfit_view);
         mOutfitGrid.setAdapter(mOutfitItemAdapter);
         service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
             @Override
             public void onSuccess(final List<OutfitItem> items) {
-                /*if(items != null) {
+                *//*if(items != null) {
                     try {
                         for (OutfitItem item : items) {
                             item.getTopImage().getData();
@@ -148,7 +161,7 @@ public class CreatorFragment extends Fragment {
                     } catch(ParseException e) {
                         Log.d("IMAGE_DATA", e.getMessage());
                     }
-                }*/
+                }*//*
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -161,7 +174,7 @@ public class CreatorFragment extends Fragment {
             public void onFail(String message) {
 
             }
-        });
+        });*/
 
         setupClosetScrollers();
         setOnClickListeners();
@@ -175,7 +188,7 @@ public class CreatorFragment extends Fragment {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mTops = items;
-                setItemsInScroll(mTopsView, items, "You have no mTops in your closet or snags.");
+                setItemsInScroll(mTopsView, items, "Hey, go Snag some Tops");
 
             }
 
@@ -199,7 +212,7 @@ public class CreatorFragment extends Fragment {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mBottoms = items;
-                setItemsInScroll(mBottomsView, items, "You have no mBottoms or dresses in your closet or snags.");
+                setItemsInScroll(mBottomsView, items, "Hey, go Snag some Bottoms");
 
             }
 
@@ -224,7 +237,7 @@ public class CreatorFragment extends Fragment {
             @Override
             public void onSuccess(List<TagHistoryItem> items) {
                 mShoes = items;
-                setItemsInScroll(mShoesView, items, "You have no mShoes in your closet or snags.");
+                setItemsInScroll(mShoesView, items, "Hey, go Snag some Shoes");
             }
 
             @Override
@@ -239,6 +252,31 @@ public class CreatorFragment extends Fragment {
                 mSelectedShoes = mShoes.get(index - 1);
                 mShoesImageView.setParseFile(mSelectedShoes.getImage());
                 mShoesImageView.loadInBackground();
+            }
+        });
+
+
+
+        mAccView = (LinearLayout) mCreatorView.findViewById(R.id.acc_view);
+        new ParseService(getActivity().getApplicationContext()).getAcc(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+            @Override
+            public void onSuccess(List<TagHistoryItem> items) {
+                mAcc = items;
+                setItemsInScroll(mAccView, items, "Hey, go Snag some Accessories");
+            }
+
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
+
+        mAccScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
+            @Override
+            public void onScrollStopped(View view, int index) {
+                mSelectedAcc = mAcc.get(index - 1);
+                mAccImageView.setParseFile(mSelectedAcc.getImage());
+                mAccImageView.loadInBackground();
             }
         });
 
@@ -341,13 +379,16 @@ public class CreatorFragment extends Fragment {
                 mSelectedTop = null;
                 mSelectedBottom = null;
                 mSelectedShoes = null;
+                mSelectedAcc = null;
                 mTopImageView.setParseFile(null);
                 mBottomImageView.setParseFile(null);
                 mShoesImageView.setParseFile(null);
+                mAccImageView.setParseFile(null);
 
                 mShoesScrollView.setScrollX(0);
                 mBottomsScrollView.setScrollX(0);
                 mTopsScrollView.setScrollX(0);
+                mAccScrollView.setScrollX(0);
                 mOutfitName.setText("");
 
                 mCreatorView.setDisplayedChild(OUTFIT_VIEW);
@@ -367,18 +408,22 @@ public class CreatorFragment extends Fragment {
                 if (mSelectedShoes != null && mSelectedShoes.getInCloset()) {
                     //TODO:Add shoes to closet
                 }
+                if(mSelectedAcc != null && mSelectedAcc.getInCloset()) {
+
+                }
                 mButtonCart.setEnabled(false);
             }
         });
-       /* mButtonSave.setOnClickListener(new View.OnClickListener() {
+        mButtonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 mParseService = new ParseService(view.getContext());
-                mParseService.saveNewOutfit(view.getContext(), mSelectedTop, mSelectedBottom, mSelectedShoes, new IParseCallback<OutfitItem>() {
+                //TODO: add acc
+                mParseService.saveNewOutfit(view.getContext(), mSelectedTop, mSelectedBottom, mSelectedShoes, mSelectedAcc, new IParseCallback<OutfitItem>() {
                     @Override
                     public void onSuccess(OutfitItem item) {
-                        mOutfitItemAdapter.addItem(item);
+//                        mOutfitItemAdapter.addItem(item);
                     }
 
                     @Override
@@ -390,7 +435,7 @@ public class CreatorFragment extends Fragment {
                 closeBottomSlider();
                 mCreatorView.setDisplayedChild(OUTFIT_LIST);
             }
-        });*/
+        });
         mTopImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -409,6 +454,12 @@ public class CreatorFragment extends Fragment {
                 showDetail(mSelectedShoes);
             }
         });
+        mAccImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDetail(mSelectedAcc);
+            }
+        });
         mItemDetailPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -425,7 +476,7 @@ public class CreatorFragment extends Fragment {
             }
         });
 
-        mOutfitGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+/*        mOutfitGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 OutfitItem item = (OutfitItem) adapterView.getItemAtPosition(i);
@@ -451,7 +502,7 @@ public class CreatorFragment extends Fragment {
 
 
             }
-        });
+        });*/
     }
 
     private void showDetail(TagHistoryItem item) {
@@ -490,5 +541,20 @@ public class CreatorFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void replaceFragment(android.support.v4.app.Fragment newFragment, boolean addToBackstack, int transition, String backstackName) {
+        // use fragmentTransaction to replace the fragment
+        Log.i(TAG, "Initializing Fragment Transaction");
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        Log.i(TAG, "Replacing the fragment and calling backstack");
+        fragmentTransaction.replace(R.id.inner_container, newFragment, backstackName);
+/*        if (addToBackstack) {
+            fragmentTransaction.addToBackStack(backstackName);
+        }*/
+        Log.i(TAG, "setting the transition");
+        fragmentTransaction.setTransition(transition);
+        Log.i(TAG,"Commiting Transaction");
+        fragmentTransaction.commit();
     }
 }

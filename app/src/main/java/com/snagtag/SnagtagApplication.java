@@ -18,6 +18,7 @@ import com.snagtag.models.ClothingItem;
 import com.snagtag.models.HomeImage;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.StoreItem;
+import com.snagtag.models.StripeOrderModel;
 import com.snagtag.models.TagHistoryItem;
 import com.snagtag.models.UserModel;
 
@@ -31,6 +32,7 @@ public class SnagtagApplication extends Application {
     public ParseUser user;
     // Key for saving the search distance preference
     private static final String KEY_PARSE_USER = "user";
+    private static final String KEY_OUTFIT_COUNT = "count";
     private static SharedPreferences preferences;
 
     @Override
@@ -49,6 +51,7 @@ public class SnagtagApplication extends Application {
         ParseObject.registerSubclass(StoreItem.class);
         ParseObject.registerSubclass(UserModel.class);
         ParseObject.registerSubclass(HomeImage.class);
+        ParseObject.registerSubclass(StripeOrderModel.class);
         preferences = getSharedPreferences("com.snagtag", Context.MODE_PRIVATE);
         /*
             Initialize the ability to store data locally
@@ -92,6 +95,14 @@ public class SnagtagApplication extends Application {
 
         ParseACL.setDefaultACL(defaultACL, true);
 
+    }
+
+    public static void setOutfitCount(int count) {
+        preferences.edit().putInt(KEY_OUTFIT_COUNT, count).commit();
+    }
+
+    public static int getOutfitCount() {
+        return preferences.getInt(KEY_OUTFIT_COUNT, 0);
     }
 
     public static void setUserId(String userId) {

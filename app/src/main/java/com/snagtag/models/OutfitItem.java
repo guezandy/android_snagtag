@@ -38,6 +38,35 @@ public class OutfitItem extends ParseObject {
         this.setUser();
     }
 
+    public OutfitItem(TagHistoryItem top, TagHistoryItem bottom, TagHistoryItem shoes, TagHistoryItem acc) {
+        if(top != null) {
+            this.setTopRelation(top);
+            this.setTopImage(top);
+            this.setTopInCloset(top);
+            this.setTopDescription(top);
+        }
+        if(bottom != null) {
+            this.setBottomRelation(bottom);
+            this.setBottomImage(bottom);
+            this.setBottomInCloset(bottom);
+            this.setBottomDescription(bottom);
+        }
+        if(shoes != null) {
+            this.setShoesRelation(shoes);
+            this.setShoesImage(shoes);
+            this.setShoesInCloset(shoes);
+            this.setShoesDescription(shoes);
+        }
+        if(acc != null) {
+            this.setAccRelation(acc);
+            this.setAccImage(acc);
+            this.setAccInCloset(acc);
+            this.setAccDescription(acc);
+        }
+        this.setOwnEntireOutfit();
+        this.setUser();
+    }
+
     public void setTopRelation(TagHistoryItem top) {
         this.put("top", top);
     }
@@ -113,7 +142,7 @@ public class OutfitItem extends ParseObject {
     }
 
     public void setOwnEntireOutfit() {
-        this.put("own_outfit", (getBottomInCloset() && getShoesInCloset() && getTopInCloset()));
+        this.put("own_outfit", (getBottomInCloset() && getShoesInCloset() && getTopInCloset() && getAccInCloset()));
     }
 
     public Boolean getOwnEntireOutfit() {
@@ -150,4 +179,33 @@ public class OutfitItem extends ParseObject {
     public String getShoesDescription() {
         return this.getString("shoes_description");
     }
+
+    public void setAccRelation(TagHistoryItem acc) {
+        this.put("acc", acc);
+    }
+
+    public void setAccImage(TagHistoryItem acc) {
+        this.put("acc_image", acc.getImage());
+    }
+
+    public ParseFile getAccImage() {
+        return this.getParseFile("acc_image");
+    }
+
+    public void setAccDescription(TagHistoryItem acc) {
+        this.put("acc_description", acc.getDescription());
+    }
+
+    public String getAccDescription() {
+        return this.getString("acc_description");
+    }
+
+    public void setAccInCloset(TagHistoryItem acc) {
+        put("accInCloset", acc.getInCloset());
+    }
+
+    public Boolean getAccInCloset() {
+        return this.getBoolean("accInCloset");
+    }
+
 }

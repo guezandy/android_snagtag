@@ -49,7 +49,7 @@ import static com.snagtag.utils.Constant.HOME;
 import static com.snagtag.utils.Constant.OUTFITS;
 //import static com.snagtag.utils.Constant.OUTFIT_CREATOR;
 //import static com.snagtag.utils.Constant.SNAGS;
-import static com.snagtag.utils.Constant.STORES;
+//import static com.snagtag.utils.Constant.STORES;
 import static com.snagtag.utils.Constant.TERMS;
 
 /**
@@ -147,7 +147,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section_home),
                         getString(R.string.title_section_viewoutfits),
                         getString(R.string.title_section_closet),
-                        getString(R.string.title_section_stores),
+                        /*getString(R.string.title_section_stores), //TODO: V2 */
                         getString(R.string.title_section_account),
                         getString(R.string.title_section_terms),
                 }){
@@ -169,9 +169,9 @@ public class NavigationDrawerFragment extends Fragment {
                     case CLOSET:
                         icon.setImageResource(R.drawable.closet);
                         break;
-                    case STORES:
+ /*                   case STORES:
                         icon.setImageResource(R.drawable.store);
-                        break;
+                        break; */
                     case ACCOUNT:
                         icon.setImageResource(R.drawable.account);
                         break;

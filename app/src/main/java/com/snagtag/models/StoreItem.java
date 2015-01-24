@@ -58,4 +58,8 @@ public class StoreItem extends ParseObject {
     public ParseFile getStoreIcon() {
         return getParseFile("icon");
     }
+
+    public String getStoreStripeId() {
+        return this.getString("stripeId");
+    }
 }

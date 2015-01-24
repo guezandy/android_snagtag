@@ -1,20 +1,20 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ParseLoginDispatchActivity" >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_above="@+id/navigation_bar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true">
 
@@ -28,7 +28,8 @@
         android:layout_width="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:src="@drawable/logo_shrunk" />
 
     <EditText
@@ -39,8 +40,10 @@
         android:layout_marginTop="-2dp"
         android:padding="10dp"
         android:hint="User Name"
+        android:textAlignment="center"
         android:textColorHint="#bbbbbb"
-        android:drawableLeft="@drawable/tag"/>
+        android:drawableLeft="@drawable/user"/>
+
     <EditText
         android:id="@+id/loginPassword"
         android:layout_width="match_parent"
@@ -51,28 +54,66 @@
         android:hint="Password"
         android:textColorHint="#bbbbbb"
         android:password="true"
-        android:drawableLeft="@drawable/tag"/>
+        android:drawableLeft="@drawable/pass"/>
 
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_login_bg"
-            android:text="Login to SnagTag" />
-        </LinearLayout>
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_login_bg"
+        android:text="Login to SnagTag" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:gravity="center"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/fbLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Login using Facebook"
+        android:textColor="#fff"
+        android:background="@drawable/com_facebook_button_blue"
+        android:textStyle="bold" />
+    </LinearLayout>
 </ScrollView>
-
-        <Button
-            android:id="@+id/fbLoginButton"
+    <RelativeLayout
+        android:id="@+id/navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey_light">
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#999999"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="4dp">
+        </LinearLayout>
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/arrow_back"
+            android:text="@string/icon_left"
+            android:textSize="28sp"
+            android:textColor="@color/grey_dark"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:text="Login using Facebook"
-            android:textColor="#fff"
-            android:background="@drawable/com_facebook_button_blue"
-            android:textStyle="bold" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingEnd="24dp"
+            />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/registerButton"
@@ -89,4 +130,5 @@
             android:layout_height="wrap_content"
             android:text="" />
 
-</LinearLayout>
+
+</RelativeLayout>

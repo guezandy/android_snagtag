@@ -6,18 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_medium"
+        android:id="@+id/title_bar"/>
+
     <RelativeLayout
         android:id="@+id/step_bar"
         android:layout_below="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-
         android:background="#dddddd">
         <TextView
             android:id="@+id/edit_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginStart="12dp"
             android:textStyle="bold"
             android:layout_centerVertical="true"
@@ -26,19 +31,12 @@
             android:id="@+id/shipping_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:text="@string/label_step_2"/>
-        <TextView
-            android:id="@+id/review_header"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:text="@string/label_register_3"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/navigation_bar"
@@ -55,21 +53,6 @@
             android:layout_marginTop="4dp">
         </LinearLayout>
         <com.snagtag.ui.IconCustomTextView
-            android:id="@+id/arrow_forward"
-            android:text="@string/icon_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:paddingLeft="24dp"
-            android:paddingStart="24dp"
-            android:paddingRight="24dp"
-            android:paddingEnd="24dp"
-            android:layout_centerVertical="true"
-            android:textSize="28sp"
-            android:textColor="@color/grey_dark"
-            />
-        <com.snagtag.ui.IconCustomTextView
             android:id="@+id/arrow_back"
             android:text="@string/icon_left"
             android:textSize="28sp"
@@ -80,7 +63,6 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:paddingLeft="24dp"
-            android:paddingStart="24dp"
             android:paddingRight="24dp"
             android:paddingEnd="24dp"
             />
@@ -113,46 +95,15 @@
             android:id="@+id/edit_order_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
-<!-- Items in the first page go here -->
-            <EditText
-                android:id="@+id/fname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_top_bg"
-                android:layout_marginTop="-2dp"
-                android:padding="10dp"
-                android:hint="Enter First Name"
-                android:textColorHint="#bbbbbb"
-                android:inputType="textPersonName"
-                android:drawableLeft="@drawable/tag">
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                android:id="@+id/lname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fname"
-                android:hint="Enter Last Name"
-                android:inputType="textPersonName"
-                android:background="@drawable/edittext_default_bg"
-                android:layout_marginTop="-2dp"
-                android:padding="10dp"
-                android:textColorHint="#bbbbbb"
-                android:drawableLeft="@drawable/tag"/>
-
+        <!-- Items in the first page go here -->
             <EditText
                 android:id="@+id/unEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lname"
                 android:hint="Enter Email"
                 android:inputType="textEmailAddress"
                 android:background="@drawable/edittext_default_bg"
-                android:layout_marginTop="-2dp"
+                android:layout_marginTop="12dp"
                 android:padding="10dp"
                 android:textColorHint="#bbbbbb"
                 android:drawableLeft="@drawable/tag"/>
@@ -198,7 +149,43 @@
                 android:textColorHint="#bbbbbb"
                 android:drawableLeft="@drawable/tag"/>
 
+            <Button
+                android:id="@+id/next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@+id/comPass"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_login_bg"
+                android:text="@string/next" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/or"
+                android:layout_below="@id/next"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="-OR-"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/fbLoginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@id/or"
+                android:text="Sign up using Facebook"
+                android:textColor="#fff"
+                android:background="@drawable/com_facebook_button_blue"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -268,8 +255,6 @@
                             android:padding="10dp"
                             android:textColorHint="#bbbbbb"
                             android:drawableLeft="@drawable/tag"/>
-
-
                     </LinearLayout>
 
                 </LinearLayout>
@@ -334,149 +319,31 @@
                             android:padding="5dp"
                             android:layout_centerHorizontal="true" />
                     </LinearLayout>
-                    <Button
-                        android:id="@+id/stripe_verify"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:background="@drawable/stripe_btn_default_holo_dark"
-                        android:text="Verify Using Stripe" />
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/stripe_verify"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:background="@drawable/stripe_btn_default_holo_dark"
+                            android:text="Process Payments with Stripe" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="What is Stripe?"/>
+                    </LinearLayout>
                 </LinearLayout>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/startSnagging"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/start"/>
             </LinearLayout>
         </ScrollView>
-
-
-        <!-- Step 3, Review -->
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center|left"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:background="@color/grey_light"
-                android:text="Items"
-                android:textColor="#000000"/>
-            <HorizontalScrollView
-                android:id="@+id/list_items_purchase"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center|left"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:background="@color/grey_light"
-                android:text="Order Details"
-                android:textColor="#000000"/>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/ship_to_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp">
-                <TextView
-                    android:id="@+id/user_and_billing_summary_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#111111"
-                    android:textSize="11sp"
-                    tools:text="Ship to:\nLindsay Smith\n123 Main St.\n\nMilwaukee, WI 53202\n\nCard #:XXXX XXXX XXXX 1234\nExp Date: 01/18"/>
-                <TextView
-                    android:id="@+id/shipping_label"
-                    android:textColor="#111111"
-                    android:textSize="11sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    tools:text="Free Shipping($50 min)\n4-9 business days"/>
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/grey_light"
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="12dp">
-                <TextView
-                    android:id="@+id/label_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:text="Product Total"/>
-                <TextView
-                    android:id="@+id/label_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_below="@id/label_total"
-                    android:text="Tax"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_below="@id/label_tax"
-                    android:text="Shipping &amp; Handling"/>
-
-                <TextView
-                    android:id="@+id/value_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    tools:text="$165.00"/>
-                <TextView
-                    android:id="@+id/value_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/value_total"
-                    android:layout_marginRight="12dp"
-                    tools:text="$9.90"/>
-                <TextView
-                    android:id="@+id/value_shipping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_below="@id/value_tax"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    tools:text="Free"/>
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:id="@+id/total_separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#999999"
-                    android:layout_marginBottom="12dp"
-                    android:layout_below="@id/value_shipping"
-                    />
-                <TextView
-                    android:id="@+id/value_order_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/total_separator"
-                    android:layout_marginRight="12dp"
-
-                    tools:text="Total: $174.90"
-
-                    />
-            </RelativeLayout>
-        </LinearLayout>
-
-
     </ViewFlipper>
 </RelativeLayout>

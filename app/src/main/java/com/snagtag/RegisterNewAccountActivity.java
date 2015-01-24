@@ -2,6 +2,8 @@ package com.snagtag;
 
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.snagtag.adapter.CartItemAdapter;
@@ -27,6 +31,7 @@ import com.snagtag.service.ParseService;
 import com.stripe.exception.AuthenticationException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,22 +42,24 @@ import java.util.List;
  */
 public class RegisterNewAccountActivity extends Activity {
     private final String TAG = RegisterNewAccountActivity.class.getSimpleName();
+    private Dialog progressDialog;
 
     protected EditText mEditUsername;
-	protected EditText mEditFirstName;
-	protected EditText mEditLastName;
 	protected EditText mEditEmailAddress;
 	protected EditText mEditPassword;
 	protected EditText mEditPasswordConfirm;
+	protected TextView mSkipButton;
+    protected Button mRegister;
 
-	protected View mRegisterAccount;
     private ParseService mParseService;
     private ViewFlipper mViewFlipper;
 
-    private View mArrowForward;
     private View mArrowBack;
+    private Button mFbLoginButton;
+    private Button mNextButton;
     private Spinner states;
     private String state;
+
 
     private TextView mEditHeader;
     private TextView mShippingHeader;
@@ -73,7 +80,6 @@ public class RegisterNewAccountActivity extends Activity {
 
     private static final int EDIT = 0;
     private static final int SHIPPING = 1;
-    private static final int REVIEW = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +89,15 @@ public class RegisterNewAccountActivity extends Activity {
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.checkout_view_flipper);
 
-        mArrowForward = findViewById(R.id.arrow_forward);
         mArrowBack = findViewById(R.id.arrow_back);
-        mRegisterAccount = findViewById(R.id.button_place_order);
+        mNextButton = (Button) findViewById(R.id.next);
+        mFbLoginButton = (Button) findViewById(R.id.fbLoginButton);
+
+        mSkipButton = (TextView) findViewById(R.id.button_place_order);
+        mSkipButton.setVisibility(View.GONE);
+
+        mRegister = (Button) findViewById(R.id.startSnagging);
+
 
         mEditHeader = (TextView) findViewById(R.id.edit_header);
         mShippingHeader = (TextView) findViewById(R.id.shipping_header);
@@ -96,8 +108,6 @@ public class RegisterNewAccountActivity extends Activity {
          * Page one
          */
         mEditUsername = (EditText) findViewById(R.id.username);
-        mEditFirstName = (EditText) findViewById(R.id.fname);
-        mEditLastName = (EditText) findViewById(R.id.lname);
         mEditEmailAddress = (EditText) findViewById(R.id.unEmail);
         mEditPassword = (EditText) findViewById(R.id.pass);
         mEditPasswordConfirm = (EditText) findViewById(R.id.comPass);
@@ -180,38 +190,32 @@ public class RegisterNewAccountActivity extends Activity {
         registerDetails.add(0, mEditUsername.getText().toString());
         registerDetails.add(1, mEditPassword.getText().toString());
         registerDetails.add(2, mEditEmailAddress.getText().toString());
-        registerDetails.add(3, mEditFirstName.getText().toString());
-        registerDetails.add(4, mEditLastName.getText().toString());
-
-        //registerDetails.add(5, shippingAddress.getText().toString());
-        //registerDetails.add(6, shippingCity.getText().toString());
-        //registerDetails.add(7, shippingZipcode.getText().toString());
-        //registerDetails.add(8, state);
-        //registerDetails.add(9, customerStripeId);
 
         return registerDetails;
     }
-	public void registerAccount(View view) {
+	public Boolean registerAccount(View view) {
 		if (validateFields()) {
 			if (validatePasswordMatch()) {
                 //processSignup(view);
                 mParseService = new ParseService(view.getContext());
                 mParseService.registerNewUser(view.getContext(), getUserInformation());
+                return true;
             } else {
 				Toast.makeText(this, "Password doesn't match",
 						Toast.LENGTH_SHORT).show();
+                return false;
 			}
 		} else {
-			Toast.makeText(this, "Fields not filled in", Toast.LENGTH_SHORT)
-					.show();
+/*			Toast.makeText(this, "Fields not filled in", Toast.LENGTH_SHORT)
+					.show();*/
+            return false;
 		}
 	}
 
 	// TODO: FIX THESE VALUES
 	private boolean validateFields() {
-		if (mEditFirstName.getText().length() > 0
-				&& mEditLastName.getText().length() > 0
-				&& mEditEmailAddress.length() > 0
+		if (mEditUsername.getText().length() > 0
+                && mEditEmailAddress.length() > 0
 				&& mEditPassword.getText().length() > 0
 				&& mEditPasswordConfirm.getText().length() > 0) {
 			return true;
@@ -247,11 +251,6 @@ public class RegisterNewAccountActivity extends Activity {
 		user.setPassword(mEditPassword.getText().toString());
 		user.setEmail(mEditEmailAddress.getText().toString().toLowerCase());
 
-		//TODO: set other fields in a user object
-		user.put("first_name", mEditFirstName.getText().toString());
-		user.put("last_name", mEditLastName.getText().toString());
-
-
 		user.signUpInBackground(new SignUpCallback() {
 			@Override
 			public void done(ParseException e) {
@@ -283,7 +282,7 @@ public class RegisterNewAccountActivity extends Activity {
      * We have a lot of click listeners in this view, so I'm adding them in a separate method just to keep things organized.
      */
     private void setOnClickListeners(final Activity act) {
-        mArrowForward.setOnClickListener(new View.OnClickListener() {
+/*        mArrowForward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mViewFlipper.getDisplayedChild() < mViewFlipper.getChildCount() - 1) {
@@ -294,30 +293,44 @@ public class RegisterNewAccountActivity extends Activity {
                     updateView(mViewFlipper.getDisplayedChild());
                 }
             }
+        });*/
+        mFbLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                     onFBLoginButtonClicked();
+            }
+        });
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(registerAccount(view)) {
+                    Log.i(TAG, "Register account");
+                    mViewFlipper.setInAnimation(act, R.anim.in_from_right);
+                    mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
+                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
+                    updateView(mViewFlipper.getDisplayedChild());
+                } else {
+                    Toast.makeText(view.getContext(), "Hey, you're not done yet", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
         mArrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mViewFlipper.getDisplayedChild() > 0) {
-                    mViewFlipper.setInAnimation(act, R.anim.in_from_left);
-                    mViewFlipper.setOutAnimation(act, R.anim.out_to_right);
-                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() - 1);
-                    updateView(mViewFlipper.getDisplayedChild());
-                } else {
-                    Intent i = new Intent(RegisterNewAccountActivity.this, ParseLoginDispatchActivity.class);
+                if(mViewFlipper.getDisplayedChild() == 0) {
+                    Intent i = new Intent(RegisterNewAccountActivity.this, LaunchActivity.class);
                     startActivity(i);
                 }
             }
         });
-        mRegisterAccount.setOnClickListener(new View.OnClickListener() {
+        mSkipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "Were in the register button");
-                //registerAccount(view);
-
-                //TODO: Place order and show receipt (Should probably add receipt to users receipts and open the order history to this order.
+                Intent i = new Intent(RegisterNewAccountActivity.this, MainActivity.class);
+                startActivity(i);
             }
         });
+
         VerifyStripe.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -349,25 +362,67 @@ public class RegisterNewAccountActivity extends Activity {
             case EDIT:
                 mEditHeader.setTypeface(Typeface.DEFAULT_BOLD);
                 mShippingHeader.setTypeface(Typeface.DEFAULT);
-                mReviewHeader.setTypeface(Typeface.DEFAULT);
-                mArrowForward.setVisibility(View.VISIBLE);
-                mRegisterAccount.setVisibility(View.GONE);
+                mArrowBack.setVisibility(View.VISIBLE);
+                mSkipButton.setVisibility(View.GONE);
                 break;
             case SHIPPING:
                 mEditHeader.setTypeface(Typeface.DEFAULT);
                 mShippingHeader.setTypeface(Typeface.DEFAULT_BOLD);
-                mReviewHeader.setTypeface(Typeface.DEFAULT);
-                mArrowForward.setVisibility(View.GONE);
-                mRegisterAccount.setVisibility(View.VISIBLE);
-                break;
-            case REVIEW:
-                mEditHeader.setTypeface(Typeface.DEFAULT);
-                mShippingHeader.setTypeface(Typeface.DEFAULT);
-                mReviewHeader.setTypeface(Typeface.DEFAULT_BOLD);
-                mArrowForward.setVisibility(View.GONE);
-                mRegisterAccount.setVisibility(View.VISIBLE);
+                mArrowBack.setVisibility(View.GONE);
+                mSkipButton.setVisibility(View.VISIBLE);
+                mSkipButton.setText("Skip N Start Snaggin'");
                 break;
         }
+    }
+
+    public void addShippingInfo(ParseUser user, View view) {
+        if(shippingAddress.getText().toString() != null) {
+            user.put("address", shippingAddress.getText().toString());
+        }
+        if(shippingCity.getText().toString() != null) {
+            user.put("state", shippingCity.getText().toString());
+        }
+        user.put("zipcode", shippingZipcode.getText().toString());
+        user.put("city", state);
+        user.saveInBackground();
+    }
+
+    /**
+     * Handles facebook login request.
+     */
+    private void onFBLoginButtonClicked() {
+        RegisterNewAccountActivity.this.progressDialog = ProgressDialog.show(
+                RegisterNewAccountActivity.this, "", "Logging in...", true);
+        List<String> permissions = Arrays.asList("public_profile", "user_friends", "user_about_me",
+                "user_relationships", "user_birthday", "user_location");
+        ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                RegisterNewAccountActivity.this.progressDialog.dismiss();
+                if (user == null) {
+                    Log.d(TAG,
+                            "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d(TAG,
+                            "User signed up and logged in through Facebook!");
+                    startMainActivity();
+                } else {
+                    Log.d(TAG,
+                            "User logged in through Facebook!");
+                    startMainActivity();
+                }
+            }
+        });
+    }
+    /**
+     * Starts the Main Activity.
+     */
+    public void startMainActivity() {
+        Log.i(TAG, "starting Main Activity");
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

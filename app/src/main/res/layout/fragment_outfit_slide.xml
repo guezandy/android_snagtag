@@ -6,19 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
-    <com.snagtag.ui.IconCustomTextView
-        android:id="@+id/button_delete"
-        android:layout_width="@dimen/delete_circle_diameter"
-        android:layout_height="@dimen/delete_circle_diameter"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="12dp"
-        android:text="@string/icon_delete"
-        android:gravity="center"
-        android:textSize="@dimen/text_size_close"
-        android:textColor="@color/white"
-        android:background="@drawable/circle_grey"
-        />
     <com.parse.ParseImageView
         android:id="@+id/image_top"
         android:layout_width="150dp"
@@ -41,10 +28,19 @@
     <com.parse.ParseImageView
         android:id="@+id/image_bottom"
         android:layout_width="150dp"
-        android:layout_height="300dp"
+        android:layout_height="150dp"
+        android:layout_margin="12dp"
         android:layout_toEndOf="@id/image_top"
         android:layout_toRightOf="@id/image_top"
-        android:layout_below="@id/button_delete"
+        tools:src="@drawable/ic_launcher"/>
+    <com.parse.ParseImageView
+        android:id="@+id/image_acc"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="12dp"
+        android:layout_below="@+id/image_bottom"
+        android:layout_toEndOf="@id/image_shoes"
+        android:layout_toRightOf="@id/image_shoes"
         tools:src="@drawable/ic_launcher"/>
 
     <LinearLayout
@@ -55,22 +51,19 @@
         android:layout_below="@id/image_shoes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/shareButton"
-            android:text="Share" />
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_below="@id/share"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true">
-
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/button_delete"
+            android:layout_width="@dimen/delete_circle_diameter"
+            android:layout_height="@dimen/delete_circle_diameter"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="12dp"
+            android:text="@string/icon_delete"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_close"
+            android:textColor="@color/white"
+            android:background="@drawable/circle_grey"
+            />
         <TextView
             android:id="@+id/text_outfit_name"
             android:layout_below="@id/image_shoes"
@@ -80,6 +73,5 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="5dp"/>
-    </ScrollView>
-
+    </LinearLayout>
 </RelativeLayout>

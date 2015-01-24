@@ -27,27 +27,22 @@ public class OutfitItemSlideFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_outfit_slide, container, false);
         TextView text = (TextView) rootView.findViewById(R.id.text_outfit_name);
-        text.setText(getOutfitDescription(theOutfit));
+        text.setText(theOutfit.getOutfitTitle());
 
         ParseImageView topImage = (ParseImageView) rootView.findViewById(R.id.image_top);
         ParseImageView bottomImage = (ParseImageView) rootView.findViewById(R.id.image_bottom);
         ParseImageView shoesImage = (ParseImageView) rootView.findViewById(R.id.image_shoes);
-
+        ParseImageView accImage = (ParseImageView) rootView.findViewById(R.id.image_acc);
         topImage.setParseFile(theOutfit.getTopImage());
         topImage.loadInBackground();
         bottomImage.setParseFile(theOutfit.getBottomImage());
         bottomImage.loadInBackground();
         shoesImage.setParseFile(theOutfit.getShoesImage());
         shoesImage.loadInBackground();
+        accImage.setParseFile(theOutfit.getAccImage());
+        accImage.loadInBackground();
 
         return rootView;
     }
 
-    public String getOutfitDescription(OutfitItem item) {
-        return (item.getOutfitTitle()+ "\nContains:\n"+
-                "Top: " +item.getTopDescription()+"\n"+
-                "Bottom: "+item.getBottomDescription()+"\n"+
-                "Shoes: "+item.getShoesDescription()+"\n"
-        );
-    }
 }

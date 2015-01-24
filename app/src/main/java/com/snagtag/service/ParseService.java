@@ -100,7 +100,7 @@ public class ParseService {
 
     public void getStoresByCartItems(Context context, final IParseCallback<List<String>> storesCallback) {
 
-        if(APPDEBUG) {
+        if (APPDEBUG) {
             final List<String> list = new ArrayList<String>();
             list.add("Gap");
             list.add("Men's Warehouse");
@@ -144,7 +144,7 @@ public class ParseService {
                                 }
                             }
                         });
-                        if(APPDEBUG) {
+                        if (APPDEBUG) {
                             list.add("Gap");
                             list.add("Men's Warehouse");
                         }
@@ -193,7 +193,7 @@ public class ParseService {
             @Override
             public void run() {
                 //TODO: Call Parse
-                if(APPDEBUG) {
+                if (APPDEBUG) {
                     Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -217,7 +217,7 @@ public class ParseService {
                             final List<CartItem> innerList = new ArrayList<CartItem>();
                             for (CartItem singleCartItem : entireCart) {
                                 Log.i(TAG, "cart items query: " + singleCartItem.getString("itemId"));
-                                if(singleCartItem.getParseObject("item").getString("store").equals(store))
+                                if (singleCartItem.getParseObject("item").getString("store").equals(store))
                                     innerList.add(singleCartItem);
                             }
                             itemsCallback.onSuccess(innerList);
@@ -226,7 +226,7 @@ public class ParseService {
                 });
 
 
-                if(APPDEBUG) {
+                if (APPDEBUG) {
                     for (int i = 0; i < CART_ITEMS; i++) {
                         CartItem item = new CartItem();
                         item.setItem(new TagHistoryItem());
@@ -250,10 +250,12 @@ public class ParseService {
 
     }
 
+//////GET OUTFIT COUNTTT
+
+
     public void getOutfitItems(final Context context, final IParseCallback<List<OutfitItem>> itemCallback) {
         //Changing this to get the list on a background thread so the UI works smoother.
         final List<OutfitItem> mockOutfitItems = new ArrayList<OutfitItem>();
-
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -297,6 +299,40 @@ public class ParseService {
                 }
                 itemCallback.onSuccess(mockOutfitItems);
 */
+            }
+        });
+        t.start();
+    }
+
+
+    public void getAcc(final Context context, final IParseCallback<List<TagHistoryItem>> callback) {
+        final List<TagHistoryItem> Acc = new ArrayList<TagHistoryItem>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                //query.whereEqualTo("inCloset", true);
+                //query.whereEqualTo("visible", true);
+                query.whereEqualTo("type", "acc");
+                query.orderByDescending("createdAt");
+                //query.setLimit(SNAGS_PER_STORE);
+
+                query.findInBackground(new FindCallback<TagHistoryItem>() {
+                    @Override
+                    public void done(List<TagHistoryItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+//                for (int i = 0; i < SNAGS_PER_STORE; i++) {
+//                    TagHistoryItem item = buildDummyTagHistoryItem("", i, context);
+//                    mockItems.add(item);
+//                }
+                //callback.onSuccess(tops);
             }
         });
         t.start();
@@ -525,12 +561,9 @@ public class ParseService {
 
     public void registerNewUser(final Context context, List<String> registerDetails) {
         final UserModel user = new UserModel();
-        // username is set to email
         user.setUsername(registerDetails.get(0));
         user.setPassword(registerDetails.get(1));
         user.setEmail(registerDetails.get(2));
-        user.setFirstName(registerDetails.get(3));
-        user.setLastName(registerDetails.get(4));
 
         user.signUpInBackground(new SignUpCallback() {
             @Override
@@ -542,10 +575,7 @@ public class ParseService {
                             Toast.LENGTH_SHORT).show();
                     // TODO: Email notification???
                     user.setEmail(user.getEmail());
-                    // Hooray! Let them use the app now.
-                    //Intent i = new Intent(context, ParseLoginDispatchActivity.class);
-                    //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //context.getApplicationContext().startActivity(i);
+                    user.setOutfitCount(0);
                 } else {
                     Toast.makeText(context, "Registration Failed: "+e.getMessage(),
                             Toast.LENGTH_SHORT).show();
@@ -557,8 +587,8 @@ public class ParseService {
         });
     }
 
-    public void saveNewOutfit(Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes,  final IParseCallback<OutfitItem> callback) {
-        final OutfitItem newOutfit = new OutfitItem(mTop, mBottom, mShoes);
+    public void saveNewOutfit(Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes, TagHistoryItem mAcc,  final IParseCallback<OutfitItem> callback) {
+        final OutfitItem newOutfit = new OutfitItem(mTop, mBottom, mShoes, mAcc);
         newOutfit.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

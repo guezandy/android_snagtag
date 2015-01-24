@@ -89,5 +89,12 @@ public class UserModel extends ParseUser {
         return this.getString("city");
     }
 
+    public void setOutfitCount(int i) {
+        this.put("outfit_count", i);
+    }
+
+    public int getOutfitCount() {
+        return this.getInt("outfit_count");
+    }
 
 }

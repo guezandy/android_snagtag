@@ -34,6 +34,7 @@ import com.parse.ParseFacebookUtils;
 
 import com.snagtag.fragment.ClosetFragment;
 import com.snagtag.fragment.CreatorFragment;
+import com.snagtag.fragment.CreatorFragment2;
 import com.snagtag.fragment.HomeFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
 import com.snagtag.fragment.SingleItemFragment;
@@ -156,29 +157,17 @@ public class MainActivity extends ActionBarActivity
             case HOME:
                 replaceFragment(new HomeFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_terms));
                 break;
-//            case SNAGS:
-//                getSupportFragmentManager().popBackStackImmediate();
-//                replaceFragment(new ViewSnagFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewsnags));
-//                break;
             case OUTFITS:
-                replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
+                Log.i(TAG,"Starting creator 2 fragment");
+                replaceFragment(new CreatorFragment2(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
+                //replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
                 break;
-//                getSupportFragmentManager().popBackStackImmediate();
-//                replaceFragment(new ViewOutfitFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_viewoutfits));
-//                break;
-//            case CART:
-//                getSupportFragmentManager().popBackStackImmediate();
-//                replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
-//                break;
-//            case OUTFIT_CREATOR:
-//                replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
-//                break;
             case CLOSET:
                 replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_closet));
                 break;
-            case STORES:
+ /*           case STORES:
                 replaceFragment(new StoreFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_stores));
-                break;
+                break; */
             case ACCOUNT:
                 replaceFragment(new AccountFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_account));
                 break;

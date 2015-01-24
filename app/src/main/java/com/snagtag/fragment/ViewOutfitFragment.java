@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.parse.ParseFile;
+import com.snagtag.SnagtagApplication;
 import com.snagtag.adapter.OutfitItemAdapter;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.TagHistoryItem;
@@ -43,7 +44,7 @@ public class ViewOutfitFragment extends Fragment {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 5;
+    private final static int NUM_PAGES = SnagtagApplication.getOutfitCount();
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -70,7 +71,17 @@ public class ViewOutfitFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Insdie on create");
-            new ParseService(getActivity().getApplicationContext()).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final Context context = getActivity().getBaseContext();
+        mView = inflater.inflate(R.layout.fragment_outfit_viewpager, container, false);
+        mPager = (ViewPager) mView.findViewById(R.id.pager);
+
+        Log.i(TAG, "onCreateView");
+
+        new ParseService(getActivity().getApplicationContext()).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
             @Override
             public void onSuccess(List<OutfitItem> items) {
                 Log.i(TAG, "Insdie on success of parse service");
@@ -82,28 +93,18 @@ public class ViewOutfitFragment extends Fragment {
                 } else {
                 }
             }
-
             @Override
             public void onFail(String message) {
                 Log.i(TAG, "Insdie on fail");
             }
         });
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final Context context = getActivity().getBaseContext();
-        mView = inflater.inflate(R.layout.fragment_outfit_viewpager, container, false);
-        mPager = (ViewPager) mView.findViewById(R.id.pager);
-
-        Log.i(TAG, "onCreateView");
-
         for (int i = 0; i < NUM_PAGES; i++) {
                     OutfitItem item = new OutfitItem();
                     TagHistoryItem top = buildDummyTagHistoryItem("", i, context);
                     TagHistoryItem bottom = buildDummyTagHistoryItem("", i, context);
                     TagHistoryItem shoes = buildDummyTagHistoryItem("", i, context);
+                    TagHistoryItem acc = buildDummyTagHistoryItem("", i, context);
 
                     item.setBottomImage(bottom);
                     item.setBottomInCloset(bottom);
@@ -119,7 +120,10 @@ public class ViewOutfitFragment extends Fragment {
                     item.setTopInCloset(top);
                     item.setTopRelation(top);
                     item.setTopDescription(top);
-
+                    item.setAccImage(acc);
+                    item.setAccInCloset(acc);
+                    item.setAccRelation(acc);
+                    item.setAccDescription(acc);
                     CONTENT.add(item);
                 }
 

@@ -30,6 +30,7 @@ public class ParseLoginDispatchActivity extends Activity {
     private final String TAG = ParseLoginDispatchActivity.class.getSimpleName();
     private Button fbLoginButton;
     private Button loginButton;
+    private View mBack;
     private TextView registerButton;
     private Dialog progressDialog;
 
@@ -57,6 +58,15 @@ public class ParseLoginDispatchActivity extends Activity {
             }
         });
 
+        mBack = (View) findViewById(R.id.arrow_back);
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ParseLoginDispatchActivity.this, LaunchActivity.class);
+                startActivity(i);
+            }
+        });
+
         registerButton = (TextView) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +76,7 @@ public class ParseLoginDispatchActivity extends Activity {
                 startActivity(i);
             }
         });
+        registerButton.setVisibility(View.GONE);
 
         loginButton = (Button) findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +96,9 @@ public class ParseLoginDispatchActivity extends Activity {
         }
 
         //TODO: remove this debugging code set to true to skip login
-        boolean debugMode = false;
+        boolean debugMode = true;
         if (debugMode) {
-            username.setText("demo2@snagtagapp.com");
+            username.setText("demo");
             password.setText("demo");
             loginButton.callOnClick();
         }
@@ -145,10 +156,14 @@ public class ParseLoginDispatchActivity extends Activity {
         ParseUser.logInInBackground(mUsername, mPassword, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
+                    //TODO: Change to getString("username");
                     Toast.makeText(getApplicationContext(),
-                            "Welcome, " + user.getString("first_name"),
+                            "Welcome :, " + user.getString("username"),
                             Toast.LENGTH_SHORT).show();
+
                     SnagtagApplication.setUserId(user.getObjectId());
+                    SnagtagApplication.setOutfitCount(user.getInt("outfit_count"));
+                    Log.i(TAG, "Outfit count: "+user.getNumber("outfit_count"));
                     Intent i = new Intent(ParseLoginDispatchActivity.this,
                             MainActivity.class);
                     startActivity(i);
