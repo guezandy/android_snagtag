@@ -18,8 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.snagtag.SnagtagApplication;
 import com.snagtag.adapter.OutfitItemAdapter;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.TagHistoryItem;
@@ -44,7 +44,7 @@ public class ViewOutfitFragment extends Fragment {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private final static int NUM_PAGES = SnagtagApplication.getOutfitCount();
+    private static int NUM_PAGES = 0;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -65,7 +65,14 @@ public class ViewOutfitFragment extends Fragment {
      */
     private ParseService mParseService;
 
-    List<OutfitItem> CONTENT = new ArrayList<OutfitItem>();
+    public static List<OutfitItem> CONTENT = new ArrayList<OutfitItem>();
+
+    public static ViewOutfitFragment newInstance(List<OutfitItem> content, int count) {
+        ViewOutfitFragment fragment = new ViewOutfitFragment();
+        fragment.NUM_PAGES = count;
+        CONTENT = content;
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,52 +87,6 @@ public class ViewOutfitFragment extends Fragment {
         mPager = (ViewPager) mView.findViewById(R.id.pager);
 
         Log.i(TAG, "onCreateView");
-
-        new ParseService(getActivity().getApplicationContext()).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
-            @Override
-            public void onSuccess(List<OutfitItem> items) {
-                Log.i(TAG, "Insdie on success of parse service");
-                if(items != null && items.size() > 0) {
-                    for(OutfitItem item : items) {
-                        Log.i(TAG, "Insdie for loop");
-                        //CONTENT.add(item);
-                    }
-                } else {
-                }
-            }
-            @Override
-            public void onFail(String message) {
-                Log.i(TAG, "Insdie on fail");
-            }
-        });
-
-        for (int i = 0; i < NUM_PAGES; i++) {
-                    OutfitItem item = new OutfitItem();
-                    TagHistoryItem top = buildDummyTagHistoryItem("", i, context);
-                    TagHistoryItem bottom = buildDummyTagHistoryItem("", i, context);
-                    TagHistoryItem shoes = buildDummyTagHistoryItem("", i, context);
-                    TagHistoryItem acc = buildDummyTagHistoryItem("", i, context);
-
-                    item.setBottomImage(bottom);
-                    item.setBottomInCloset(bottom);
-                    item.setBottomRelation(bottom);
-                    item.setBottomDescription(bottom);
-                    item.setOutfitTitle("Outfit " + i);
-                    item.setOwnEntireOutfit();
-                    item.setShoesImage(shoes);
-                    item.setShoesInCloset(shoes);
-                    item.setShoesRelation(shoes);
-                    item.setShoesDescription(shoes);
-                    item.setTopImage(top);
-                    item.setTopInCloset(top);
-                    item.setTopRelation(top);
-                    item.setTopDescription(top);
-                    item.setAccImage(acc);
-                    item.setAccInCloset(acc);
-                    item.setAccRelation(acc);
-                    item.setAccDescription(acc);
-                    CONTENT.add(item);
-                }
 
         mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager());
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());

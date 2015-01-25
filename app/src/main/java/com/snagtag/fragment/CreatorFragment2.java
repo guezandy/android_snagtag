@@ -1,5 +1,6 @@
 package com.snagtag.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import android.widget.ViewFlipper;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.ParseUser;
 import com.snagtag.R;
 import com.snagtag.adapter.OutfitItemAdapter;
 import com.snagtag.animation.HideAnimation;
@@ -30,6 +33,7 @@ import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
 
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,7 +49,7 @@ public class CreatorFragment2 extends Fragment {
     private ViewFlipper mCreatorView;
     private LinearLayout mBottomSlider;
     private LinearLayout mOutfitSelectSlider;
-    //private GridView mOutfitGrid;
+
     private View mButtonNewOutfit;
     private View mSelectorChevron;
 
@@ -81,7 +85,7 @@ public class CreatorFragment2 extends Fragment {
     private View mSnagIndicatorAcc;
 
     private View mItemDetailPopup;
-
+    private EditText outfitTitle;
     //Lists of items
     List<TagHistoryItem> mTops;
     List<TagHistoryItem> mBottoms;
@@ -96,8 +100,10 @@ public class CreatorFragment2 extends Fragment {
     private boolean mOutfitCreatorOpen = false;
 
     private ParseService mParseService;
+    public List<OutfitItem> OutfitListForFragment;
 
     private OutfitItemAdapter mOutfitItemAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,13 +120,12 @@ public class CreatorFragment2 extends Fragment {
         mButtonNewOutfit = mCreatorView.findViewById(R.id.button_new);
         mSelectorChevron = mCreatorView.findViewById(R.id.selector_chevron);
 
-        replaceFragment(new ViewOutfitFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
-
         mTopsScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.tops_scroll_view);
         mBottomsScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.bottoms_scroll_view);
         mShoesScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.shoes_scroll_view);
         mAccScrollView = (CenteringHorizontalScrollView) mCreatorView.findViewById(R.id.acc_scroll_view);
 
+        outfitTitle = (EditText) mCreatorView.findViewById(R.id.input_outfit_name);
 
         mTopImageView = (ParseImageView) mCreatorView.findViewById(R.id.image_top_selected);
         mBottomImageView = (ParseImageView) mCreatorView.findViewById(R.id.image_bottom_selected);
@@ -146,36 +151,36 @@ public class CreatorFragment2 extends Fragment {
         mItemDetailPopup = mCreatorView.findViewById(R.id.item_detail_popup);
 
         ParseService service = new ParseService(getActivity().getApplicationContext());
-
-/*        mOutfitItemAdapter = new OutfitItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_outfit_view);
-        mOutfitGrid.setAdapter(mOutfitItemAdapter);
         service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
             @Override
             public void onSuccess(final List<OutfitItem> items) {
-                *//*if(items != null) {
-                    try {
+                if(items != null) {
+/*                    try {
                         for (OutfitItem item : items) {
                             item.getTopImage().getData();
                             Log.d("IMAGE_DATA", "Image for " + item.getTopDescription());
                         }
                     } catch(ParseException e) {
                         Log.d("IMAGE_DATA", e.getMessage());
-                    }
-                }*//*
+                    }*/
+                }
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mOutfitItemAdapter.setItems(items);
+                        if(ParseUser.getCurrentUser().getNumber("outfit_count").intValue() != 0) {
+                            Fragment outfit = ViewOutfitFragment.newInstance(items, ParseUser.getCurrentUser().getNumber("outfit_count").intValue());
+                            replaceFragment(outfit, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
+                            OutfitListForFragment = items;
+                        } else {
+                            replaceFragment(new OutfitItemEmptyFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
+                        }
                     }
                 });
             }
-
             @Override
             public void onFail(String message) {
-
             }
-        });*/
-
+        });
         setupClosetScrollers();
         setOnClickListeners();
         return mCreatorView;
@@ -420,10 +425,45 @@ public class CreatorFragment2 extends Fragment {
 
                 mParseService = new ParseService(view.getContext());
                 //TODO: add acc
-                mParseService.saveNewOutfit(view.getContext(), mSelectedTop, mSelectedBottom, mSelectedShoes, mSelectedAcc, new IParseCallback<OutfitItem>() {
+                String outfitName = outfitTitle.getText().toString();
+                Date date = new Date();
+
+                if(outfitName == null) {
+                    outfitName = "Outfit Created on: "+ date.getDate();
+                }
+                final Context con = view.getContext();
+                mParseService.saveNewOutfit(con, mSelectedTop, mSelectedBottom, mSelectedShoes, mSelectedAcc, outfitName, new IParseCallback<OutfitItem>() {
                     @Override
                     public void onSuccess(OutfitItem item) {
-//                        mOutfitItemAdapter.addItem(item);
+                        Log.i(TAG, "OUTFIT COUNT: "+ ParseUser.getCurrentUser().getNumber("outfit_count"));
+                        ParseUser.getCurrentUser().increment("outfit_count");
+                        ParseUser.getCurrentUser().saveInBackground();
+                        Log.i(TAG, "OUTFIT COUNT: "+ ParseUser.getCurrentUser().getNumber("outfit_count"));
+                        new ParseService(con).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
+                            @Override
+                            public void onSuccess(final List<OutfitItem> items) {
+                                if(items != null) {
+/*                                    try {
+                                        for (OutfitItem item : items) {
+                                            item.getTopImage().getData();
+                                            Log.d("IMAGE_DATA", "Image for " + item.getTopDescription());
+                                        }
+                                    } catch(ParseException e) {
+                                        Log.d("IMAGE_DATA", e.getMessage());
+                                    }*/
+                                }
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Fragment outfit = ViewOutfitFragment.newInstance(items, ParseUser.getCurrentUser().getNumber("outfit_count").intValue());
+                                        replaceFragment(outfit, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onFail(String message) {
+                            }
+                        });
                     }
 
                     @Override
@@ -549,9 +589,6 @@ public class CreatorFragment2 extends Fragment {
         android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         Log.i(TAG, "Replacing the fragment and calling backstack");
         fragmentTransaction.replace(R.id.inner_container, newFragment, backstackName);
-/*        if (addToBackstack) {
-            fragmentTransaction.addToBackStack(backstackName);
-        }*/
         Log.i(TAG, "setting the transition");
         fragmentTransaction.setTransition(transition);
         Log.i(TAG,"Commiting Transaction");

@@ -405,7 +405,9 @@ public class RegisterNewAccountActivity extends Activity {
                 } else if (user.isNew()) {
                     Log.d(TAG,
                             "User signed up and logged in through Facebook!");
+                    user.put("outfit_count", 0);
                     startMainActivity();
+
                 } else {
                     Log.d(TAG,
                             "User logged in through Facebook!");

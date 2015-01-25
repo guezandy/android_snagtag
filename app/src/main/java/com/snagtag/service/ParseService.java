@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.GetCallback;
@@ -21,6 +22,7 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 import com.snagtag.ParseLoginDispatchActivity;
 import com.snagtag.R;
+import com.snagtag.SnagtagApplication;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.OutfitItem;
 import com.snagtag.models.StoreItem;
@@ -250,7 +252,6 @@ public class ParseService {
 
     }
 
-//////GET OUTFIT COUNTTT
 
 
     public void getOutfitItems(final Context context, final IParseCallback<List<OutfitItem>> itemCallback) {
@@ -587,8 +588,8 @@ public class ParseService {
         });
     }
 
-    public void saveNewOutfit(Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes, TagHistoryItem mAcc,  final IParseCallback<OutfitItem> callback) {
-        final OutfitItem newOutfit = new OutfitItem(mTop, mBottom, mShoes, mAcc);
+    public void saveNewOutfit(final Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes, TagHistoryItem mAcc, String name,  final IParseCallback<OutfitItem> callback) {
+        final OutfitItem newOutfit = new OutfitItem(mTop, mBottom, mShoes, mAcc, name);
         newOutfit.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -596,8 +597,20 @@ public class ParseService {
                     Log.i(TAG, "New outfit save failed with error: "+e.getMessage());
                 } else {
                     Log.i(TAG, "New outfit saved!");
+                    int old = ParseUser.getCurrentUser().getNumber("outfit_count").intValue();
+                    ParseUser.getCurrentUser().put("outfit_count", old++);
+                    ParseUser.getCurrentUser().saveInBackground();
                     callback.onSuccess(newOutfit);
                 }
+            }
+        });
+    }
+
+    public void deleteOutfit(final Context context, OutfitItem item, final IParseCallback<OutfitItem> callback) {
+        item.deleteEventually(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+
             }
         });
     }

@@ -371,7 +371,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void startLoginActivity() {
-        Intent intent = new Intent(this, ParseLoginDispatchActivity.class);
+        Intent intent = new Intent(this, LaunchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

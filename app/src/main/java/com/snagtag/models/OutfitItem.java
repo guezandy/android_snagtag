@@ -38,7 +38,8 @@ public class OutfitItem extends ParseObject {
         this.setUser();
     }
 
-    public OutfitItem(TagHistoryItem top, TagHistoryItem bottom, TagHistoryItem shoes, TagHistoryItem acc) {
+    public OutfitItem(TagHistoryItem top, TagHistoryItem bottom, TagHistoryItem shoes, TagHistoryItem acc, String name) {
+        this.setOutfitTitle(name);
         if(top != null) {
             this.setTopRelation(top);
             this.setTopImage(top);
@@ -131,6 +132,14 @@ public class OutfitItem extends ParseObject {
 
     public Boolean getShoesInCloset() {
         return this.getBoolean("shoesInCloset");
+    }
+
+    public void setVisible(Boolean v) {
+        this.put("visible", v);
+    }
+
+    public Boolean getVisible() {
+        return this.getBoolean("visible");
     }
 
     public void setOutfitTitle(String title) {
