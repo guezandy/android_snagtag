@@ -30,7 +30,6 @@ public class FittingGridView extends GridView {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         int height = displaymetrics.heightPixels;
-        int width = displaymetrics.widthPixels;
 
         if (getLayoutParams().height == LayoutParams.WRAP_CONTENT) {
             heightSpec = MeasureSpec.makeMeasureSpec(height/2, MeasureSpec.EXACTLY);

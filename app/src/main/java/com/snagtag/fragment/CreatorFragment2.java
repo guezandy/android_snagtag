@@ -11,14 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseUser;
@@ -31,7 +28,6 @@ import com.snagtag.models.TagHistoryItem;
 import com.snagtag.scroll.CenteringHorizontalScrollView;
 import com.snagtag.service.IParseCallback;
 import com.snagtag.service.ParseService;
-
 
 import java.util.Date;
 import java.util.List;
@@ -151,10 +147,10 @@ public class CreatorFragment2 extends Fragment {
         mItemDetailPopup = mCreatorView.findViewById(R.id.item_detail_popup);
 
         ParseService service = new ParseService(getActivity().getApplicationContext());
-        service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
+        service.getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
             @Override
             public void onSuccess(final List<OutfitItem> items) {
-                if(items != null) {
+                if (items != null) {
 /*                    try {
                         for (OutfitItem item : items) {
                             item.getTopImage().getData();
@@ -167,7 +163,7 @@ public class CreatorFragment2 extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(ParseUser.getCurrentUser().getNumber("outfit_count").intValue() != 0) {
+                        if (ParseUser.getCurrentUser().getNumber("outfit_count").intValue() != 0) {
                             Fragment outfit = ViewOutfitFragment.newInstance(items, ParseUser.getCurrentUser().getNumber("outfit_count").intValue());
                             replaceFragment(outfit, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
                             OutfitListForFragment = items;
@@ -177,6 +173,7 @@ public class CreatorFragment2 extends Fragment {
                     }
                 });
             }
+
             @Override
             public void onFail(String message) {
             }
@@ -205,9 +202,12 @@ public class CreatorFragment2 extends Fragment {
         mTopsScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped(View view, int index) {
-                mSelectedTop = mTops.get(index - 1);
-                setSelected(mSnagIndicatorTop, mTopImageView, mSelectedTop);
-
+                try {
+                    mSelectedTop = mTops.get(index - 1);
+                    setSelected(mSnagIndicatorTop, mTopImageView, mSelectedTop);
+                } catch (IndexOutOfBoundsException ioobe) {
+                    //'Selected' item is out of range, just do nothing.
+                }
             }
         });
 
@@ -230,9 +230,14 @@ public class CreatorFragment2 extends Fragment {
         mBottomsScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped(View view, int index) {
-                mSelectedBottom = mBottoms.get(index - 1);
-                mBottomImageView.setParseFile(mSelectedBottom.getImage());
-                mBottomImageView.loadInBackground();
+
+                try {
+                    mSelectedBottom = mBottoms.get(index - 1);
+                    mBottomImageView.setParseFile(mSelectedBottom.getImage());
+                    mBottomImageView.loadInBackground();
+                } catch (IndexOutOfBoundsException ioobe) {
+                    //'Selected' item is out of range, just do nothing.
+                }
 
             }
         });
@@ -254,12 +259,15 @@ public class CreatorFragment2 extends Fragment {
         mShoesScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped(View view, int index) {
-                mSelectedShoes = mShoes.get(index - 1);
-                mShoesImageView.setParseFile(mSelectedShoes.getImage());
-                mShoesImageView.loadInBackground();
+                try {
+                    mSelectedShoes = mShoes.get(index - 1);
+                    mShoesImageView.setParseFile(mSelectedShoes.getImage());
+                    mShoesImageView.loadInBackground();
+                } catch (IndexOutOfBoundsException ioobe) {
+                    //'Selected' item is out of range, just do nothing.
+                }
             }
         });
-
 
 
         mAccView = (LinearLayout) mCreatorView.findViewById(R.id.acc_view);
@@ -279,9 +287,13 @@ public class CreatorFragment2 extends Fragment {
         mAccScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped(View view, int index) {
-                mSelectedAcc = mAcc.get(index - 1);
-                mAccImageView.setParseFile(mSelectedAcc.getImage());
-                mAccImageView.loadInBackground();
+                try {
+                    mSelectedAcc = mAcc.get(index - 1);
+                    mAccImageView.setParseFile(mSelectedAcc.getImage());
+                    mAccImageView.loadInBackground();
+                } catch (IndexOutOfBoundsException ioobe) {
+                    //'Selected' item is out of range, just do nothing.
+                }
             }
         });
 
@@ -413,7 +425,7 @@ public class CreatorFragment2 extends Fragment {
                 if (mSelectedShoes != null && mSelectedShoes.getInCloset()) {
                     //TODO:Add shoes to closet
                 }
-                if(mSelectedAcc != null && mSelectedAcc.getInCloset()) {
+                if (mSelectedAcc != null && mSelectedAcc.getInCloset()) {
 
                 }
                 mButtonCart.setEnabled(false);
@@ -428,21 +440,21 @@ public class CreatorFragment2 extends Fragment {
                 String outfitName = outfitTitle.getText().toString();
                 Date date = new Date();
 
-                if(outfitName == null) {
-                    outfitName = "Outfit Created on: "+ date.getDate();
+                if (outfitName == null) {
+                    outfitName = "Outfit Created on: " + date.getDate();
                 }
                 final Context con = view.getContext();
                 mParseService.saveNewOutfit(con, mSelectedTop, mSelectedBottom, mSelectedShoes, mSelectedAcc, outfitName, new IParseCallback<OutfitItem>() {
                     @Override
                     public void onSuccess(OutfitItem item) {
-                        Log.i(TAG, "OUTFIT COUNT: "+ ParseUser.getCurrentUser().getNumber("outfit_count"));
+                        Log.i(TAG, "OUTFIT COUNT: " + ParseUser.getCurrentUser().getNumber("outfit_count"));
                         ParseUser.getCurrentUser().increment("outfit_count");
                         ParseUser.getCurrentUser().saveInBackground();
-                        Log.i(TAG, "OUTFIT COUNT: "+ ParseUser.getCurrentUser().getNumber("outfit_count"));
-                        new ParseService(con).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>(){
+                        Log.i(TAG, "OUTFIT COUNT: " + ParseUser.getCurrentUser().getNumber("outfit_count"));
+                        new ParseService(con).getOutfitItems(getActivity().getApplicationContext(), new IParseCallback<List<OutfitItem>>() {
                             @Override
                             public void onSuccess(final List<OutfitItem> items) {
-                                if(items != null) {
+                                if (items != null) {
 /*                                    try {
                                         for (OutfitItem item : items) {
                                             item.getTopImage().getData();
@@ -460,6 +472,7 @@ public class CreatorFragment2 extends Fragment {
                                     }
                                 });
                             }
+
                             @Override
                             public void onFail(String message) {
                             }
@@ -591,7 +604,7 @@ public class CreatorFragment2 extends Fragment {
         fragmentTransaction.replace(R.id.inner_container, newFragment, backstackName);
         Log.i(TAG, "setting the transition");
         fragmentTransaction.setTransition(transition);
-        Log.i(TAG,"Commiting Transaction");
+        Log.i(TAG, "Commiting Transaction");
         fragmentTransaction.commit();
     }
 }
