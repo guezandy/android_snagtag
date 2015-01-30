@@ -22,7 +22,7 @@
             android:id="@+id/edit_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:textStyle="bold"
             android:layout_centerVertical="true"
@@ -31,11 +31,19 @@
             android:id="@+id/shipping_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp"
+            android:layout_marginLeft="12dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/label_step_2"/>
+            android:text="@string/label_register_2"/>
+        <TextView
+            android:id="@+id/review_header"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:text="@string/label_register_3"/>
 
     </RelativeLayout>
     <RelativeLayout
@@ -95,7 +103,7 @@
             android:id="@+id/edit_order_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <!-- Items in the first page go here -->
+            <!-- Items in the first page go here -->
             <EditText
                 android:id="@+id/unEmail"
                 android:layout_width="match_parent"
@@ -345,5 +353,139 @@
                     android:text="@string/start"/>
             </LinearLayout>
         </ScrollView>
+
+
+
+        <!-- Step 3, Review -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center|left"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="@color/grey_light"
+                android:text="Items"
+                android:textColor="#000000"/>
+            <HorizontalScrollView
+                android:id="@+id/list_items_purchase"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center|left"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="@color/grey_light"
+                android:text="Order Details"
+                android:textColor="#000000"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/ship_to_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+                <TextView
+                    android:id="@+id/user_and_billing_summary_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#111111"
+                    android:textSize="11sp"
+                    tools:text="Ship to:\nLindsay Smith\n123 Main St.\n\nMilwaukee, WI 53202\n\nCard #:XXXX XXXX XXXX 1234\nExp Date: 01/18"/>
+                <TextView
+                    android:id="@+id/shipping_label"
+                    android:textColor="#111111"
+                    android:textSize="11sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    tools:text="Free Shipping($50 min)\n4-9 business days"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_light"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="12dp">
+                <TextView
+                    android:id="@+id/label_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Product Total"/>
+                <TextView
+                    android:id="@+id/label_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@id/label_total"
+                    android:text="Tax"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@id/label_tax"
+                    android:text="Shipping &amp; Handling"/>
+
+                <TextView
+                    android:id="@+id/value_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    tools:text="$165.00"/>
+                <TextView
+                    android:id="@+id/value_tax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/value_total"
+                    android:layout_marginRight="12dp"
+                    tools:text="$9.90"/>
+                <TextView
+                    android:id="@+id/value_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@id/value_tax"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    tools:text="Free"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/total_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#999999"
+                    android:layout_marginBottom="12dp"
+                    android:layout_below="@id/value_shipping"
+                    />
+                <TextView
+                    android:id="@+id/value_order_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/total_separator"
+                    android:layout_marginRight="12dp"
+
+                    tools:text="Total: $174.90"
+
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
     </ViewFlipper>
 </RelativeLayout>

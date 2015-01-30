@@ -34,8 +34,8 @@
 
     <!-- Register strings -->
     <string name="label_register_1">1. About you</string>
-    <string name="label_register_2">2. Shipping and Billing</string>
-    <string name="label_register_3">3. Register</string>
+    <string name="label_register_2">2. Shipping </string>
+    <string name="label_register_3">3. Billing</string>
     <string name="register_button">Register </string>
     <!-- Put dialog messages here -->
     <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
@@ -110,6 +110,7 @@
     <string name="label_set_default">Set as Default</string>
     <string name="label_checkout">Checkout</string>
     <string name="label_find_a_store">Find a store</string>
+
     <!-- Tutorial texts -->
     <string name="label_tutorial_title">Here\'s how it works:</string>
     <string name="label_tutorial_step_1">1. Swipe Snagtags with your phone, pick a size and color add them to your card</string>
