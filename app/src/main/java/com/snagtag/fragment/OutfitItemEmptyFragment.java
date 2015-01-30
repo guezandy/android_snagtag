@@ -49,8 +49,6 @@ public class OutfitItemEmptyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final Context context = getActivity().getBaseContext();
         mView = inflater.inflate(R.layout.fragment_outfit_empty, container, false);
-
-
         return mView;
     }
 }

@@ -315,8 +315,6 @@ public class CreatorFragment extends Fragment {
                 view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
             }
         });
-
-
     }
 
 

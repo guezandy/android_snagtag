@@ -1,7 +1,5 @@
 package com.snagtag;
 
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,7 +35,7 @@ import com.snagtag.fragment.CreatorFragment;
 import com.snagtag.fragment.CreatorFragment2;
 import com.snagtag.fragment.HomeFragment;
 import com.snagtag.fragment.NavigationDrawerFragment;
-import com.snagtag.fragment.SingleItemFragment;
+import com.snagtag.fragment.NfcLaunchFragment;
 import com.snagtag.fragment.StoreFragment;
 import com.snagtag.fragment.TagsDrawerFragment;
 import com.snagtag.fragment.TermsFragment;
@@ -137,8 +135,8 @@ public class MainActivity extends ActionBarActivity
                 NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
             final String nfcid = processReadIntent(getIntent());
             Log.i(TAG, "Got nfc id "+nfcid);
-            Fragment snag = new SingleItemFragment();
-            ((SingleItemFragment) snag).setItemId(nfcid);
+            Fragment snag = new NfcLaunchFragment();
+            ((NfcLaunchFragment) snag).setItemId(nfcid);
             replaceFragment(snag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_tags));
         } else {
             if(getSharedPreferences("PREFS", 0).getBoolean("firstTime", true)) {
@@ -158,12 +156,12 @@ public class MainActivity extends ActionBarActivity
                 replaceFragment(new HomeFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_terms));
                 break;
             case OUTFITS:
-                Log.i(TAG,"Starting creator 2 fragment");
                 replaceFragment(new CreatorFragment2(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
                 //replaceFragment(new CreatorFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_outfits));
                 break;
             case CLOSET:
-                replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_closet));
+                replaceFragment(new ViewSnagFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_closet));
+                //replaceFragment(new ClosetFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_closet));
                 break;
  /*           case STORES:
                 replaceFragment(new StoreFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_stores));

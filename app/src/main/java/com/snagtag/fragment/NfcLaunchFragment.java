@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,9 @@ import com.snagtag.R;
 import com.snagtag.SnagtagApplication;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.TagHistoryItem;
+import com.snagtag.scroll.CenteringHorizontalScrollView;
+import com.snagtag.service.IParseCallback;
+import com.snagtag.service.ParseService;
 
 import java.util.List;
 
@@ -33,8 +37,8 @@ import java.util.List;
  * This will be reused for a single item view also
  * Created by Owner on 9/24/2014.
  */
-public class SingleItemFragment extends Fragment {
-    private final String TAG = SingleItemFragment.class.getSimpleName();
+public class NfcLaunchFragment extends Fragment {
+    private final String TAG = NfcLaunchFragment.class.getSimpleName();
     /**
      * barcode number needed to query parse to get information on an item
      */
@@ -52,8 +56,11 @@ public class SingleItemFragment extends Fragment {
     private TextView brand;
     private TextView description;
     private TextView price;
-    private ParseImageView image;
     private String tagObjectId;
+    private LinearLayout mTopsView;
+    private CenteringHorizontalScrollView mTopsScrollView;
+    List<TagHistoryItem> mTops;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,14 +85,12 @@ public class SingleItemFragment extends Fragment {
                 R.layout.fragment_item_detail_view, container, false);
         Log.i(TAG, "ID is: " + barcode);
 
-//        ParseUser u = SnagtagApplication.getUser();
-//        if(u!= null) {
-//            Log.i(TAG, u.getString("first_name"));
-//        }
         brand = (TextView) mItemView.findViewById(R.id.label_brand);
         description = (TextView) mItemView.findViewById(R.id.label_description);
         price = (TextView) mItemView.findViewById(R.id.label_price);
-        image = (ParseImageView) mItemView.findViewById(R.id.item_image);
+        mTopsScrollView = (CenteringHorizontalScrollView) mItemView.findViewById(R.id.tops_scroll_view);
+        mTopsView = (LinearLayout) mItemView.findViewById(R.id.tops_view);
+
 
         //TODO: Move into service
         onItemSnagged(barcode);
@@ -100,7 +105,7 @@ public class SingleItemFragment extends Fragment {
         //this.nfcIntent = b;
     }*/
 
-    public SingleItemFragment() {
+    public NfcLaunchFragment() {
         //default constructor for fragment
     }
 
@@ -130,7 +135,31 @@ public void onItemSnagged(String nfcid) {
                 brand.setText(object.getStore());
                 description.setText(object.getDescription());
                 price.setText(object.getPrice().toString());
-                ParseFile photoFile = object.getMainImage();
+
+                //TODO: CHANGE TO GET ITEM IMAGES
+                new ParseService(getActivity().getApplicationContext()).getTops(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+                    @Override
+                    public void onSuccess(List<TagHistoryItem> items) {
+                        mTops = items;
+                        setItemsInScroll(mTopsView, items, "You have no mTops in your closet or snags.");
+
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+
+                    }
+                });
+                mTopsScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
+                    @Override
+                    public void onScrollStopped(View view, int index) {
+                        //mSelectedTop = mTops.get(index - 1);
+                        //setSelected(mSnagIndicatorTop, mTopImageView, mSelectedTop);
+
+                    }
+                });
+
+/*                ParseFile photoFile = object.getMainImage();
                 if (photoFile != null) {
                     image.setParseFile(photoFile);
                     image.loadInBackground(new GetDataCallback() {
@@ -140,7 +169,7 @@ public void onItemSnagged(String nfcid) {
                             Log.i(TAG, "Image uploaded");
                         }
                     });
-                }
+                }*/
       /* 2 */
                 Log.i(TAG, "Incrementing tag count");
                 object.increment("tag_count"); //increments the items tag counter
@@ -202,5 +231,46 @@ public void onItemSnagged(String nfcid) {
                 }
             });
         }
+    }
+
+    /**
+     * Adds the items to the scrollview.
+     *
+     * @param view      The Layout inside the Horizontal scroller
+     * @param items     The list of Tags
+     * @param emptyText Message to display if the list is empty
+     */
+    private void setItemsInScroll(final LinearLayout view, final List<TagHistoryItem> items, final String emptyText) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                if (items.size() == 0) {
+                    TextView empty = new TextView(getActivity());
+                    empty.setText(emptyText);
+                    //add a blank view to start.
+                    view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
+                    view.addView(empty);
+                    view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
+                    return;
+                }
+                int i = 1;
+
+                //add a blank view to start.
+                view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
+
+                for (TagHistoryItem item : items) {
+                    ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.row_item_creator_view, view, false);
+                    ParseImageView iv = (ParseImageView) itemView.findViewById(R.id.item_image);
+                    iv.setParseFile(item.getImage());
+                    iv.loadInBackground();
+                    ((TextView) itemView.findViewById(R.id.item_count)).setText(i + "/" + items.size());
+                    i++;
+                    view.addView(itemView);
+                }
+                //add a blank views to end.
+                view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
+            }
+        });
     }
 }

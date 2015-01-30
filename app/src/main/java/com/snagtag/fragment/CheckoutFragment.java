@@ -125,7 +125,8 @@ public class CheckoutFragment extends Fragment {
                     @Override
                     public void run() {
                         checkoutAdapter.setItems(items);
-                        StripeOrderModel order = new StripeOrderModel(ParseUser.getCurrentUser(), items, mStore);
+                        //Check if user has a stripe account if not guide them to enter card info
+                        //StripeOrderModel order = new StripeOrderModel(ParseUser.getCurrentUser(), items, mStore);
                     }
                 });
 

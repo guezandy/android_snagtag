@@ -23,7 +23,7 @@ import com.viewpagerindicator.TitlePageIndicator;
  * Created by benjamin on 10/19/14.
  */
 public class ViewSnagFragment extends Fragment {
-    private static final String[] CONTENT = new String[] { "Tops", "Bottoms", "Shoes"};
+    private static final String[] CONTENT = new String[] { "Tops", "Bottoms", "Shoes", "Accesories"};
     private static final int[] ICONS = new int[] {
             R.drawable.perm_group_calendar,
             R.drawable.perm_group_camera,
