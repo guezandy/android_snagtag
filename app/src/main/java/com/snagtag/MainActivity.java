@@ -281,10 +281,13 @@ public class MainActivity extends ActionBarActivity
         Log.i(TAG, "Initializing Fragment Transaction");
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Log.i(TAG, "Replacing the fragment and calling backstack");
-        fragmentTransaction.replace(R.id.container, newFragment, backstackName);
-        if (addToBackstack) {
-            fragmentTransaction.addToBackStack(backstackName);
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
         }
+        fragmentTransaction.replace(R.id.container, newFragment, backstackName);
+        //if (addToBackstack) {
+            fragmentTransaction.addToBackStack(backstackName);
+        //}
         Log.i(TAG, "setting the transition");
         fragmentTransaction.setTransition(transition);
         Log.i(TAG,"Commiting Transaction");

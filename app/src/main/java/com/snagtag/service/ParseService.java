@@ -219,7 +219,17 @@ public class ParseService {
                             final List<CartItem> innerList = new ArrayList<CartItem>();
                             for (CartItem singleCartItem : entireCart) {
                                 Log.i(TAG, "cart items query: " + singleCartItem.getString("itemId"));
-                                if (singleCartItem.getParseObject("item").getString("store").equals(store))
+                                ParseObject po = singleCartItem.getParseObject("item");
+                                String storeStr = null;
+                                try {
+                                    po.fetchIfNeeded();
+                                } catch (Exception ex) {}
+                                try {
+                                    storeStr = po.getString("store");
+                                } catch(IllegalStateException pe) {
+                                    Log.d("UNFETCHED", po.toString());
+                                }
+                                if (store.equals(storeStr))
                                     innerList.add(singleCartItem);
                             }
                             itemsCallback.onSuccess(innerList);

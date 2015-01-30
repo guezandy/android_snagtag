@@ -41,7 +41,7 @@
     <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
     <string name="dialog_exit">Are you sure you want to exit Snagtag?</string>
     <string name="dialog_yes">Yes</string>
-    <string name="dialog_no">Yes</string>
+    <string name="dialog_no">No</string>
 
     <!-- font awesome icons go here -->
     <string name="icon_cart"></string>
