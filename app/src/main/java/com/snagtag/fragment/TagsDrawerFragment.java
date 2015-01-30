@@ -139,7 +139,7 @@ public class TagsDrawerFragment extends Fragment {
                                 flipper.setVisibility(View.VISIBLE);
                                 openIndicator.setRotation(180);
 
-                                final TagHistoryItemAdapter gridAdapter = new TagHistoryItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_clothing_view);
+                                final TagHistoryItemAdapter gridAdapter = new TagHistoryItemAdapter(getActivity().getApplicationContext(), R.layout.row_item_clothing_view, itemGrid);
 
                                 itemGrid.setAdapter(gridAdapter);
                                 new ParseService(getActivity().getApplicationContext()).getTagHistory(getActivity().getApplicationContext(), storeName, new IParseCallback<List<TagHistoryItem>>() {

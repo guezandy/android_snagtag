@@ -45,6 +45,7 @@ public class StripeOrderModel extends ParseObject {
      * We need customer id, items to purchase, shipping address, billing address, and store stripe id
      */
     public void setCustomerId(String customerId) {
+
         this.put("customerId", customerId);
     }
 

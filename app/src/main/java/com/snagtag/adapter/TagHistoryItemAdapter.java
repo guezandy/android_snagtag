@@ -28,11 +28,13 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
     List<TagHistoryItem> mItems = Collections.emptyList();
     Context mContext;
     private int mView;
+    private View gridView;
 
-    public TagHistoryItemAdapter(Context context, int view) {
+    public TagHistoryItemAdapter(Context context, int view, View gridView) {
         super(context, view);
         this.mContext = context;
         mView = view;
+        this.gridView = gridView;
     }
 
     public void setItems(List<TagHistoryItem> mItems) {
@@ -46,7 +48,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
     }
 
     @Override
-    public View getView(int position, View v, ViewGroup parent) {
+    public View getView(int position, View v, final ViewGroup parent) {
         final TagHistoryItem item = mItems.get(position);
         if (v == null) {
             v = View.inflate(mContext, mView, null);
@@ -80,7 +82,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
             }
         });
 
-        ParseImageView itemImage = (ParseImageView) v.findViewById(R.id.item_image);
+        final ParseImageView itemImage = (ParseImageView) v.findViewById(R.id.item_image);
         ParseFile photoFile = item.getImage();
         if (photoFile != null) {
             itemImage.setParseFile(photoFile);
@@ -89,6 +91,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
                 public void done(byte[] data, ParseException e) {
                     // nothing to do
                     Log.i("TAG", "Image loaded: " + item.getStore() + " , " + item.getDescription());
+
                 }
             });
         }

@@ -4,8 +4,10 @@ package com.snagtag.grid;
  * Created by benjamin on 10/8/14.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.widget.GridView;
 
 public class FittingGridView extends GridView {
@@ -24,9 +26,13 @@ public class FittingGridView extends GridView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightSpec = heightMeasureSpec;
+        //IF the spec is to wrap content, set it to 1/2 the size of the screen instead...
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
 
         if (getLayoutParams().height == LayoutParams.WRAP_CONTENT) {
-            heightSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+            heightSpec = MeasureSpec.makeMeasureSpec(height/2, MeasureSpec.EXACTLY);
         }
 
         super.onMeasure(widthMeasureSpec, heightSpec);
