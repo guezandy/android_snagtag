@@ -96,7 +96,7 @@ public class ParseLoginDispatchActivity extends Activity {
         }
 
         //TODO: remove this debugging code set to true to skip login
-        boolean debugMode = true;
+        boolean debugMode = false;
         if (debugMode) {
             username.setText("demo");
             password.setText("demo");
@@ -197,11 +197,11 @@ public class ParseLoginDispatchActivity extends Activity {
                                 "Uh oh. The user cancelled the Facebook login.");
                     } else if (user.isNew()) {
                         Log.d(TAG,
-                                "User signed up and logged in through Facebook!");
+                                "user signed up and logged in through Facebook!");
                         startMainActivity();
                     } else {
                         Log.d(TAG,
-                                "User logged in through Facebook!");
+                                "user logged in through Facebook!");
                         startMainActivity();
                     }
                 }
