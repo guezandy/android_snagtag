@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.parse.ParseImageView;
@@ -19,7 +20,7 @@ public final class LaunchViewPagerFragment extends android.support.v4.app.Fragme
     public static android.support.v4.app.Fragment newInstance(String content) {
         LaunchViewPagerFragment fragment = new LaunchViewPagerFragment();
 
-        fragment.mContent = ("Text on" + content);
+        fragment.mContent = (content);
         return fragment;
     }
 
@@ -36,20 +37,23 @@ public final class LaunchViewPagerFragment extends android.support.v4.app.Fragme
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TextView text = new TextView(getActivity());
-        text.setGravity(Gravity.CENTER);
-        text.setText(mContent);
-        text.setTextSize(20 * getResources().getDisplayMetrics().density);
-        text.setPadding(20, 20, 20, 20);
 
+        TextView text = new TextView(getActivity());
+        text.setGravity(Gravity.CENTER_HORIZONTAL);
+        text.setText(mContent);
+        text.setTextSize(12 * getResources().getDisplayMetrics().density);
+        text.setPadding(1, 1, 1, 1);
+        text.setTextColor(getResources().getColor(R.color.white));
 
 /*        ParseImageView image = new ParseImageView(getActivity());
         image.setImageResource(R.drawable.snaglogo);
         image.loadInBackground();*/
 
-        LinearLayout layout = new LinearLayout(getActivity());
-        layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-        layout.setGravity(Gravity.CENTER);
+        RelativeLayout layout = new RelativeLayout(getActivity());
+        layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+        layout.setGravity(Gravity.BOTTOM);
+        layout.setPadding(50,50,50,50);
         layout.addView(text);
         //layout.addView(image);
 

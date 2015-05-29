@@ -16,14 +16,16 @@ import com.snagtag.R;
 public final class HomeViewPagerFragment extends Fragment {
     private static final String KEY_CONTENT = "TestFragment:Content";
 
-    public static HomeViewPagerFragment newInstance(String content) {
+    public static HomeViewPagerFragment newInstance(String content, int image) {
         HomeViewPagerFragment fragment = new HomeViewPagerFragment();
 
-        fragment.mContent = ("This is image" + content);
+        fragment.mContent = (content);
+        fragment.mImage = image;
         return fragment;
     }
 
     private String mContent = "???";
+    private int mImage = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,13 @@ public final class HomeViewPagerFragment extends Fragment {
 
 
         ParseImageView image = new ParseImageView(getActivity());
-        image.setImageResource(R.drawable.snaglogo);
+        image.setImageResource(mImage);
         image.loadInBackground();
 
         LinearLayout layout = new LinearLayout(getActivity());
         layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
         layout.setGravity(Gravity.CENTER);
-       // layout.addView(text);
+        //layout.addView(text);
         layout.addView(image);
 
         return layout;

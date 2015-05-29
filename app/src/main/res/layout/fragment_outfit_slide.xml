@@ -4,18 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="match_parent"
+    android:background="@drawable/outfit_square">
     <com.parse.ParseImageView
         android:id="@+id/image_top"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
         android:layout_margin="12dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
         tools:src="@drawable/ic_launcher"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tag"
+        android:background="@drawable/circle_button_snag"
+        android:padding="5dp"
+        android:layout_alignRight="@+id/image_top"
+        android:layout_alignBottom="@+id/image_top"/>
     <com.parse.ParseImageView
         android:id="@+id/image_shoes"
         android:layout_width="150dp"
@@ -25,6 +34,14 @@
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
         tools:src="@drawable/ic_launcher"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tag"
+        android:background="@drawable/circle_button_snag"
+        android:padding="5dp"
+        android:layout_alignRight="@+id/image_shoes"
+        android:layout_alignBottom="@+id/image_shoes"/>
     <com.parse.ParseImageView
         android:id="@+id/image_bottom"
         android:layout_width="150dp"
@@ -32,7 +49,17 @@
         android:layout_margin="12dp"
         android:layout_toEndOf="@id/image_top"
         android:layout_toRightOf="@id/image_top"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         tools:src="@drawable/ic_launcher"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tag"
+        android:background="@drawable/circle_button_snag"
+        android:padding="5dp"
+        android:layout_alignRight="@+id/image_bottom"
+        android:layout_alignBottom="@+id/image_bottom"/>
     <com.parse.ParseImageView
         android:id="@+id/image_acc"
         android:layout_width="150dp"
@@ -41,37 +68,46 @@
         android:layout_below="@+id/image_bottom"
         android:layout_toEndOf="@id/image_shoes"
         android:layout_toRightOf="@id/image_shoes"
+        android:layout_alignParentRight="true"
         tools:src="@drawable/ic_launcher"/>
-
-    <LinearLayout
+    <ImageView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tag"
+        android:background="@drawable/circle_blue_button"
+        android:padding="5dp"
+        android:layout_alignRight="@+id/image_acc"
+        android:layout_alignBottom="@+id/image_acc"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/share"
         android:orientation="horizontal"
+        android:background="@color/grey_light"
         android:layout_below="@id/image_shoes"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true">
+        <TextView
+            android:id="@+id/text_outfit_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Outfit Name"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:layout_toLeftOf="@+id/button_delete"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="5dp"/>
         <com.snagtag.ui.IconCustomTextView
             android:id="@+id/button_delete"
             android:layout_width="@dimen/delete_circle_diameter"
             android:layout_height="@dimen/delete_circle_diameter"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="12dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/icon_delete"
-            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
             android:textSize="@dimen/text_size_close"
             android:textColor="@color/white"
             android:background="@drawable/circle_grey"
             />
-        <TextView
-            android:id="@+id/text_outfit_name"
-            android:layout_below="@id/image_shoes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Outfit Name"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginBottom="5dp"/>
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

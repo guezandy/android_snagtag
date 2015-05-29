@@ -1,6 +1,7 @@
 package com.snagtag.adapter;
 
 import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,10 @@ import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.snagtag.MainActivity;
 import com.snagtag.R;
+import com.snagtag.fragment.CartFragment;
+import com.snagtag.fragment.NfcLaunchFragment;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.TagHistoryItem;
 
@@ -53,9 +57,6 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
         if (v == null) {
             v = View.inflate(mContext, mView, null);
         }
-        TextView description = (TextView) v.findViewById(R.id.item_description);
-
-        description.setText("");
 
         com.snagtag.ui.IconCustomTextView delete = (com.snagtag.ui.IconCustomTextView) v.findViewById(R.id.delete_item);
         delete.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +66,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
                 item.setVisible(false);
                 item.saveInBackground();
 
-                ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
+                /*ParseQuery<TagHistoryItem> query = ParseQuery.getQuery("TagHistoryItem");
                 query.getInBackground(item.getObjectId(), new GetCallback<TagHistoryItem>() {
                     @Override
                     public void done(TagHistoryItem tagHistoryItem, ParseException e) {
@@ -77,7 +78,7 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
                             }
                         });
                     }
-                });
+                });*/
                 //TODO: unpin all mItems with false as visibility we don't need to store them locally
             }
         });
@@ -96,11 +97,24 @@ public class TagHistoryItemAdapter extends ArrayAdapter<TagHistoryItem> {
             });
         }
 
-        TextView color = (TextView) v.findViewById(R.id.item_color);
-        color.setText(String.format(mContext.getResources().getString(R.string.item_color), item.getObjectId()/*item.getString("color")*/));
+        itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NfcLaunchFragment frag = new NfcLaunchFragment();
+                frag.setItemId(item.getBarcode());
+                Toast.makeText(mContext, "Feature coming soon", Toast.LENGTH_SHORT).show();
+                //((MainActivity) mContext.get).replaceFragment(frag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, mContext.getString(R.string.title_section_cart));
+            }
+        });
+
+        //TextView color = (TextView) v.findViewById(R.id.item_color);
+        //color.setText(String.format(mContext.getResources().getString(R.string.item_color), item.getObjectId()/*item.getString("color")*/));
+
+//        TextView description = (TextView) v.findViewById(R.id.item_description);
+//        description.setText(String.format(mContext.getResources().getString(R.string.item_size), item.getDescription()));
 
         TextView size = (TextView) v.findViewById(R.id.item_size);
-        size.setText(String.format(mContext.getResources().getString(R.string.item_size), item.getString("size")));
+        size.setText(item.getDescription());
 
         TextView cost = (TextView) v.findViewById(R.id.item_cost);
         cost.setText(String.format(mContext.getResources().getString(R.string.item_cost), item.getPrice()));

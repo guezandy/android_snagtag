@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/grey_light"
+            android:src="@drawable/user"
+            android:id="@+id/account_image" />
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/button_edit_image"
+            android:layout_width="@dimen/delete_circle_diameter"
+            android:layout_height="@dimen/delete_circle_diameter"
+            android:layout_marginBottom="5dp"
+            android:text="@string/icon_edit"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/account_image"
+            android:layout_marginRight="25dp"
+            android:textSize="24sp"
+            android:textColor="@color/grey_dark"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user"
+            android:layout_toLeftOf="@+id/account_profile_name"
+            android:background="@color/blue"
+            android:gravity="center_vertical"
+            android:id="@+id/name_icon" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button_edit_name"
+            android:textColorHint="@color/blue"
+            android:textColor="@color/gray"
+            android:textSize="24sp"
+            android:enabled="false"
+            android:hint="Username"
+            android:id="@+id/account_profile_name" />
+
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/button_edit_name"
+            android:layout_width="@dimen/delete_circle_diameter"
+            android:layout_height="@dimen/delete_circle_diameter"
+            android:layout_marginBottom="5dp"
+            android:text="@string/icon_edit"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:textSize="24sp"
+            android:textColor="@color/grey_dark"
+            android:gravity="center_vertical"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:src="@drawable/emailenvelope_blue"
+            android:layout_toLeftOf="@+id/account_profile_email"
+            android:background="@color/white"
+            android:id="@+id/email_icon" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:layout_toLeftOf="@+id/button_edit_email"
+            android:enabled="false"
+            android:hint="Email"
+            android:id="@+id/account_profile_email" />
+
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/button_edit_email"
+            android:layout_width="@dimen/delete_circle_diameter"
+            android:layout_height="@dimen/delete_circle_diameter"
+            android:layout_marginBottom="5dp"
+            android:text="@string/icon_edit"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:layout_marginRight="25dp"
+            android:textSize="24sp"
+            android:textColor="@color/grey_dark"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/passwordlock_blue"
+            android:gravity="center_vertical"
+            android:layout_toLeftOf="@+id/account_profile_password"
+            android:background="@color/white"
+            android:id="@+id/password_icon" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:layout_toLeftOf="@+id/button_edit_password"
+            android:enabled="false"
+            android:hint="Password"
+            android:id="@+id/account_profile_password" />
+
+        <com.snagtag.ui.IconCustomTextView
+            android:id="@+id/button_edit_password"
+            android:layout_width="@dimen/delete_circle_diameter"
+            android:layout_height="@dimen/delete_circle_diameter"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:text="@string/icon_edit"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:textSize="24sp"
+            android:textColor="@color/grey_dark"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

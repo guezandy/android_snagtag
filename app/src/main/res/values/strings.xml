@@ -28,15 +28,23 @@
     <string name="button_cart">Cart Button</string>
     <string name="button_back_arrow">Back Button</string>
     <string name="title_measurements">Measurements:</string>
-    <string name="facebook_app_id">1518067891776005</string>
+    <string name="facebook_app_id">680394008758696</string>
     <string name="next">Continue to Shipping and Billing..</string>
     <string name="start">Start Snagging > </string>
 
     <!-- Register strings -->
-    <string name="label_register_1">1. About you</string>
-    <string name="label_register_2">2. Shipping </string>
-    <string name="label_register_3">3. Billing</string>
+    <string name="label_register_1">About you</string>
+    <string name="label_register_2">Shipping </string>
+    <string name="label_register_3">Billing</string>
     <string name="register_button">Register </string>
+    <string name="skip">Skip for now</string>
+    <string name="or">-OR-</string>
+    <string name="new_shipping">Setup your shipping address NOW for fast shopping!</string>
+    <string name="new_billing">Setup Billing Address</string>
+    <string name="card_name">Enter name on card</string>
+    <string name="card_number">Enter number on card</string>
+    <string name="what_stripe">What is Stripe?</string>
+
     <!-- Put dialog messages here -->
     <string name="dialog_no_nfc">Sorry, NFC is not available on this device</string>
     <string name="dialog_exit">Are you sure you want to exit Snagtag?</string>
@@ -58,7 +66,9 @@
     <string name="icon_add"></string>
     <string name="icon_check"></string>
     <string name="icon_tag"></string>
+    <string name="icon_edit">&#xf044;</string>
     <string name="icon_reorder"> Reorder</string>
+    <string name="color">Color</string>
 
     <!-- cart labels -->
     <string name="label_cart_items">%n Items</string>
@@ -110,6 +120,7 @@
     <string name="label_set_default">Set as Default</string>
     <string name="label_checkout">Checkout</string>
     <string name="label_find_a_store">Find a store</string>
+    <string name="add_to_cart">Add to Cart</string>
 
     <!-- Tutorial texts -->
     <string name="label_tutorial_title">Here\'s how it works:</string>
@@ -274,6 +285,23 @@
         <item>WV</item>
         <item>WI</item>
         <item>WY</item>
+    </string-array>
+
+    <string-array name="clothes_sizes">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+
+    <string-array name="shoe_sizes">
+        <item>8</item>
+        <item>8.5</item>
+        <item>9</item>
+        <item>9.5</item>
+        <item>10</item>
+        <item>10.5</item>
+        <item>11</item>
+        <item>11.5</item>
     </string-array>
 
     <string name="title_activity_launch">LaunchActivity</string>

@@ -42,43 +42,25 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="2dp"
         tools:text="Title"/>
-    <TextView
-        android:id="@+id/item_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/item_title"
-        android:layout_toRightOf="@id/item_image"
-        android:textSize="12sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        tools:text="Brand Striped Boatneck Top"/>
-    <TextView
-        android:id="@+id/item_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/item_image"
-        android:layout_below="@id/item_description"
-        android:textSize="12sp"
-        tools:visibility="gone"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        tools:text="Color: Red"/>
+
     <TextView
         android:id="@+id/item_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_color"
         android:layout_toRightOf="@id/item_image"
-        android:textSize="12sp"
+        android:textSize="16sp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         tools:visibility="gone"
-        tools:text="Size: M"/>
+        tools:text="Size: M"
+        android:textIsSelectable="false"
+        android:textColor="@color/blue" />
     <TextView
         android:id="@+id/item_cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_size"
+        android:layout_below="@id/item_title"
         android:layout_toRightOf="@id/item_image"
         android:textSize="12sp"
         android:layout_marginLeft="10dp"

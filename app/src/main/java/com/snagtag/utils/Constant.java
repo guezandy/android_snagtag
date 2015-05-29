@@ -16,9 +16,11 @@ public class Constant {
     //public static final int CART = 3;
     //public static final int OUTFIT_CREATOR = 2;
     public static final int CLOSET = 2;
+    //public static final int COLOR_WHEEL = 3;
     //public static final int STORES = 3;
     public static final int ACCOUNT = 3;
     public static final int TERMS = 4;
+    public static final int LOGOUT = 5;
 
     //Keys for parameter passing.  Per Google recommendations, fully qualified names are used.
 

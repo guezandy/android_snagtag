@@ -2,16 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_tags"
         android:title="@string/action_tags"
-        android:icon="@drawable/tag"
+        android:icon="@drawable/snag_inactive"
         android:orderInCategory="100"
         app:showAsAction="always" />
     <item android:id="@+id/action_cart"
         android:title="Cart"
-        android:icon="@drawable/cart"
+        android:icon="@drawable/cart_inactive"
         app:showAsAction="always"
     />
-    <item android:id="@+id/action_logout"
-        android:title="@string/action_logout"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
 </menu>

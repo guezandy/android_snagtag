@@ -109,11 +109,11 @@ public class CartItemAdapter extends ArrayAdapter<CartItem> {
                 this.description.setText(item.getDescription());
             }
 
-            //Double priceVal = item.getPrice();
+            Double priceVal = item.getPrice();
             String colorVal = item.getString("color");
             String sizeVal = item.getString("size");
 
-            //this.cost.setText(String.format(mContext.getResources().getString(R.string.item_cost), priceVal == null ? 0.00 : priceVal));
+            this.cost.setText(String.format(mContext.getResources().getString(R.string.item_cost), priceVal == null ? 0.00 : priceVal));
             if(this.color != null) {
                 this.color.setText(String.format(mContext.getResources().getString(R.string.item_color), colorVal == null ? "" : colorVal));
             }

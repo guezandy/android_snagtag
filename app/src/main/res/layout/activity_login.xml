@@ -15,6 +15,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_above="@+id/navigation_bar"
+        android:background="@drawable/stock4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true">
 
@@ -30,38 +31,38 @@
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
-        android:src="@drawable/logo_shrunk" />
+        android:src="@drawable/stlogo_s" />
 
     <EditText
         android:id="@+id/loginUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_default_bg"
         android:layout_marginTop="-2dp"
         android:padding="10dp"
         android:hint="User Name"
         android:textAlignment="center"
-        android:textColorHint="#bbbbbb"
+        android:textColorHint="@color/white"
         android:drawableLeft="@drawable/user"/>
 
     <EditText
         android:id="@+id/loginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_bottom_bg"
         android:layout_marginTop="-2dp"
         android:padding="10dp"
         android:hint="Password"
-        android:textColorHint="#bbbbbb"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         android:password="true"
-        android:drawableLeft="@drawable/pass"/>
+        android:drawableLeft="@drawable/passwordlock"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/button_login_bg"
+        android:background="@color/blue"
+        android:textColor="@color/white"
         android:text="Login to SnagTag" />
 
     <TextView

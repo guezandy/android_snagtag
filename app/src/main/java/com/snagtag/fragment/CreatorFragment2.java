@@ -163,6 +163,9 @@ public class CreatorFragment2 extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        ParseUser user = ParseUser.getCurrentUser();
+                        int inte = user.getNumber("outfit_count").intValue();
+                        System.out.println(inte);
                         if (ParseUser.getCurrentUser().getNumber("outfit_count").intValue() != 0) {
                             Fragment outfit = ViewOutfitFragment.newInstance(items, ParseUser.getCurrentUser().getNumber("outfit_count").intValue());
                             replaceFragment(outfit, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));

@@ -8,5 +8,6 @@
     <color name="blue">#36B0F3</color>
     <color name="grey_dark_semi_transparent">#ff666666</color>
     <color name="black_overlay">#66000000</color>
-
+    <color name="transparent">#ffffffff</color>
+    <color name="red">#ff0000</color>
 </resources>

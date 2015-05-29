@@ -105,7 +105,7 @@ public class CartFragment extends Fragment {
 
                                 @Override
                                 public void onFail(String message) {
-                                    //TODO:Show User error Message
+                                    //TODO:Show user error Message
                                 }
                             });
 

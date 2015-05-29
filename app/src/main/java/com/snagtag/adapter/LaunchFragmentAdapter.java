@@ -11,10 +11,10 @@ import com.viewpagerindicator.IconPagerAdapter;
 
 public class LaunchFragmentAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
     protected static final String[] CONTENT = new String[] {
-            "1",
-            "2",
-            "3",
-            "", };
+            "Snag any item in the store you want more information on",
+            "Snag it whether or not you plan to buy it",
+            "Snag Snag Snag",
+            "Continue Snagging", };
     protected static final int[] ICONS = new int[] {
             R.drawable.perm_group_calendar,
             R.drawable.perm_group_camera,

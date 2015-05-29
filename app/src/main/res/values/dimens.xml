@@ -9,6 +9,7 @@
     <dimen name="tag_drawer_width">320dp</dimen>
     <dimen name="outfit_selector_height">420dp</dimen>
     <dimen name="creator_selector_height">103dp</dimen>
+    <dimen name="similar_selector_height">90dp</dimen>
     <dimen name="creator_bottom_drawer_height">410dp</dimen>
     <dimen name="item_selector_width">150dp</dimen>
     <dimen name="delete_circle_diameter">25dp</dimen>

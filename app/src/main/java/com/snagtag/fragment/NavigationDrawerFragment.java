@@ -45,7 +45,9 @@ import static com.snagtag.utils.Constant.ACCOUNT;
 //import static com.snagtag.utils.Constant.CART;
 import static com.snagtag.utils.Constant.CLOSET;
 //import static com.snagtag.utils.Constant.FAVORITES;
+//import static com.snagtag.utils.Constant.COLOR_WHEEL;
 import static com.snagtag.utils.Constant.HOME;
+import static com.snagtag.utils.Constant.LOGOUT;
 import static com.snagtag.utils.Constant.OUTFITS;
 //import static com.snagtag.utils.Constant.OUTFIT_CREATOR;
 //import static com.snagtag.utils.Constant.SNAGS;
@@ -138,6 +140,8 @@ public class NavigationDrawerFragment extends Fragment {
         Session session = ParseFacebookUtils.getSession();
         if (session != null && session.isOpened()) {
             makeMeRequest();
+        } else {
+            userNameView.setText(ParseUser.getCurrentUser().getUsername());
         }
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
@@ -147,9 +151,11 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section_home),
                         getString(R.string.title_section_viewoutfits),
                         getString(R.string.title_section_closet),
+                        /*"Color Wheel (Coming Soon)",*/
                         /*getString(R.string.title_section_stores), //TODO: V2 */
                         getString(R.string.title_section_account),
                         getString(R.string.title_section_terms),
+                        "Logout"
                 }){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -158,10 +164,10 @@ public class NavigationDrawerFragment extends Fragment {
                 ImageView icon = ((ImageView)view.findViewById(R.id.icon_navigation));
                 switch(position) {
                     case HOME:
-                        icon.setImageResource(R.drawable.cart);
+                        icon.setImageResource(R.drawable.home);
                         break;
                     case OUTFITS:
-                        icon.setImageResource(R.drawable.outfit);
+                        icon.setImageResource(R.drawable.outfits);
                         break;
 //                    case OUTFIT_CREATOR:
 //                        icon.setImageResource(R.drawable.outfit);
@@ -169,6 +175,9 @@ public class NavigationDrawerFragment extends Fragment {
                     case CLOSET:
                         icon.setImageResource(R.drawable.closet);
                         break;
+//                    case COLOR_WHEEL:
+//                        icon.setImageResource(R.drawable.closet);
+//                        break;
  /*                   case STORES:
                         icon.setImageResource(R.drawable.store);
                         break; */
@@ -178,7 +187,9 @@ public class NavigationDrawerFragment extends Fragment {
                     case TERMS:
                         icon.setImageResource(R.drawable.terms);
                         break;
-
+                    case LOGOUT:
+                        icon.setImageResource(R.drawable.logout);
+                        break;
                     default:
                         break;
                 }
@@ -417,10 +428,10 @@ public class NavigationDrawerFragment extends Fragment {
                 Log.d(TAG, "Error parsing saved user data.");
             }
         } else {
-            if(currentUser.getString("first_name") != null) {
-                userNameView.setText(currentUser.getString("first_name"));
+            if(currentUser.getString("username") != null) {
+                userNameView.setText(currentUser.getString("username"));
             } else {
-                userNameView.setText("SnagTag User");
+                userNameView.setText("SnagTag user");
             }
         }
     }

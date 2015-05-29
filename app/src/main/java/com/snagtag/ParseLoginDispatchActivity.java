@@ -186,8 +186,7 @@ public class ParseLoginDispatchActivity extends Activity {
     private void onFBLoginButtonClicked() {
             ParseLoginDispatchActivity.this.progressDialog = ProgressDialog.show(
                     ParseLoginDispatchActivity.this, "", "Logging in...", true);
-            List<String> permissions = Arrays.asList("public_profile", "user_friends", "user_about_me",
-                    "user_relationships", "user_birthday", "user_location");
+            List<String> permissions = Arrays.asList("public_profile");
             ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException err) {
@@ -198,10 +197,16 @@ public class ParseLoginDispatchActivity extends Activity {
                     } else if (user.isNew()) {
                         Log.d(TAG,
                                 "user signed up and logged in through Facebook!");
+                        if(user.getNumber("outfit_count") == null) {
+                            user.put("outfit_count",0);
+                        }
                         startMainActivity();
                     } else {
                         Log.d(TAG,
                                 "user logged in through Facebook!");
+                        if(user.getNumber("outfit_count") == null) {
+                            user.put("outfit_count",0);
+                        }
                         startMainActivity();
                     }
                 }

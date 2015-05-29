@@ -42,34 +42,39 @@ import java.util.List;
  */
 public class RegisterNewAccountActivity extends Activity {
     private final String TAG = RegisterNewAccountActivity.class.getSimpleName();
+
     private Dialog progressDialog;
-
-    protected EditText mEditUsername;
-	protected EditText mEditEmailAddress;
-	protected EditText mEditPassword;
-	protected EditText mEditPasswordConfirm;
-	protected TextView mSkipButton;
-    protected Button mRegister;
-
     private ParseService mParseService;
     private ViewFlipper mViewFlipper;
 
+    /*Navigation bar params*/
     private View mArrowBack;
-    private Button mFbLoginButton;
-    private Button mNextButton;
-    private Spinner states;
-    private String state;
+    protected TextView mSkipButton;
 
-
-    private TextView mEditHeader;
+    /*Steps bar */
+    private TextView mOneCircle;
+    private TextView mTwoCircle;
+    private TextView mThreeCircle;
+    private TextView mAboutHeader;
     private TextView mShippingHeader;
-    private TextView mReviewHeader;
+    private TextView mBillingHeader;
 
+    /*About you fields*/
+    protected EditText mEditUsername;
+    protected EditText mEditEmailAddress;
+    protected EditText mEditPassword;
+    protected EditText mEditPasswordConfirm;
+    protected Button mRegisterButton;
+    private Button mFbLoginButton;
 
     //Shipping fields
+    private EditText shippingName;
     private EditText shippingAddress;
     private EditText shippingCity;
     private EditText shippingZipcode;
+    private Spinner states;
+    private String state;
+    private Button nextInShipping;
 
     //Card fields
     private EditText mCardName;
@@ -78,48 +83,50 @@ public class RegisterNewAccountActivity extends Activity {
     String mMonth;
     String mYear;
 
-    private static final int EDIT = 0;
+    private static final int ABOUT = 0;
     private static final int SHIPPING = 1;
+    private static final int BILLING = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+        mParseService = new ParseService(this);
+
         setContentView(R.layout.activity_register_steps);
+        mViewFlipper = (ViewFlipper) findViewById(R.id.register_view_flipper);
 
-        mViewFlipper = (ViewFlipper) findViewById(R.id.checkout_view_flipper);
+        /*Top Nav */
+        mOneCircle = (TextView) findViewById(R.id.one);
+        mAboutHeader = (TextView) findViewById(R.id.about_header);
+        mTwoCircle = (TextView) findViewById(R.id.two);
+        mShippingHeader = (TextView) findViewById(R.id.shipping_header);
+        mThreeCircle = (TextView) findViewById(R.id.three);
+        mBillingHeader = (TextView) findViewById(R.id.billing_header);
 
+        /*Bottom Nav */
         mArrowBack = findViewById(R.id.arrow_back);
-        mNextButton = (Button) findViewById(R.id.next);
-        mFbLoginButton = (Button) findViewById(R.id.fbLoginButton);
-
-        mSkipButton = (TextView) findViewById(R.id.button_place_order);
+        mSkipButton = (TextView) findViewById(R.id.skip_button);
+        //Skips starts invisible cant skip the first step
         mSkipButton.setVisibility(View.GONE);
 
-        mRegister = (Button) findViewById(R.id.startSnagging);
-
-
-        mEditHeader = (TextView) findViewById(R.id.edit_header);
-        mShippingHeader = (TextView) findViewById(R.id.shipping_header);
-        mReviewHeader = (TextView) findViewById(R.id.review_header);
-
-
         /**
-         * Page one
+         * About you
          */
         mEditUsername = (EditText) findViewById(R.id.username);
-        mEditEmailAddress = (EditText) findViewById(R.id.unEmail);
-        mEditPassword = (EditText) findViewById(R.id.pass);
-        mEditPasswordConfirm = (EditText) findViewById(R.id.comPass);
+        mEditEmailAddress = (EditText) findViewById(R.id.user_email);
+        mEditPassword = (EditText) findViewById(R.id.password);
+        mEditPasswordConfirm = (EditText) findViewById(R.id.confirm_pass);
+        mRegisterButton = (Button) findViewById(R.id.register_button);
+        mFbLoginButton = (Button) findViewById(R.id.fbLoginButton);
 
         /**
          *  Shipping
          */
-
+        shippingName = (EditText) findViewById(R.id.shipping_name);
         shippingAddress = (EditText) findViewById(R.id.shipping_address);
         shippingCity = (EditText) findViewById(R.id.shipping_city);
         shippingZipcode = (EditText) findViewById(R.id.shipping_zipcode);
-
         states = (Spinner) findViewById(R.id.shipping_state);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.states_abbreviations, android.R.layout.simple_spinner_item);
@@ -137,6 +144,7 @@ public class RegisterNewAccountActivity extends Activity {
                 Log.i(TAG, "State is: "+state);
             }
         });
+        nextInShipping = (Button) findViewById(R.id.shipping_next_button);
 
         /**
          * Billing
@@ -185,132 +193,126 @@ public class RegisterNewAccountActivity extends Activity {
         setOnClickListeners(this);
 	}
 
+    /*About you validation methods*/
+    private boolean validatePasswordMatch() {
+        if (mEditPassword.getText().toString()
+                .equals(mEditPasswordConfirm.getText().toString())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // TODO: FIX THESE VALUES
+    private boolean validateFields() {
+        if (mEditUsername.getText().toString().length() > 2
+                && mEditEmailAddress.getText().toString().length() > 2
+                && mEditPassword.getText().toString().length() > 2
+                && mEditPasswordConfirm.getText().toString().length() > 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public List<String> getUserInformation() {
         final List<String> registerDetails = new ArrayList<String>();
         registerDetails.add(0, mEditUsername.getText().toString());
         registerDetails.add(1, mEditPassword.getText().toString());
         registerDetails.add(2, mEditEmailAddress.getText().toString());
-
         return registerDetails;
     }
 	public Boolean registerAccount(View view) {
 		if (validateFields()) {
 			if (validatePasswordMatch()) {
                 //processSignup(view);
-                mParseService = new ParseService(view.getContext());
                 mParseService.registerNewUser(view.getContext(), getUserInformation());
                 return true;
             } else {
-				Toast.makeText(this, "Password doesn't match",
+				Toast.makeText(this, "Password don't match",
 						Toast.LENGTH_SHORT).show();
                 return false;
 			}
 		} else {
-/*			Toast.makeText(this, "Fields not filled in", Toast.LENGTH_SHORT)
-					.show();*/
+			Toast.makeText(this, "Fields not filled in", Toast.LENGTH_SHORT)
+					.show();
             return false;
 		}
 	}
 
-	// TODO: FIX THESE VALUES
-	private boolean validateFields() {
-		if (mEditUsername.getText().length() > 0
-                && mEditEmailAddress.length() > 0
-				&& mEditPassword.getText().length() > 0
-				&& mEditPasswordConfirm.getText().length() > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public Boolean addShipping(View view) {
+        if (validateShippingFields()) {
+            mParseService.addShippingAddress(view.getContext(), getShippingInfoFromUI());
+            return true;
+        } else {
+			Toast.makeText(this, "Fields not filled in", Toast.LENGTH_SHORT)
+					.show();
+            return false;
+        }
+    }
 
-	private boolean validatePasswordMatch() {
-		if (mEditPassword.getText().toString()
-				.equals(mEditPasswordConfirm.getText().toString())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    // TODO: FIX THESE VALUES
+    private boolean validateShippingFields() {
+        if (shippingName.getText().length() > 1
+                && shippingAddress.getText().length() > 1
+                && shippingCity.getText().length() > 1
+                && shippingZipcode.getText().length() > 4) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * Calls the createUserWithUsername method of the Parse to create a new
-	 * user. After sign-up is successful, the First and Last name are added to
-	 * the user, and an Intent is instantiated to bring the user back to the
-	 * login page to confirm authentication.
-	 *
-	 * Note that a user is not Authorized here to the Android Account Manager,
-	 * but rather is added to AccountManager upon successful authentication.
-	 */
-	public void processSignup(final View view) {
-		Toast.makeText(this, "Creating user...", Toast.LENGTH_SHORT).show();
-
-		final ParseUser user = new ParseUser();
-		// username is set to email
-		user.setUsername(mEditEmailAddress.getText().toString());
-		user.setPassword(mEditPassword.getText().toString());
-		user.setEmail(mEditEmailAddress.getText().toString().toLowerCase());
-
-		user.signUpInBackground(new SignUpCallback() {
-			@Override
-			public void done(ParseException e) {
-				if (e == null) {
-					Toast.makeText(
-							view.getContext(),
-							"Registration Successful\nSending Confirmation Email",
-							Toast.LENGTH_SHORT).show();
-					// TODO: Email notification???
-					user.setEmail(user.getEmail());
-					Intent i = new Intent(RegisterNewAccountActivity.this,
-							ParseLoginDispatchActivity.class);
-					startActivity(i);
-					// Hooray! Let them use the app now.
-				} else {
-					Toast.makeText(view.getContext(), "Registration Failed",
-							Toast.LENGTH_SHORT).show();
-					// Sign up didn't succeed. Look at the ParseException
-					// to figure out what went wrong
-                    Log.e(TAG, "Login failed: "+e.getMessage());
-				}
-			}
-		});
-	}
-
+    private List<String> getShippingInfoFromUI() {
+        List<String> info = new ArrayList<String>();
+        info.add(0, shippingName.getText().toString());
+        info.add(1, shippingAddress.getText().toString());
+        info.add(2, shippingCity.getText().toString());
+        info.add(3, state);
+        info.add(4, shippingZipcode.getText().toString());
+        return info;
+    }
 
 
     /**
      * We have a lot of click listeners in this view, so I'm adding them in a separate method just to keep things organized.
      */
     private void setOnClickListeners(final Activity act) {
-/*        mArrowForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mViewFlipper.getDisplayedChild() < mViewFlipper.getChildCount() - 1) {
-                    mViewFlipper.setInAnimation(act, R.anim.in_from_right);
-                    mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
-                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
-                    registerAccount(view);
-                    updateView(mViewFlipper.getDisplayedChild());
-                }
-            }
-        });*/
+
         mFbLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                     onFBLoginButtonClicked();
+                     onFBLoginButtonClicked(act);
             }
         });
-        mNextButton.setOnClickListener(new View.OnClickListener() {
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(registerAccount(view)) {
+                    //TODO: if invalid don't go to the next
                     Log.i(TAG, "Register account");
+                    if(ParseUser.getCurrentUser().getObjectId().length() > 0) {
+                        mViewFlipper.setInAnimation(act, R.anim.in_from_right);
+                        mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
+                        mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
+                        updateView(mViewFlipper.getDisplayedChild());
+                    } else {
+                        Toast.makeText(act, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(view.getContext(), "Hey, you're not done yet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        nextInShipping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(addShipping(v)) {
+                    Log.i(TAG, "Add Shipping");
                     mViewFlipper.setInAnimation(act, R.anim.in_from_right);
                     mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
                     mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
                     updateView(mViewFlipper.getDisplayedChild());
                 } else {
-                    Toast.makeText(view.getContext(), "Hey, you're not done yet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "Missing some information", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -326,8 +328,15 @@ public class RegisterNewAccountActivity extends Activity {
         mSkipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(RegisterNewAccountActivity.this, MainActivity.class);
-                startActivity(i);
+                if(mViewFlipper.getDisplayedChild() == 1) {
+                    //go to get billing information
+                    mViewFlipper.setInAnimation(act, R.anim.in_from_right);
+                    mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
+                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
+                    updateView(mViewFlipper.getDisplayedChild());
+                } else if(mViewFlipper.getDisplayedChild() == 2) {
+                    startMainActivity();
+                }
             }
         });
 
@@ -335,16 +344,19 @@ public class RegisterNewAccountActivity extends Activity {
            @Override
            public void onClick(View view) {
                Log.i(TAG, "Were verifying stripe");
-               mParseService = new ParseService(view.getContext());
+               RegisterNewAccountActivity.this.progressDialog = ProgressDialog.show(
+                       RegisterNewAccountActivity.this, "", "Verifying Card using Stripe....", true);
 
+               //TODO: Save last 4 digits
                String mCVV = "123";
                String theCardNumber = "4242424242424242";
                String theMonth = "12";
-               String theYear = "14";
+               String theYear = "15";
                try {
                    //mParseService.registerStripeCustomer(view.getContext(), mCardNumber.getText().toString(), mMonth, mYear, mCVV);
                    mParseService.registerStripeCustomer(view.getContext(), theCardNumber, theMonth, theYear, mCVV);
-
+                   RegisterNewAccountActivity.this.progressDialog.dismiss();
+                   startMainActivity();
                } catch(AuthenticationException e ) {
                    Log.e(TAG, e.getMessage());
                }
@@ -359,18 +371,37 @@ public class RegisterNewAccountActivity extends Activity {
      */
     private void updateView(int newView) {
         switch (newView) {
-            case EDIT:
-                mEditHeader.setTypeface(Typeface.DEFAULT_BOLD);
+            case ABOUT:
+                mOneCircle.setBackgroundResource(R.drawable.circle_blue_button);
+                mTwoCircle.setBackgroundResource(R.drawable.circle_grey);
+                mThreeCircle.setBackgroundResource(R.drawable.circle_grey);
+                mAboutHeader.setTypeface(Typeface.DEFAULT_BOLD);
                 mShippingHeader.setTypeface(Typeface.DEFAULT);
+                mBillingHeader.setTypeface(Typeface.DEFAULT);
+
                 mArrowBack.setVisibility(View.VISIBLE);
                 mSkipButton.setVisibility(View.GONE);
                 break;
             case SHIPPING:
-                mEditHeader.setTypeface(Typeface.DEFAULT);
+                mOneCircle.setBackgroundResource(R.drawable.circle_grey);
+                mTwoCircle.setBackgroundResource(R.drawable.circle_blue_button);
+                mThreeCircle.setBackgroundResource(R.drawable.circle_grey);
+                mAboutHeader.setTypeface(Typeface.DEFAULT);
                 mShippingHeader.setTypeface(Typeface.DEFAULT_BOLD);
+                mBillingHeader.setTypeface(Typeface.DEFAULT);
+
                 mArrowBack.setVisibility(View.GONE);
                 mSkipButton.setVisibility(View.VISIBLE);
-                mSkipButton.setText("Skip N Start Snaggin'");
+                break;
+            case BILLING:
+                mOneCircle.setBackgroundResource(R.drawable.circle_grey);
+                mTwoCircle.setBackgroundResource(R.drawable.circle_grey);
+                mThreeCircle.setBackgroundResource(R.drawable.circle_blue_button);
+                mAboutHeader.setTypeface(Typeface.DEFAULT);
+                mShippingHeader.setTypeface(Typeface.DEFAULT);
+                mBillingHeader.setTypeface(Typeface.DEFAULT_BOLD);
+                mArrowBack.setVisibility(View.GONE);
+                mSkipButton.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -390,11 +421,10 @@ public class RegisterNewAccountActivity extends Activity {
     /**
      * Handles facebook login request.
      */
-    private void onFBLoginButtonClicked() {
+    private void onFBLoginButtonClicked(final Activity act) {
         RegisterNewAccountActivity.this.progressDialog = ProgressDialog.show(
                 RegisterNewAccountActivity.this, "", "Logging in...", true);
-        List<String> permissions = Arrays.asList("public_profile", "user_friends", "user_about_me",
-                "user_relationships", "user_birthday", "user_location");
+        List<String> permissions = Arrays.asList("public_profile");
         ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
@@ -404,14 +434,26 @@ public class RegisterNewAccountActivity extends Activity {
                             "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     Log.d(TAG,
-                            "User signed up and logged in through Facebook!");
+                            "user signed up and logged in through Facebook!");
                     user.put("outfit_count", 0);
-                    startMainActivity();
+                    user.saveInBackground();
+                    //go to get shipping address information
+                    mViewFlipper.setInAnimation(act, R.anim.in_from_right);
+                    mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
+                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
+                    updateView(mViewFlipper.getDisplayedChild());
 
+                    //startMainActivity();
                 } else {
                     Log.d(TAG,
-                            "User logged in through Facebook!");
-                    startMainActivity();
+                            "user logged in through Facebook!");
+                    //go get shipping address
+                    user.saveInBackground();
+                    mViewFlipper.setInAnimation(act, R.anim.in_from_right);
+                    mViewFlipper.setOutAnimation(act, R.anim.out_to_left);
+                    mViewFlipper.setDisplayedChild(mViewFlipper.getDisplayedChild() + 1);
+                    updateView(mViewFlipper.getDisplayedChild());
+                    //startMainActivity();
                 }
             }
         });

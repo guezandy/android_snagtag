@@ -40,7 +40,8 @@
             android:id="@+id/input_outfit_name"
             android:hint="Outfit name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/outfit"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -69,7 +70,6 @@
                 android:textSize="20sp"
                 android:gravity="center"
                 android:background="@drawable/circle_button" />
-
         </LinearLayout>
         <LinearLayout
             android:layout_below="@id/input_outfit_name"

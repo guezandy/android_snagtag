@@ -24,7 +24,9 @@ import com.snagtag.ParseLoginDispatchActivity;
 import com.snagtag.R;
 import com.snagtag.SnagtagApplication;
 import com.snagtag.models.CartItem;
+import com.snagtag.models.ClothingItem;
 import com.snagtag.models.OutfitItem;
+import com.snagtag.models.ShippingModel;
 import com.snagtag.models.StoreItem;
 import com.snagtag.models.TagHistoryItem;
 import com.snagtag.models.UserModel;
@@ -166,7 +168,7 @@ public class ParseService {
         query.whereEqualTo("store", store);
         //get ten most recent
         query.setLimit(SNAGS_PER_STORE);
-        //query.whereEqualTo("visible", true);
+        query.whereEqualTo("visible", true);
         query.orderByDescending("createdAt");
 
 
@@ -188,6 +190,38 @@ public class ParseService {
             }
         });
 
+    }
+
+    public void getShippingPerUser(final Context context, final IParseCallback<List<ShippingModel>> itemsCallback) {
+        ParseQuery<ShippingModel> query = ParseQuery.getQuery("ShippingItem");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.orderByDescending("createdAt");
+        query.findInBackground(new FindCallback<ShippingModel>() {
+            @Override
+            public void done(List<ShippingModel> results, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    itemsCallback.onSuccess(results);
+                }
+            }
+        });
+    }
+
+    public void getBillingPerUser(final Context context, final IParseCallback<List<ShippingModel>> itemsCallback) {
+        ParseQuery<ShippingModel> query = ParseQuery.getQuery("BillingItem");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.orderByDescending("createdAt");
+        query.findInBackground(new FindCallback<ShippingModel>() {
+            @Override
+            public void done(List<ShippingModel> results, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    itemsCallback.onSuccess(results);
+                }
+            }
+        });
     }
 
     public void getCartItems(final Context context, final String store, final IParseCallback<List<CartItem>> itemsCallback) {
@@ -572,6 +606,7 @@ public class ParseService {
 
     public void registerNewUser(final Context context, List<String> registerDetails) {
         final UserModel user = new UserModel();
+
         user.setUsername(registerDetails.get(0));
         user.setPassword(registerDetails.get(1));
         user.setEmail(registerDetails.get(2));
@@ -584,18 +619,20 @@ public class ParseService {
                             context,
                             "Registration Successful\nSending Confirmation Email",
                             Toast.LENGTH_SHORT).show();
-                    // TODO: Email notification???
                     user.setEmail(user.getEmail());
                     user.setOutfitCount(0);
                 } else {
                     Toast.makeText(context, "Registration Failed: "+e.getMessage(),
                             Toast.LENGTH_SHORT).show();
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
                     Log.e(TAG, "Login failed: "+e.getMessage());
                 }
             }
         });
+    }
+
+    public void addShippingAddress(final Context context, List<String> info) {
+        ShippingModel newShippingAddress = new ShippingModel(info);
+        newShippingAddress.saveInBackground();
     }
 
     public void saveNewOutfit(final Context context, TagHistoryItem mTop, TagHistoryItem mBottom, TagHistoryItem mShoes, TagHistoryItem mAcc, String name,  final IParseCallback<OutfitItem> callback) {
@@ -664,10 +701,18 @@ public class ParseService {
     public void registerStripeCustomer(Context context, String cardNumber, String expMonth, String expYear, String CVV) throws AuthenticationException {
         Log.i(TAG, "Registering stripe customer in the service");
         Card card = new Card(cardNumber, Integer.parseInt(expMonth), Integer.parseInt(expYear), CVV);
-        card.validateNumber();
-        card.validateExpMonth();
-        card.validateExpYear();
-        card.validateCVC();
+        if(!card.validateNumber()) {
+            Toast.makeText(context, "Card Number is Invalid", Toast.LENGTH_LONG).show();
+        }
+        if(!card.validateExpMonth()) {
+            Toast.makeText(context, "Card Month is Invalid", Toast.LENGTH_LONG).show();
+        }
+        if(!card.validateExpYear()) {
+            Toast.makeText(context, "Card Year is Invalid", Toast.LENGTH_LONG).show();
+        }
+        if(!card.validateCVC()) {
+            Toast.makeText(context, "Card CVC is Invalid", Toast.LENGTH_LONG).show();
+        }
         card.validateCard();
         Log.i(TAG, "Card validated");
         Stripe stripe = new Stripe(context.getString(R.string.stripe_card_sample));
@@ -687,9 +732,7 @@ public class ParseService {
                             @Override
                             public void done(Object result, ParseException e) {
                                 if (e == null) {
-                                    // result is "Hello world!"
                                     Log.i(TAG, "parse cloud code ran successfully");
-                                    //Log.i(TAG, result);
                                 }
                             }
                         });
@@ -701,5 +744,33 @@ public class ParseService {
                 }
         );
 
+    }
+
+
+    /**Returns first 3 items with similar type**/
+    public void getSimilarItems(final Context context, final ClothingItem item, final IParseCallback<List<ClothingItem>> callback) {
+        final List<ClothingItem> tops = new ArrayList<ClothingItem>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ParseQuery<ClothingItem> query = ParseQuery.getQuery("ClothingItem");
+                query.whereEqualTo("type", item.getType());
+                query.orderByDescending("createdAt");
+                query.whereNotEqualTo("objectId", item.getObjectId());
+                query.setLimit(3);
+
+                query.findInBackground(new FindCallback<ClothingItem>() {
+                    @Override
+                    public void done(List<ClothingItem> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            callback.onSuccess(results);
+                        }
+                    }
+                });
+            }
+        });
+        t.start();
     }
 }

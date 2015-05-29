@@ -2,13 +2,18 @@ package com.snagtag.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -21,8 +26,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.snagtag.MainActivity;
 import com.snagtag.R;
 import com.snagtag.SnagtagApplication;
+import com.snagtag.models.CartItem;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.TagHistoryItem;
 import com.snagtag.scroll.CenteringHorizontalScrollView;
@@ -57,9 +64,14 @@ public class NfcLaunchFragment extends Fragment {
     private TextView description;
     private TextView price;
     private String tagObjectId;
-    private LinearLayout mTopsView;
-    private CenteringHorizontalScrollView mTopsScrollView;
-    List<TagHistoryItem> mTops;
+    private LinearLayout mSimilarView;
+    private CenteringHorizontalScrollView mSimilarScrollView;
+    List<ClothingItem> mSimilar;
+    private ParseImageView mItemImage;
+    private Spinner mSizeSpinner;
+    private TextView addToCart;
+    private TagHistoryItem tag;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,9 +100,11 @@ public class NfcLaunchFragment extends Fragment {
         brand = (TextView) mItemView.findViewById(R.id.label_brand);
         description = (TextView) mItemView.findViewById(R.id.label_description);
         price = (TextView) mItemView.findViewById(R.id.label_price);
-        mTopsScrollView = (CenteringHorizontalScrollView) mItemView.findViewById(R.id.tops_scroll_view);
-        mTopsView = (LinearLayout) mItemView.findViewById(R.id.tops_view);
-
+        mSimilarScrollView = (CenteringHorizontalScrollView) mItemView.findViewById(R.id.similar_scroll_view);
+        mSimilarView = (LinearLayout) mItemView.findViewById(R.id.similar_view);
+        mItemImage = (ParseImageView) mItemView.findViewById(R.id.nfc_item_image);
+        mSizeSpinner = (Spinner) mItemView.findViewById(R.id.size_spinner);
+        addToCart = (TextView) mItemView.findViewById(R.id.button_cart);
 
         //TODO: Move into service
         onItemSnagged(barcode);
@@ -131,18 +145,17 @@ public void onItemSnagged(String nfcid) {
             } else {
                 Log.d("Scan Tag", "Retrieved the clothingItem.");
       /* 1 */
-                ClothingItem object = (ClothingItem) item;
+                final ClothingItem object = (ClothingItem) item;
                 brand.setText(object.getStore());
                 description.setText(object.getDescription());
-                price.setText(object.getPrice().toString());
+                price.setText("$"+object.getPrice().toString());
 
-                //TODO: CHANGE TO GET ITEM IMAGES
-                new ParseService(getActivity().getApplicationContext()).getTops(getActivity().getApplicationContext(), new IParseCallback<List<TagHistoryItem>>() {
+                /*Gets similar item scroller images**/
+                new ParseService(getActivity().getApplicationContext()).getSimilarItems(getActivity().getApplicationContext(), object, new IParseCallback<List<ClothingItem>>() {
                     @Override
-                    public void onSuccess(List<TagHistoryItem> items) {
-                        mTops = items;
-                        setItemsInScroll(mTopsView, items, "You have no mTops in your closet or snags.");
-
+                    public void onSuccess(List<ClothingItem> items) {
+                        mSimilar = items;
+                        setItemsInScroll(mSimilarView, items, "No Similar Items");
                     }
 
                     @Override
@@ -150,7 +163,7 @@ public void onItemSnagged(String nfcid) {
 
                     }
                 });
-                mTopsScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
+                mSimilarScrollView.setOnScrollStoppedListener(new CenteringHorizontalScrollView.OnScrollStoppedListener() {
                     @Override
                     public void onScrollStopped(View view, int index) {
                         //mSelectedTop = mTops.get(index - 1);
@@ -159,17 +172,17 @@ public void onItemSnagged(String nfcid) {
                     }
                 });
 
-/*                ParseFile photoFile = object.getMainImage();
+                ParseFile photoFile = object.getMainImage();
                 if (photoFile != null) {
-                    image.setParseFile(photoFile);
-                    image.loadInBackground(new GetDataCallback() {
+                    mItemImage.setParseFile(photoFile);
+                    mItemImage.loadInBackground(new GetDataCallback() {
                         @Override
                         public void done(byte[] data, ParseException e) {
                             // nothing to do
                             Log.i(TAG, "Image uploaded");
                         }
                     });
-                }*/
+                }
       /* 2 */
                 Log.i(TAG, "Incrementing tag count");
                 object.increment("tag_count"); //increments the items tag counter
@@ -177,22 +190,61 @@ public void onItemSnagged(String nfcid) {
 
       /* 3 */
                 Log.i(TAG, "Add item to tag history table");
-                TagHistoryItem tag = new TagHistoryItem(object); //creates a tagmodel from a clothingItem
+                final ParseQuery<TagHistoryItem> avoidDuplicateQuery = ParseQuery.getQuery("TagHistoryItem"); //or clothingItem
+                avoidDuplicateQuery.whereEqualTo("barcode", object.getBarcode());
+                avoidDuplicateQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+                avoidDuplicateQuery.getFirstInBackground(new GetCallback<TagHistoryItem>()
+                {
+                    public void done(TagHistoryItem exists, ParseException e) {
+                        if(e == null) {
+                            //object exists
+                            tag = exists;
+                            if(tag.getVisible() == false) {
+                                tag.setVisible(true);
+                            }
+                            tag.saveInBackground();
+                            Toast.makeText(getActivity(), "Duplicate Snag", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if(e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                                //object doesn't exist
+                                tag = new TagHistoryItem(object);
+                                tag.saveInBackground(); //saves to the universal tag history table
+                                Toast.makeText(getActivity(), "Added to Snags", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                //unknown error, debug
+                            }
+                        }
+                    }
+                });
       /* 5 */
-                tag.saveInBackground(); //saves to the universal tag history table
                 Log.i(TAG, "item saved");
-                tagObjectId = tag.getObjectId();
+                if(tag != null) {
+                    tagObjectId = tag.getObjectId();
+                }
 
                 ParseUser theUser = ParseUser.getCurrentUser();
                 //createRelation(theUser, tag.getObjectId());
 
+               /**Add to cart button**/
+                addToCart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!tag.getInCart()) {
+                            addTagItemToCart(tag);
+                        } else {
+                            Toast.makeText(v.getContext(), tag.getDescription() + " is already in cart.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
                 Log.i(TAG, "The current user is:"+theUser.getString("first_name"));
-                ParseRelation relation = theUser.getRelation("user_tags");
-                Log.i(TAG, "the relation is: "+relation.toString());
+                //ParseRelation relation = theUser.getRelation("user_tags");
+                //Log.i(TAG, "the relation is: "+relation.toString());
                 //relation.add(tag);
                 //theUser.saveInBackground();
 
-                relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+/*                relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
                         for(ParseObject p : list) {
@@ -201,6 +253,19 @@ public void onItemSnagged(String nfcid) {
                     }
                 });
                 Log.i(TAG, "The user is saved");
+*/
+                /**Setup sizes**/
+                if(object.getType().equals("shoe")) {
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                            R.array.shoe_sizes, android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mSizeSpinner.setAdapter(adapter);
+                } else {
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                            R.array.clothes_sizes, android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mSizeSpinner.setAdapter(adapter);
+                }
             }
         }
     });
@@ -225,7 +290,7 @@ public void onItemSnagged(String nfcid) {
 
                     Log.i(TAG, "Inside create relation and the item adding to relation is: "+item.getDescription());
                         relation.add(item);
-                    Log.i(TAG, "User is: "+user.getString("first_name"));
+                    Log.i(TAG, "user is: "+user.getString("first_name"));
                         user.saveInBackground();
 
                 }
@@ -240,7 +305,7 @@ public void onItemSnagged(String nfcid) {
      * @param items     The list of Tags
      * @param emptyText Message to display if the list is empty
      */
-    private void setItemsInScroll(final LinearLayout view, final List<TagHistoryItem> items, final String emptyText) {
+    private void setItemsInScroll(final LinearLayout view, final List<ClothingItem> items, final String emptyText) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -259,10 +324,19 @@ public void onItemSnagged(String nfcid) {
                 //add a blank view to start.
                 view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
 
-                for (TagHistoryItem item : items) {
+                for (final ClothingItem item : items) {
                     ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.row_item_creator_view, view, false);
                     ParseImageView iv = (ParseImageView) itemView.findViewById(R.id.item_image);
-                    iv.setParseFile(item.getImage());
+                    iv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(getActivity(), "Pressed: "+item.getDescription(), Toast.LENGTH_SHORT).show();
+                            NfcLaunchFragment frag = new NfcLaunchFragment();
+                            frag.setItemId(item.getBarcode());
+                            ((MainActivity) getActivity()).replaceFragment(frag, true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_snagtag));
+                        }
+                    });
+                    iv.setParseFile(item.getMainImage());
                     iv.loadInBackground();
                     ((TextView) itemView.findViewById(R.id.item_count)).setText(i + "/" + items.size());
                     i++;
@@ -272,5 +346,13 @@ public void onItemSnagged(String nfcid) {
                 view.addView(inflater.inflate(R.layout.row_item_creator_view_empty, view, false));
             }
         });
+    }
+
+    private void addTagItemToCart(TagHistoryItem item) {
+        CartItem cartItem = new CartItem(item);
+        cartItem.saveInBackground();
+        item.setInCart(true);
+        item.saveInBackground();
+        Toast.makeText(getActivity(), "Added "+item.getDescription()+" Cart", Toast.LENGTH_SHORT).show();
     }
 }

@@ -22,6 +22,7 @@ import static com.snagtag.utils.Constant.*;
 
 import com.parse.ParseUser;
 import com.snagtag.fragment.AccountFragment;
+import com.snagtag.fragment.AccountTabsFragment;
 import com.snagtag.fragment.CartFragment;
 
 import com.facebook.Request;
@@ -166,11 +167,16 @@ public class MainActivity extends ActionBarActivity
  /*           case STORES:
                 replaceFragment(new StoreFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_stores));
                 break; */
+  //          case COLOR_WHEEL:
+  //              break;
             case ACCOUNT:
-                replaceFragment(new AccountFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_account));
+                replaceFragment(new AccountTabsFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_account));
                 break;
             case TERMS:
                 replaceFragment(new TermsFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_terms));
+                break;
+            case LOGOUT:
+                logout();
                 break;
             default:
                 break;
@@ -211,9 +217,6 @@ public class MainActivity extends ActionBarActivity
                     mDrawer.closeDrawer(mNavigationDrawerFragment.getView());
                 }
             }
-            return true;
-        } if(id == R.id.action_logout) {
-            logout();
             return true;
         } if(id == R.id.action_cart) {
             replaceFragment(new CartFragment(), true, FragmentTransaction.TRANSIT_FRAGMENT_FADE, getString(R.string.title_section_cart));
@@ -330,7 +333,7 @@ public class MainActivity extends ActionBarActivity
                                 // Populate the JSON object
                                 userProfile.put("facebookId", user.getId());
                                 userProfile.put("name", user.getName());
-                                if (user.getLocation().getProperty("name") != null) {
+/*                                if (user.getLocation().getProperty("name") != null) {
                                     userProfile.put("location", (String) user
                                             .getLocation().getProperty("name"));
                                 }
@@ -348,6 +351,7 @@ public class MainActivity extends ActionBarActivity
                                                     (String) user
                                                             .getProperty("relationship_status"));
                                 }
+*/
 
                             } catch (JSONException e) {
                                 Log.d(TAG,

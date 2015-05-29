@@ -13,10 +13,12 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.snagtag.models.BillingModel;
 import com.snagtag.models.CartItem;
 import com.snagtag.models.ClothingItem;
 import com.snagtag.models.HomeImage;
 import com.snagtag.models.OutfitItem;
+import com.snagtag.models.ShippingModel;
 import com.snagtag.models.StoreItem;
 import com.snagtag.models.StripeOrderModel;
 import com.snagtag.models.TagHistoryItem;
@@ -52,6 +54,8 @@ public class SnagtagApplication extends Application {
         ParseObject.registerSubclass(UserModel.class);
         ParseObject.registerSubclass(HomeImage.class);
         ParseObject.registerSubclass(StripeOrderModel.class);
+        ParseObject.registerSubclass(ShippingModel.class);
+        ParseObject.registerSubclass(BillingModel.class);
         preferences = getSharedPreferences("com.snagtag", Context.MODE_PRIVATE);
         /*
             Initialize the ability to store data locally

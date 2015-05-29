@@ -3,47 +3,97 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@drawable/stock4"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_medium"
-        android:id="@+id/title_bar"/>
+        android:layout_marginTop="10dp"
+        android:layout_height="100dp"
+        android:src="@drawable/stlogo_s"
+        android:id="@+id/logo"/>
 
     <RelativeLayout
         android:id="@+id/step_bar"
-        android:layout_below="@+id/title_bar"
+        android:layout_below="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="#dddddd">
-        <TextView
-            android:id="@+id/edit_header"
+        android:layout_height="60dp"
+        android:background="@color/grey_light">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true"
-            android:text="@string/label_register_1"/>
-        <TextView
-            android:id="@+id/shipping_header"
+            android:id="@+id/first_item"
+            android:paddingLeft="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/one"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingLeft="5dp"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:layout_above="@+id/about_header"
+                android:background="@drawable/circle_blue_button"
+                android:text="1"/>
+            <TextView
+                android:id="@+id/about_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/label_register_1"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/label_register_2"/>
-        <TextView
-            android:id="@+id/review_header"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/second_item"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:id="@+id/two"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:layout_above="@+id/shipping_header"
+                android:background="@drawable/circle_grey"
+                android:layout_gravity="center"
+                android:text="2"/>
+            <TextView
+                android:id="@+id/shipping_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/label_register_2"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:id="@+id/third_item"
             android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:text="@string/label_register_3"/>
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/three"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingRight="5dp"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:layout_above="@+id/billing_header"
+                android:background="@drawable/circle_grey"
+                android:text="3"/>
+            <TextView
+                android:id="@+id/billing_header"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                android:text="@string/label_register_3"/>
+        </LinearLayout>
 
     </RelativeLayout>
     <RelativeLayout
@@ -75,7 +125,7 @@
             android:paddingEnd="24dp"
             />
         <TextView
-            android:id="@+id/button_place_order"
+            android:id="@+id/skip_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -87,86 +137,87 @@
             android:gravity="center"
             android:visibility="gone"
             tools:visibility="visible"
-            android:text="@string/register_button"/>
+            android:text="@string/skip"/>
     </RelativeLayout>
 
-    <!--It seemed appropriate to just flip the view for the center content when 'navigating through checkout'-->
     <ViewFlipper
-        android:id="@+id/checkout_view_flipper"
+        android:id="@+id/register_view_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/step_bar"
         android:layout_above="@id/navigation_bar">
-
-        <!-- Step 1, Edit Order -->
-        <RelativeLayout
-            android:id="@+id/edit_order_view"
+        <ScrollView
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <!-- Step 1,  About you -->
+        <RelativeLayout
+            android:id="@+id/about_view"
+            android:layout_width="match_parent"
+            android:background="@color/grey_light"
             android:layout_height="match_parent">
             <!-- Items in the first page go here -->
             <EditText
-                android:id="@+id/unEmail"
+                android:id="@+id/user_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Email"
                 android:inputType="textEmailAddress"
-                android:background="@drawable/edittext_default_bg"
-                android:layout_marginTop="12dp"
-                android:padding="10dp"
-                android:textColorHint="#bbbbbb"
-                android:drawableLeft="@drawable/tag"/>
+                android:textColorHint="@color/white"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/emailenvelope"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
-                android:layout_below="@id/unEmail"
+                android:layout_below="@id/user_email"
                 android:layout_gravity="center_horizontal"
                 android:hint="Enter Username"
-                android:background="@drawable/edittext_default_bg"
                 android:layout_marginTop="-2dp"
                 android:padding="10dp"
-                android:textColorHint="#bbbbbb"
-                android:drawableLeft="@drawable/tag"/>
+                android:drawablePadding="5dp"
+                android:textColorHint="@color/white"
+                android:drawableLeft="@drawable/user"/>
 
             <EditText
-                android:id="@+id/pass"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/username"
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:background="@drawable/edittext_default_bg"
                 android:layout_marginTop="-2dp"
                 android:padding="10dp"
-                android:textColorHint="#bbbbbb"
-                android:drawableLeft="@drawable/tag"/>
+                android:drawablePadding="5dp"
+                android:textColorHint="@color/white"
+                android:drawableLeft="@drawable/passwordlock"/>
 
             <EditText
-                android:id="@+id/comPass"
+                android:id="@+id/confirm_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/pass"
+                android:layout_below="@id/password"
                 android:ems="10"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
-                android:background="@drawable/edittext_bottom_bg"
                 android:layout_marginTop="-2dp"
                 android:padding="10dp"
-                android:textColorHint="#bbbbbb"
-                android:drawableLeft="@drawable/tag"/>
+                android:drawablePadding="5dp"
+                android:textColorHint="@color/white"
+                android:drawableLeft="@drawable/passwordlock"/>
 
             <Button
-                android:id="@+id/next"
+                android:id="@+id/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_below="@+id/comPass"
+                android:layout_below="@+id/confirm_pass"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_login_bg"
-                android:text="@string/next" />
+                android:background="@color/blue"
+                android:textColor="@color/white"
+                android:text="@string/register_button"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -174,30 +225,29 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 android:id="@+id/or"
-                android:layout_below="@id/next"
+                android:layout_below="@id/register_button"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="-OR-"
+                android:layout_marginTop="5dp"
+                android:text="@string/or"
                 android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/fbLoginButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:layout_below="@id/or"
-                android:text="Sign up using Facebook"
                 android:textColor="#fff"
-                android:background="@drawable/com_facebook_button_blue"
+                android:background="@drawable/facebook"
                 android:textStyle="bold" />
 
         </RelativeLayout>
-
-        <!-- Step 2, Shipping & Billing -->
+</ScrollView>
+        <!-- Step 2, Optional Shipping Address-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -213,279 +263,171 @@
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:background="@color/grey_light"
-                    android:text="Shipping Address"
-                    android:textColor="#000000"/>
+                    android:text="@string/new_shipping"
+                    android:textColor="@color/white"/>
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/grey_light"
                     android:padding="12dp">
+                    <EditText
+                        android:id="@+id/shipping_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Full Name"
+                        android:layout_marginTop="-2dp"
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/user"/>
                     <EditText
                         android:id="@+id/shipping_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lines="3"
-                        android:hint="Enter Street Address"
+                        android:hint="Street Address"
                         android:inputType="textPostalAddress"
-                        android:background="@drawable/edittext_top_bg"
                         android:layout_marginTop="-2dp"
                         android:padding="10dp"
-                        android:textColorHint="#bbbbbb"
-                        android:drawableLeft="@drawable/tag"/>
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/address"/>
                     <EditText
                         android:id="@+id/shipping_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter City"
-                        android:background="@drawable/edittext_default_bg"
+                        android:hint="City"
                         android:layout_marginTop="-2dp"
                         android:padding="10dp"
-                        android:textColorHint="#bbbbbb"
-                        android:drawableLeft="@drawable/tag"/>
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/address"/>
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp">
                         <Spinner
-                            android:layout_width="wrap_content"
+                            android:layout_width="50dp"
                             android:layout_height="match_parent"
                             android:id="@+id/shipping_state"
                             android:layout_below="@+id/comPass"
+                            android:background="@drawable/shipping_item_square"
                             android:layout_centerHorizontal="true" />
                         <EditText
                             android:id="@+id/shipping_zipcode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Zipcode"
-                            android:background="@drawable/edittext_default_bg"
+                            android:hint="Zipcode"
                             android:layout_marginTop="-2dp"
                             android:padding="10dp"
-                            android:textColorHint="#bbbbbb"
-                            android:drawableLeft="@drawable/tag"/>
+                            android:textColorHint="@color/white"
+                            android:drawablePadding="5dp"
+                            android:drawableLeft="@drawable/address"/>
                     </LinearLayout>
-
+                    <Button
+                        android:id="@+id/shipping_next_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/blue"
+                        android:textColor="@color/white"
+                        android:text="Next" />
                 </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:gravity="center|start"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:background="@color/grey_light"
-                    android:text="Billing"
-                    android:textColor="#000000"/>
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp">
-                    <EditText
-                        android:id="@+id/card_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Name on Card"
-                        android:background="@drawable/edittext_top_bg"
-                        android:layout_marginTop="-2dp"
-                        android:padding="10dp"
-                        android:textColorHint="#bbbbbb"
-                        android:drawableLeft="@drawable/tag"/>
-                    <EditText
-                        android:id="@+id/card_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Card Number"
-                        android:background="@drawable/edittext_top_bg"
-                        android:layout_marginTop="-2dp"
-                        android:padding="10dp"
-                        android:textColorHint="#bbbbbb"
-                        android:drawableLeft="@drawable/tag"/>
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="Exp Month: "/>
-                        <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:id="@+id/expiration_month"
-                            android:padding="5dp"
-                            android:layout_centerHorizontal="true" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="Exp Year: "/>
-                        <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:id="@+id/expiration_year"
-                            android:padding="5dp"
-                            android:layout_centerHorizontal="true" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <Button
-                            android:id="@+id/stripe_verify"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="1dp"
-                            android:background="@drawable/stripe_btn_default_holo_dark"
-                            android:text="Process Payments with Stripe" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="What is Stripe?"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/startSnagging"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:text="@string/start"/>
+               <!--DONE with shipping-->
             </LinearLayout>
         </ScrollView>
 
 
-
-        <!-- Step 3, Review -->
+        <!-- Step 3, Billing -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
+            android:background="@color/grey_light"
             android:layout_height="match_parent">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:gravity="center|left"
+                android:gravity="center|start"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:background="@color/grey_light"
-                android:text="Items"
-                android:textColor="#000000"/>
-            <HorizontalScrollView
-                android:id="@+id/list_items_purchase"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center|left"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:background="@color/grey_light"
-                android:text="Order Details"
-                android:textColor="#000000"/>
+                android:text="@string/new_billing"
+                android:textColor="@color/white"/>
             <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/ship_to_label"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp">
-                <TextView
-                    android:id="@+id/user_and_billing_summary_label"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/card_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#111111"
-                    android:textSize="11sp"
-                    tools:text="Ship to:\nLindsay Smith\n123 Main St.\n\nMilwaukee, WI 53202\n\nCard #:XXXX XXXX XXXX 1234\nExp Date: 01/18"/>
-                <TextView
-                    android:id="@+id/shipping_label"
-                    android:textColor="#111111"
-                    android:textSize="11sp"
-                    android:layout_width="wrap_content"
+                    android:hint="@string/card_name"
+                    android:layout_marginTop="-2dp"
+                    android:padding="10dp"
+                    android:textColorHint="@color/white"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/user"/>
+                <EditText
+                    android:id="@+id/card_number"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    tools:text="Free Shipping($50 min)\n4-9 business days"/>
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/grey_light"
-                android:paddingRight="12dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="12dp">
-                <TextView
-                    android:id="@+id/label_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:text="Product Total"/>
-                <TextView
-                    android:id="@+id/label_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_below="@id/label_total"
-                    android:text="Tax"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_below="@id/label_tax"
-                    android:text="Shipping &amp; Handling"/>
-
-                <TextView
-                    android:id="@+id/value_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    tools:text="$165.00"/>
-                <TextView
-                    android:id="@+id/value_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/value_total"
-                    android:layout_marginRight="12dp"
-                    tools:text="$9.90"/>
-                <TextView
-                    android:id="@+id/value_shipping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:layout_below="@id/value_tax"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    tools:text="Free"/>
+                    android:hint="@string/card_number"
+                    android:layout_marginTop="-2dp"
+                    android:padding="10dp"
+                    android:textColorHint="@color/white"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/wallet"/>
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:id="@+id/total_separator"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#999999"
-                    android:layout_marginBottom="12dp"
-                    android:layout_below="@id/value_shipping"
-                    />
-                <TextView
-                    android:id="@+id/value_order_total"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Exp Month: "/>
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:id="@+id/expiration_month"
+                        android:padding="5dp"
+                        android:layout_centerHorizontal="true" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Exp Year: "/>
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:id="@+id/expiration_year"
+                        android:padding="5dp"
+                        android:layout_centerHorizontal="true" />
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/total_separator"
-                    android:layout_marginRight="12dp"
-
-                    tools:text="Total: $174.90"
-
-                    />
-            </RelativeLayout>
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/stripe_verify"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:background="@drawable/stripe"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/white" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/what_stripe"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
     </ViewFlipper>
 </RelativeLayout>

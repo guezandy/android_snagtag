@@ -103,16 +103,12 @@ public class LaunchActivity extends ActionBarActivity {
      */
     public void replaceFragment(android.support.v4.app.Fragment newFragment, boolean addToBackstack, int transition, String backstackName) {
         // use fragmentTransaction to replace the fragment
-        Log.i(TAG, "Initializing Fragment Transaction");
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Log.i(TAG, "Replacing the fragment and calling backstack");
         fragmentTransaction.replace(R.id.container, newFragment, backstackName);
         if (addToBackstack) {
             fragmentTransaction.addToBackStack(backstackName);
         }
-        Log.i(TAG, "setting the transition");
         fragmentTransaction.setTransition(transition);
-        Log.i(TAG,"Commiting Transaction");
         fragmentTransaction.commit();
     }
 
